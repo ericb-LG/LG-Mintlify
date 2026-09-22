@@ -1269,11 +1269,6 @@
         "type": "http",
         "scheme": "bearer",
         "bearerFormat": "API Token"
-      },
-      "basic": {
-        "type": "http",
-        "scheme": "basic",
-        "bearerFormat": "basic"
       }
     }
   }
