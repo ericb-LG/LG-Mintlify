@@ -212,5 +212,12 @@
   "api": {
     "openapi": "https://raw.githubusercontent.com/LogicGateTech/openapi/main/openapi.json"
   },
-  "description": "Build integrations with the Risk Cloud API."
+  "description": "Build integrations with the Risk Cloud API.",
+  "redirects": [
+    {
+      "source": "/api/public/risk-cloud-api",
+      "destination": "/api-reference",
+      "permanent": true
+    }
+  ]
 }
