@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mintlify Starter Kit",
+  "name": "Risk Cloud Developer Portal",
   "colors": {
     "primary": "#16A34A",
     "light": "#07C983",
@@ -152,12 +152,20 @@
             "pages": [
               "api-reference/workflow/retrieve-workflows",
               "api-reference/workflow/create-a-workflow",
-              "api-reference/workflow/retrieve-a-workflow"
+              "api-reference/workflow/retrieve-a-workflow",
+              "api-reference/workflow/delete-a-workflow",
+              "api-reference/workflow/update-a-workflow"
             ]
           },
           {
             "group": "Workflow Map",
-            "pages": []
+            "pages": [
+              "api-reference/workflow-map/retrieve-workflow-maps",
+              "api-reference/workflow-map/create-a-workflow-map",
+              "api-reference/workflow-map/retrieve-a-workflow-map",
+              "api-reference/workflow-map/delete-a-workflow-map",
+              "api-reference/workflow-map/update-a-workflow-map"
+            ]
           }
         ]
       },
@@ -203,5 +211,6 @@
   },
   "api": {
     "openapi": "https://raw.githubusercontent.com/LogicGateTech/openapi/main/openapi.json"
-  }
+  },
+  "description": "Build integrations with the Risk Cloud API."
 }
