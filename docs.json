@@ -208,9 +208,6 @@
       "linkedin": "https://linkedin.com/company/mintlify"
     }
   },
-  "api": {
-    "openapi": "openapi.json"
-  },
   "description": "Build integrations with the Risk Cloud API.",
   "redirects": [
     {
