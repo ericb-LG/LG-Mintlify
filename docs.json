@@ -77,39 +77,83 @@
           },
           {
             "group": "Application",
-            "pages": []
+            "pages": [
+              "api-reference/application/retrieve-applications",
+              "api-reference/application/create-an-application",
+              "api-reference/application/retrieve-an-application",
+              "api-reference/application/delete-an-application",
+              "api-reference/application/update-an-application"
+            ]
           },
           {
             "group": "Authentication",
-            "pages": []
+            "pages": [
+              "api-reference/authentication/refresh-an-api-token",
+              "api-reference/authentication/create-an-api-access-token"
+            ]
           },
           {
             "group": "Edge Path",
-            "pages": []
+            "pages": [
+              "api-reference/edge-path/list-all-conditional-edge-paths",
+              "api-reference/edge-path/create-a-conditional-edge-path",
+              "api-reference/edge-path/retrieve-a-conditional-edge-path",
+              "api-reference/edge-path/delete-a-conditional-edge-path",
+              "api-reference/edge-path/update-a-conditional-edge-path"
+            ]
           },
           {
             "group": "Field",
-            "pages": []
+            "pages": [
+              "api-reference/field/retrieve-fields"
+            ]
           },
           {
             "group": "Next Path",
-            "pages": []
+            "pages": [
+              "api-reference/next-path/list-all-default-next-paths",
+              "api-reference/next-path/create-a-default-next-path",
+              "api-reference/next-path/update-a-default-next-path",
+              "api-reference/next-path/create-a-default-next-path-2",
+              "api-reference/next-path/delete-a-default-next-path"
+            ]
           },
           {
             "group": "Record",
-            "pages": []
+            "pages": [
+              "api-reference/record/retrieve-records",
+              "api-reference/record/retrieve-a-record",
+              "api-reference/record/retrieve-all-linked-records"
+            ]
           },
           {
             "group": "Redirect Path",
-            "pages": []
+            "pages": [
+              "api-reference/redirect-path/list-all-redirect-paths",
+              "api-reference/redirect-path/create-a-redirect-path",
+              "api-reference/redirect-path/retrieve-a-redirect-path",
+              "api-reference/redirect-path/delete-a-redirect-path",
+              "api-reference/redirect-path/update-a-redirect-path"
+            ]
           },
           {
             "group": "Step",
-            "pages": []
+            "pages": [
+              "api-reference/step/retrieve-steps",
+              "api-reference/step/create-a-step",
+              "api-reference/step/retrieve-a-step",
+              "api-reference/step/delete-a-step",
+              "api-reference/step/update-a-step",
+              "api-reference/step/update-a-step-s-canvas-position"
+            ]
           },
           {
             "group": "Workflow",
-            "pages": []
+            "pages": [
+              "api-reference/workflow/retrieve-workflows",
+              "api-reference/workflow/create-a-workflow",
+              "api-reference/workflow/retrieve-a-workflow"
+            ]
           },
           {
             "group": "Workflow Map",
