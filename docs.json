@@ -64,7 +64,61 @@
           "guides/api-usage/risk-cloud-export-record-data",
           "guides/api-usage/service-accounts"
         ]
-      }
+      },
+      {
+        "group": "API Reference",
+        "pages": [
+          "api-reference",
+          {
+            "group": "Access Audit",
+            "pages": [
+              "api-reference/access-audit/retrieve-access-audits"
+            ]
+          },
+          {
+            "group": "Application",
+            "pages": []
+          },
+          {
+            "group": "Authentication",
+            "pages": []
+          },
+          {
+            "group": "Edge Path",
+            "pages": []
+          },
+          {
+            "group": "Field",
+            "pages": []
+          },
+          {
+            "group": "Next Path",
+            "pages": []
+          },
+          {
+            "group": "Record",
+            "pages": []
+          },
+          {
+            "group": "Redirect Path",
+            "pages": []
+          },
+          {
+            "group": "Step",
+            "pages": []
+          },
+          {
+            "group": "Workflow",
+            "pages": []
+          },
+          {
+            "group": "Workflow Map",
+            "pages": []
+          }
+        ]
+      },
+      "release-notes",
+      "blog-archive"
     ]
   },
   "logo": {
@@ -102,5 +156,8 @@
       "github": "https://github.com/mintlify",
       "linkedin": "https://linkedin.com/company/mintlify"
     }
+  },
+  "api": {
+    "openapi": "https://raw.githubusercontent.com/LogicGateTech/openapi/main/openapi.json"
   }
 }
