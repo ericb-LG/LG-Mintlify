@@ -15,8 +15,14 @@
   },
   "servers": [
     {
-      "url": "https://your-instance.logicgate.com",
-      "description": "Replace `your-instance` with your Risk Cloud environment's subdomain (e.g. `qa.logicgate.com`)."
+      "url": "https://{subdomain}.logicgate.com",
+      "description": "Your Risk Cloud environment.",
+      "variables": {
+        "subdomain": {
+          "default": "your-instance",
+          "description": "Your Risk Cloud environment's subdomain (e.g. `qa`)."
+        }
+      }
     }
   ],
   "security": [
