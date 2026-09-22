@@ -26,7 +26,7 @@
   ],
   "security": [
     {
-      "API Token": []
+      "ApiToken": []
     },
     {
       "basic": []
@@ -519,17 +519,26 @@
           {
             "name": "page",
             "in": "query",
-            "description": "Results page you want to retrieve (0..N)"
+            "description": "Results page you want to retrieve (0..N)",
+            "schema": {
+              "type": "integer"
+            }
           },
           {
             "name": "size",
             "in": "query",
-            "description": "Number of records per page."
+            "description": "Number of records per page.",
+            "schema": {
+              "type": "integer"
+            }
           },
           {
             "name": "sort",
             "in": "query",
-            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported."
+            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "Authorization",
@@ -673,17 +682,26 @@
           {
             "name": "page",
             "in": "query",
-            "description": "Results page you want to retrieve (0..N)"
+            "description": "Results page you want to retrieve (0..N)",
+            "schema": {
+              "type": "integer"
+            }
           },
           {
             "name": "size",
             "in": "query",
-            "description": "Number of records per page."
+            "description": "Number of records per page.",
+            "schema": {
+              "type": "integer"
+            }
           },
           {
             "name": "sort",
             "in": "query",
-            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported."
+            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "Authorization",
@@ -824,17 +842,26 @@
           {
             "name": "page",
             "in": "query",
-            "description": "Results page you want to retrieve (0..N)"
+            "description": "Results page you want to retrieve (0..N)",
+            "schema": {
+              "type": "integer"
+            }
           },
           {
             "name": "size",
             "in": "query",
-            "description": "Number of records per page."
+            "description": "Number of records per page.",
+            "schema": {
+              "type": "integer"
+            }
           },
           {
             "name": "sort",
             "in": "query",
-            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported."
+            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "Authorization",
@@ -1681,8 +1708,8 @@
         "tags": [
           "Step"
         ],
-        "summary": "Update a step\u0027s canvas position",
-        "description": "**Permissions:** [Build Access to parent application](https://help.logicgate.com/hc/en-us/articles/4402683190164-Control-Build-Access-for-Applications)\n\nUpdate a step\u0027s canvas position specified by the ID in the URL path.",
+        "summary": "Update a step's canvas position",
+        "description": "**Permissions:** [Build Access to parent application](https://help.logicgate.com/hc/en-us/articles/4402683190164-Control-Build-Access-for-Applications)\n\nUpdate a step's canvas position specified by the ID in the URL path.",
         "operationId": "updatePosition",
         "parameters": [
           {
@@ -1949,89 +1976,6 @@
           }
         },
         "x-beta": "true"
-      }
-    },
-    "/api/v2/paths/next/{id}": {
-      "patch": {
-        "tags": [
-          "Next Path"
-        ],
-        "summary": "Update a default next path",
-        "description": "User must be entitled to the path in question, meaning they must have build access and be entitled both the source and target steps.",
-        "operationId": "updateNextPath",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "The unique ID of the default next path.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "A bearer authorization header containing a Risk Cloud API access token in the format `Authorization: Bearer {TOKEN}`.\n\nTo obtain a Risk Cloud API access token, refer to [Obtain an API Access Token](https://www.logicgate.com/developer/risk-cloud-api-authentication/) in the [LogicGate Help Center](https://help.logicgate.com/hc/en-us).",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "example": "Bearer {TOKEN}"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PathApiUpdateIn"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NextPathApiOut"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AppBadRequestResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AppBadRequestResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AppStatusResponse"
-                }
-              }
-            }
-          }
-        }
       }
     },
     "/api/v2/paths/edge/{id}": {
@@ -2624,7 +2568,7 @@
           {
             "name": "depth",
             "in": "query",
-            "description": "Specifies the maximum depth of linked records to return with regards to the relationship between the given record\u0027s workflow and the workflow specified by `workflow-id` (must not be less than 0, defaults to 10)",
+            "description": "Specifies the maximum depth of linked records to return with regards to the relationship between the given record's workflow and the workflow specified by `workflow-id` (must not be less than 0, defaults to 10)",
             "required": false,
             "schema": {
               "type": "integer",
@@ -2732,6 +2676,87 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/NextPathApiOut"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Next Path"
+        ],
+        "summary": "Update a default next path",
+        "description": "User must be entitled to the path in question, meaning they must have build access and be entitled both the source and target steps.",
+        "operationId": "updateNextPath",
+        "parameters": [
+          {
+            "name": "next-path",
+            "in": "path",
+            "description": "The unique ID of the default next path.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "A bearer authorization header containing a Risk Cloud API access token in the format `Authorization: Bearer {TOKEN}`.\n\nTo obtain a Risk Cloud API access token, refer to [Obtain an API Access Token](https://www.logicgate.com/developer/risk-cloud-api-authentication/) in the [LogicGate Help Center](https://help.logicgate.com/hc/en-us).",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Bearer {TOKEN}"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PathApiUpdateIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NextPathApiOut"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppBadRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppBadRequestResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppStatusResponse"
                 }
               }
             }
@@ -3457,17 +3482,17 @@
           },
           "allowInternal": {
             "type": "boolean",
-            "description": "Whether a step\u0027s current assignee may assign this record to any user with access to the target step on submission.",
+            "description": "Whether a step's current assignee may assign this record to any user with access to the target step on submission.",
             "example": false
           },
           "allowExternal": {
             "type": "boolean",
-            "description": "Whether a step\u0027s current assignee may assign this record to external email addresses on submission.",
+            "description": "Whether a step's current assignee may assign this record to external email addresses on submission.",
             "example": false
           },
           "allowCurrentAssignee": {
             "type": "boolean",
-            "description": "Allow a step\u0027s current assignee to submit without assigning",
+            "description": "Allow a step's current assignee to submit without assigning",
             "example": false
           },
           "description": {
@@ -3507,17 +3532,17 @@
           },
           "allowInternal": {
             "type": "boolean",
-            "description": "Whether a step\u0027s current assignee may assign this record to any user with access to the target step on submission.",
+            "description": "Whether a step's current assignee may assign this record to any user with access to the target step on submission.",
             "example": false
           },
           "allowExternal": {
             "type": "boolean",
-            "description": "Whether a step\u0027s current assignee may assign this record to external email addresses on submission.",
+            "description": "Whether a step's current assignee may assign this record to external email addresses on submission.",
             "example": false
           },
           "allowCurrentAssignee": {
             "type": "boolean",
-            "description": "Allow a step\u0027s current assignee to submit without assigning",
+            "description": "Allow a step's current assignee to submit without assigning",
             "example": false
           },
           "description": {
@@ -3565,17 +3590,17 @@
           },
           "allowInternal": {
             "type": "boolean",
-            "description": "Whether a step\u0027s current assignee may assign this record to any user with access to the target step on submission.",
+            "description": "Whether a step's current assignee may assign this record to any user with access to the target step on submission.",
             "example": false
           },
           "allowExternal": {
             "type": "boolean",
-            "description": "Whether a step\u0027s current assignee may assign this record to external email addresses on submission.",
+            "description": "Whether a step's current assignee may assign this record to external email addresses on submission.",
             "example": false
           },
           "allowCurrentAssignee": {
             "type": "boolean",
-            "description": "Allow a step\u0027s current assignee to submit without assigning",
+            "description": "Allow a step's current assignee to submit without assigning",
             "example": false
           },
           "description": {
@@ -3615,17 +3640,17 @@
           },
           "allowInternal": {
             "type": "boolean",
-            "description": "Whether a step\u0027s current assignee may assign this record to any user with access to the target step on submission.",
+            "description": "Whether a step's current assignee may assign this record to any user with access to the target step on submission.",
             "example": false
           },
           "allowExternal": {
             "type": "boolean",
-            "description": "Whether a step\u0027s current assignee may assign this record to external email addresses on submission.",
+            "description": "Whether a step's current assignee may assign this record to external email addresses on submission.",
             "example": false
           },
           "allowCurrentAssignee": {
             "type": "boolean",
-            "description": "Allow a step\u0027s current assignee to submit without assigning",
+            "description": "Allow a step's current assignee to submit without assigning",
             "example": false
           },
           "description": {
@@ -3662,17 +3687,17 @@
           },
           "allowInternal": {
             "type": "boolean",
-            "description": "Whether a step\u0027s current assignee may assign this record to any user with access to the target step on submission.",
+            "description": "Whether a step's current assignee may assign this record to any user with access to the target step on submission.",
             "example": false
           },
           "allowExternal": {
             "type": "boolean",
-            "description": "Whether a step\u0027s current assignee may assign this record to external email addresses on submission.",
+            "description": "Whether a step's current assignee may assign this record to external email addresses on submission.",
             "example": false
           },
           "allowCurrentAssignee": {
             "type": "boolean",
-            "description": "Allow a step\u0027s current assignee to submit without assigning",
+            "description": "Allow a step's current assignee to submit without assigning",
             "example": false
           },
           "description": {
@@ -3733,7 +3758,7 @@
         "properties": {
           "textValue": {
             "type": "string",
-            "description": "The text representation of the record value, with the format varying by value type:\n- `NUMBER`: a string representation of the number, with currency if specified on the field (example: `\"42\"`)\n- `CALCULATION`: a string representation of the label if specified on the field, otherwise the number (example: `\"Highest Risk\"`)\n- `ATTACHMENT`: the name of the attachment file (example: `\"my-evidence.pdf\"`)\n- `DATE`: the date formatted according to the requesting user\u0027s settings (example: `\"1/1/23, 12:00 PM\"`)\n- `OPTION`: the text value of the option (example: `\"Medium Risk\"`)\n- `USER`: the full name and email of the user (example: `\"First Last (first.last@example.com)\"`)\n- `TEXT`: the text value (example: `\"Data Theft\"`)",
+            "description": "The text representation of the record value, with the format varying by value type:\n- `NUMBER`: a string representation of the number, with currency if specified on the field (example: `\"42\"`)\n- `CALCULATION`: a string representation of the label if specified on the field, otherwise the number (example: `\"Highest Risk\"`)\n- `ATTACHMENT`: the name of the attachment file (example: `\"my-evidence.pdf\"`)\n- `DATE`: the date formatted according to the requesting user's settings (example: `\"1/1/23, 12:00 PM\"`)\n- `OPTION`: the text value of the option (example: `\"Medium Risk\"`)\n- `USER`: the full name and email of the user (example: `\"First Last (first.last@example.com)\"`)\n- `TEXT`: the text value (example: `\"Data Theft\"`)",
             "example": "Medium Risk"
           },
           "numericValue": {
@@ -3809,7 +3834,7 @@
         },
         "title": "Application (Property)"
       },
-      "Crossflow (Response)": {
+      "CrossflowResponse": {
         "type": "object",
         "properties": {
           "id": {
@@ -3909,17 +3934,17 @@
           },
           "allowInternal": {
             "type": "boolean",
-            "description": "Whether a step\u0027s current assignee may assign this record to any user with access to the target step on submission.",
+            "description": "Whether a step's current assignee may assign this record to any user with access to the target step on submission.",
             "example": false
           },
           "allowExternal": {
             "type": "boolean",
-            "description": "Whether a step\u0027s current assignee may assign this record to external email addresses on submission.",
+            "description": "Whether a step's current assignee may assign this record to external email addresses on submission.",
             "example": false
           },
           "allowCurrentAssignee": {
             "type": "boolean",
-            "description": "Allow a step\u0027s current assignee to submit without assigning",
+            "description": "Allow a step's current assignee to submit without assigning",
             "example": false
           },
           "description": {
@@ -4124,7 +4149,7 @@
             "type": "array",
             "description": "The Fields that are used by a calculation as input.",
             "items": {
-              "$ref": "#/components/schemas/Crossflow (Response)"
+              "$ref": "#/components/schemas/CrossflowResponse"
             }
           },
           "linkDepth": {
@@ -4301,7 +4326,7 @@
           },
           "textValue": {
             "type": "string",
-            "description": "The text representation of the record value, with the format varying by value type:\n- `NUMBER`: a string representation of the number, with currency if specified on the field (example: `\"42\"`)\n- `CALCULATION`: a string representation of the label if specified on the field, otherwise the number (example: `\"Highest Risk\"`)\n- `ATTACHMENT`: the name of the attachment file (example: `\"my-evidence.pdf\"`)\n- `DATE`: the date formatted according to the requesting user\u0027s settings (example: `\"1/1/23, 12:00 PM\"`)\n- `OPTION`: the text value of the option (example: `\"Medium Risk\"`)\n- `USER`: the full name and email of the user (example: `\"First Last (first.last@example.com)\"`)\n- `TEXT`: the text value (example: `\"Data Theft\"`)",
+            "description": "The text representation of the record value, with the format varying by value type:\n- `NUMBER`: a string representation of the number, with currency if specified on the field (example: `\"42\"`)\n- `CALCULATION`: a string representation of the label if specified on the field, otherwise the number (example: `\"Highest Risk\"`)\n- `ATTACHMENT`: the name of the attachment file (example: `\"my-evidence.pdf\"`)\n- `DATE`: the date formatted according to the requesting user's settings (example: `\"1/1/23, 12:00 PM\"`)\n- `OPTION`: the text value of the option (example: `\"Medium Risk\"`)\n- `USER`: the full name and email of the user (example: `\"First Last (first.last@example.com)\"`)\n- `TEXT`: the text value (example: `\"Data Theft\"`)",
             "example": "Medium Risk"
           },
           "numericValue": {
@@ -4760,17 +4785,17 @@
         "properties": {
           "allowInternal": {
             "type": "boolean",
-            "description": "Whether a step\u0027s current assignee may assign this record to any user with access to the target step on submission.",
+            "description": "Whether a step's current assignee may assign this record to any user with access to the target step on submission.",
             "example": false
           },
           "allowExternal": {
             "type": "boolean",
-            "description": "Whether a step\u0027s current assignee may assign this record to external email addresses on submission.",
+            "description": "Whether a step's current assignee may assign this record to external email addresses on submission.",
             "example": false
           },
           "allowCurrentAssignee": {
             "type": "boolean",
-            "description": "Allow a step\u0027s current assignee to submit without assigning",
+            "description": "Allow a step's current assignee to submit without assigning",
             "example": false
           },
           "description": {
@@ -4791,17 +4816,17 @@
         "properties": {
           "allowInternal": {
             "type": "boolean",
-            "description": "Whether a step\u0027s current assignee may assign this record to any user with access to the target step on submission.",
+            "description": "Whether a step's current assignee may assign this record to any user with access to the target step on submission.",
             "example": false
           },
           "allowExternal": {
             "type": "boolean",
-            "description": "Whether a step\u0027s current assignee may assign this record to external email addresses on submission.",
+            "description": "Whether a step's current assignee may assign this record to external email addresses on submission.",
             "example": false
           },
           "allowCurrentAssignee": {
             "type": "boolean",
-            "description": "Allow a step\u0027s current assignee to submit without assigning",
+            "description": "Allow a step's current assignee to submit without assigning",
             "example": false
           },
           "description": {
@@ -4992,27 +5017,27 @@
           "first": {
             "type": "string",
             "description": "A URL path to the first page of requested data",
-            "example": "/api/v2/resource?page\u003d0\u0026size\u003d20"
+            "example": "/api/v2/resource?page=0&size=20"
           },
           "prev": {
             "type": "string",
             "description": "A URL path to the next page of requested data or `null` if currently on first page",
-            "example": "/api/v2/resource?page\u003d2\u0026size\u003d20"
+            "example": "/api/v2/resource?page=2&size=20"
           },
           "self": {
             "type": "string",
             "description": "A URL path to the current page of requested data",
-            "example": "/api/v2/resource?page\u003d3\u0026size\u003d20"
+            "example": "/api/v2/resource?page=3&size=20"
           },
           "next": {
             "type": "string",
             "description": "A URL link to the next page of requested data or `null` if currently on last page",
-            "example": "/api/v2/resource?page\u003d4\u0026size\u003d20"
+            "example": "/api/v2/resource?page=4&size=20"
           },
           "last": {
             "type": "string",
             "description": "A URL link to the last page of requested data",
-            "example": "/api/v2/resource?page\u003d6\u0026size\u003d20"
+            "example": "/api/v2/resource?page=6&size=20"
           }
         },
         "title": "Page Links"
@@ -5546,17 +5571,13 @@
       }
     },
     "securitySchemes": {
-      "API Token": {
+      "ApiToken": {
         "type": "http",
-        "name": "Authorization",
-        "in": "header",
         "scheme": "bearer",
         "bearerFormat": "API Token"
       },
       "basic": {
         "type": "http",
-        "name": "Authorization",
-        "in": "header",
         "scheme": "basic",
         "bearerFormat": "basic"
       }
