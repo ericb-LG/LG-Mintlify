@@ -1267,8 +1267,7 @@
       },
       "basic": {
         "type": "http",
-        "scheme": "basic",
-        "bearerFormat": "basic"
+        "scheme": "basic"
       }
     }
   }
