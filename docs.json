@@ -66,9 +66,7 @@
               "guides/api-usage/risk-cloud-export-record-data",
               "guides/api-usage/service-accounts"
             ]
-          },
-          "release-notes",
-          "blog-archive"
+          }
         ]
       },
       {
@@ -173,6 +171,18 @@
               "api-reference/workflow-map/update-a-workflow-map"
             ]
           }
+        ]
+      },
+      {
+        "tab": "Release Notes",
+        "pages": [
+          "release-notes"
+        ]
+      },
+      {
+        "tab": "Developer Blog",
+        "pages": [
+          "blog-archive"
         ]
       }
     ]
