@@ -19,13 +19,7 @@
   },
   "servers": [
     {
-      "url": "https://{env}.logicgate.com",
-      "description": "The LogicGate API application.",
-      "variables": {
-        "env": {
-          "default": "qa"
-        }
-      }
+      "url": "/api/v3"
     }
   ],
   "tags": [
@@ -108,15 +102,7 @@
           "default": {
             "description": "Unexpected error"
           }
-        },
-        "security": [
-          {
-            "petstore_auth": [
-              "write:pets",
-              "read:pets"
-            ]
-          }
-        ]
+        }
       },
       "post": {
         "tags": [
@@ -171,15 +157,7 @@
           "default": {
             "description": "Unexpected error"
           }
-        },
-        "security": [
-          {
-            "petstore_auth": [
-              "write:pets",
-              "read:pets"
-            ]
-          }
-        ]
+        }
       }
     },
     "/pet/findByStatus": {
@@ -236,15 +214,7 @@
           "default": {
             "description": "Unexpected error"
           }
-        },
-        "security": [
-          {
-            "petstore_auth": [
-              "write:pets",
-              "read:pets"
-            ]
-          }
-        ]
+        }
       }
     },
     "/pet/findByTags": {
@@ -298,15 +268,7 @@
           "default": {
             "description": "Unexpected error"
           }
-        },
-        "security": [
-          {
-            "petstore_auth": [
-              "write:pets",
-              "read:pets"
-            ]
-          }
-        ]
+        }
       }
     },
     "/pet/{petId}": {
@@ -354,18 +316,7 @@
           "default": {
             "description": "Unexpected error"
           }
-        },
-        "security": [
-          {
-            "api_key": []
-          },
-          {
-            "petstore_auth": [
-              "write:pets",
-              "read:pets"
-            ]
-          }
-        ]
+        }
       },
       "post": {
         "tags": [
@@ -424,15 +375,7 @@
           "default": {
             "description": "Unexpected error"
           }
-        },
-        "security": [
-          {
-            "petstore_auth": [
-              "write:pets",
-              "read:pets"
-            ]
-          }
-        ]
+        }
       },
       "delete": {
         "tags": [
@@ -472,15 +415,7 @@
           "default": {
             "description": "Unexpected error"
           }
-        },
-        "security": [
-          {
-            "petstore_auth": [
-              "write:pets",
-              "read:pets"
-            ]
-          }
-        ]
+        }
       }
     },
     "/pet/{petId}/uploadImage": {
@@ -542,15 +477,7 @@
           "default": {
             "description": "Unexpected error"
           }
-        },
-        "security": [
-          {
-            "petstore_auth": [
-              "write:pets",
-              "read:pets"
-            ]
-          }
-        ]
+        }
       }
     },
     "/store/inventory": {
@@ -579,12 +506,7 @@
           "default": {
             "description": "Unexpected error"
           }
-        },
-        "security": [
-          {
-            "api_key": []
-          }
-        ]
+        }
       }
     },
     "/store/order": {
@@ -1254,23 +1176,24 @@
       }
     },
     "securitySchemes": {
-      "petstore_auth": {
-        "type": "oauth2",
-        "flows": {
-          "implicit": {
-            "authorizationUrl": "https://petstore3.swagger.io/oauth/authorize",
-            "scopes": {
-              "write:pets": "modify pets in your account",
-              "read:pets": "read your pets"
-            }
-          }
-        }
+      "ApiToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "API Token"
       },
-      "api_key": {
-        "type": "apiKey",
-        "name": "api_key",
-        "in": "header"
+      "basic": {
+        "type": "http",
+        "scheme": "basic",
+        "bearerFormat": "basic"
       }
     }
-  }
+  },
+  "security": [
+    {
+      "ApiToken": []
+    },
+    {
+      "basic": []
+    }
+  ]
 }
