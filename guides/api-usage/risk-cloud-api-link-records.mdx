@@ -1,0 +1,173 @@
+---
+title: "Risk Cloud API: Link Records"
+sidebarTitle: "Link Records"
+description: "Link records to other records across workflow mappings, either by ID, name, or primary field, or via dedicated parent/child endpoints."
+---
+
+## Link Records endpoint
+
+The Records API offers the following Link Records endpoint, which allows API users to link
+records to other records of their respective workflow mappings. The endpoint also provides the
+flexibility to either preserve existing linkages or remove them all via the `strategy` query
+parameter.
+
+The Link Records endpoint is only available to accounts with Admin level privileges. If you would
+like to link records via the Risk Cloud API with an API token from a non-Admin account, reference
+the [Link Parent and Child Endpoints](#link-parent-and-child-endpoints) section below.
+
+**Endpoint:** `POST /api/v1/records/link-by-identifiers`
+
+This endpoint has the following query parameter, which can be left empty for the default use case.
+
+| Query Parameter | Description |
+|---|---|
+| `strategy` | Determines the linking strategy of the records: `RESPECT_MAPPING` (default) — checks to ensure that every record involved has the capacity to be linked; `REMOVE_EXISTING` — removes all relationships between involved records prior to linking. |
+
+### Request body
+
+#### Link records by ID
+
+The request body consists of an array of objects containing `recordId` properties to set the
+record IDs of the parent and child records to be linked.
+
+```json
+[
+  {
+    "recordId": "{parent-record-id}"
+  },
+  {
+    "recordId": "{child-record-id}"
+  }
+]
+```
+
+#### Link records by name
+
+The request body consists of an array of objects containing `recordName` properties to set the
+parent and child records to be linked.
+
+```json
+[
+  {
+    "recordName": "{parent-record-name}"
+  },
+  {
+    "recordName": "{child-record-name}"
+  }
+]
+```
+
+#### Link records by primary field
+
+The request body consists of an array of objects containing `primaryFieldValue` and `workflowId`
+properties to set the parent and child records to be linked.
+
+```json
+[
+  {
+    "primaryFieldValue": "{parent-primary-field-value-string}",
+    "workflowId": "{parent-workflow-id}"
+  },
+  {
+    "primaryFieldValue": "{child-primary-field-value-string}",
+    "workflowId": "{child-workflow-id}"
+  }
+]
+```
+
+### Response
+
+The response is an empty 200 OK if the record linkage was successful.
+
+### Many-to-many relationships
+
+If you are trying to link records in a many-to-many relationship using this endpoint, you need to
+provide one record from the linked workflow at a time. Below is a request that returns a 200
+successful response and a request that returns a 400 error response. In this example, Task
+records have a many-to-many relationship to Incident records and a many-to-many relationship to
+Communication records.
+
+This request succeeds because there is exactly one Task-to-Incident relationship and one
+Task-to-Communication relationship:
+
+```json
+[
+    {"recordId": "abc123"}, // Task-1
+    {"recordId": "def456"}, // Incident-1
+    {"recordId": "ghi789"}  // Communication-1
+]
+```
+
+This request fails with a 400 error because it includes more than one record from the linked
+Communication workflow (Task-1 to Communication-1 and Task-1 to Communication-2), which is not
+allowed:
+
+```json
+[
+    {"recordId": "abc123"}, // Task-1
+    {"recordId": "def456"}, // Incident-1
+    {"recordId": "ghi789"}, // Communication-1
+    {"recordId": "jkl012"}  // Communication-2
+]
+```
+
+## Link Parent and Child Endpoints
+
+For non-Admin users, linking parent and child records can also be accomplished via the Risk Cloud
+API with the following endpoints.
+
+**Endpoint:** `GET /api/v1/records/{child-record-id}/parent?layout={layout-id}`
+
+**Endpoint:** `POST /api/v1/records/{parent-record-id}/child?layout={layout-id}`
+
+### Use case
+
+#### Get the default layout
+
+Each of these endpoints requires the ID of a layout object. For the purposes of linking records,
+the default layout is recommended. The ID of the default layout in your Risk Cloud environment can
+be obtained from the following internal endpoint. The layout ID is located in the `id` property of
+the response.
+
+**Endpoint:** `GET /api/v1/internal/layouts/type/default`
+
+**Response:**
+
+```json
+{
+  "id": "a1b2c3d4",
+  "active": true,
+  "created": 1512570904482,
+  "updated": 1713208740015,
+  "title": "Default",
+  "defaultLayout": false,
+  "workflow": null,
+  "layoutType": "Default"
+}
+```
+
+#### Link parent or child
+
+Parent or child records reflect the directionality of their corresponding linked workflows. The
+parent-child relationship of the linked workflows may already be known; if it is not, test each
+endpoint call with records from each workflow to confirm which one succeeds.
+
+**Endpoint:** `POST /api/v1/records/{child-record-id}/parent?layout={layout-id}`
+
+**Endpoint:** `POST /api/v1/records/{parent-record-id}/child?layout={layout-id}`
+
+**Request:**
+
+Each of these endpoints takes a payload with the ID of the record to link as either a parent or
+child of the record specified by `child-record-id` or `parent-record-id` in the URL path.
+Additionally, use the `layout-id` obtained from the step above.
+
+```json
+{
+  "id": "a1b2c3d4"
+}
+```
+
+**Response:**
+
+A 200 response and JSON payload confirming the linkage.

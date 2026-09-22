@@ -1,0 +1,68 @@
+---
+title: "Risk Cloud PowerBI Connection"
+description: "Connect Power BI to Risk Cloud Table Reports using the provided template and an Access Key."
+---
+
+This guide explains how to connect Power BI to Risk Cloud so you can automatically import data
+from Table Reports using a pre-built template.
+
+## Step 1: Get the Power BI template
+
+Reach out to your Customer Success Manager, or LogicGate's Developer Relations team at
+[developer-relations@logicgate.com](mailto:developer-relations@logicgate.com), to request the
+`PowerBI Template.pbit` file.
+
+## Step 2: Generate an Access Key
+
+Navigate to your User Profile (the person icon in the top-right corner) and open the **Access
+Key** tab to generate one. Keep in mind:
+
+- Generating an Access Key requires the API Access module entitlement.
+- Access Keys expire after one year.
+- Store the key securely — generating a new one invalidates the old one.
+- You can set up a reminder job to renew the key before it expires.
+
+See [Authentication](/guides/api-usage/authentication) for more on managing Access Keys.
+
+## Step 3: Find your Table Report ID(s)
+
+The Table Report ID is found in your browser's URL bar after navigating to the report in Risk
+Cloud — it's the last eight characters of the URL. For example, in a URL ending in
+`.../report/01Z7lWQ4`, the ID is `01Z7lWQ4`.
+
+## Step 4: Connect to Power BI
+
+Open the template and enter:
+
+- Your Risk Cloud environment URL (without a trailing slash)
+- Your generated Access Key
+- Up to 5 Table Report IDs
+
+Click **Load** to import the data into a table.
+
+## Step 5: Build and customize your reports
+
+Once your data has loaded, you can:
+
+- Create visualizations and dashboards.
+- Integrate with additional internal systems.
+- Perform deeper analysis directly within Power BI.
+
+## Troubleshooting tips
+
+### Authentication errors
+
+- Verify that your Access Key is valid.
+- Confirm you have Table Report Edit Access via your assigned Role.
+- Ensure the Data Source permissions are set to the **Anonymous** credential type and **Public**
+  privacy level.
+
+### Data type errors
+
+- Check for duplicate column names across your Table Reports.
+- In Power BI, set data type detection to never detect data types automatically.
+
+### Known limitation
+
+Automatic data refreshes aren't supported, due to Power BI's restrictions on dynamic data
+sources.

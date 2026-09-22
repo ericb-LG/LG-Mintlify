@@ -1,0 +1,85 @@
+---
+title: "Risk Cloud API: Automated Evidence Collection"
+sidebarTitle: "Automated Evidence Collection"
+description: "Upload evidence files into Risk Cloud records from external systems without granting them direct application access."
+---
+
+## Overview
+
+Automated Evidence Collection (AEC) lets you upload evidence files into Risk Cloud without granting the uploading system direct access to Risk Cloud, and without requiring a person to manually attach files. It's well suited to secure, custom, and on-premises environments that need to push evidence into Risk Cloud on a schedule or in response to an event.
+
+## Setup requirements
+
+AEC requires a Risk Cloud application with two interconnected workflows. The Controls Compliance Application available through Risk Cloud Exchange is a good starting point if you don't already have a suitable application.
+
+All requests require the standard bearer token `Authorization` header — see [Authentication](/guides/api-usage/authentication).
+
+## Process overview
+
+Uploading evidence is a four-step process:
+
+1. Obtain the `STEP_ID` of the step where the evidence record should be created.
+2. Obtain the `FIELD_ID` of the field the attachment should be placed on.
+3. Obtain the `RECORD_ID` of the parent record the evidence belongs to.
+4. Send the `POST` request that uploads the file.
+
+### 1. Get the step ID
+
+**Web application:** Open the step in the step builder; the ID is in the URL: `https://your-company.logicgate.com/build/steps/STEP_ID`.
+
+**API:** `GET /api/v1/workflows` returns workflow objects with nested step arrays; each step object includes an `id`.
+
+### 2. Get the field ID
+
+**Web application:** Open the step builder, click the edit pencil on the target field, and read the field ID from the modal.
+
+**API:** `GET /api/v1/fields/workflow/{workflow-id}/values`, using the workflow ID from step 1, returns field objects with the `id` you need.
+
+### 3. Get the record ID
+
+**Web application:** Open the record; the ID is in the URL: `https://your-company.logicgate.com/records/RECORD_ID`.
+
+**API:** See [Risk Cloud API: Record Search](/guides/api-usage/risk-cloud-api-record-search).
+
+### 4. Upload the file
+
+**`POST /api/v1/evidence?parentRecordId={RECORD_ID}&fieldId={FIELD_ID}&stepId={STEP_ID}`**
+
+Send the file as `multipart/form-data` with a key named `file`.
+
+```bash
+curl --location 'https://your-company.logicgate.com/api/v1/evidence?parentRecordId={RECORD_ID}&fieldId={FIELD_ID}&stepId={STEP_ID}' \
+--header 'Authorization: Bearer {API_TOKEN}' \
+--form 'file=@"/the/path/to/evidence/file.pdf"'
+```
+
+#### Optional query parameters
+
+| Parameter | Type | Description |
+|---|---|---|
+| `jobExecutionOperationId` | string | Updates the operation history when the upload is triggered by an AEC webhook. |
+| `dueDateInterval` | integer | How long after record creation the due date should be set. |
+| `dueDateIntervalUnit` | string | Unit for `dueDateInterval`: `DAYS`, `WEEKS`, `MONTHS`, or `YEARS`. |
+| `assignUserId` | string | The ID of the user the newly created record should be assigned to. |
+| `assignFieldId` | string | The ID of the field value the newly created record should be assigned to. |
+
+#### Response
+
+```json
+{
+  "recordId": "CREATED_RECORD_ID",
+  "record": { },
+  "parentRecordId": "RECORD_ID",
+  "parentRecord": { },
+  "attachmentId": "ATTACHMENT_ID",
+  "attachment": { },
+  "stepId": "STEP_ID",
+  "step": { }
+}
+```
+
+The response includes the ID and full object for the newly created record, the parent record, the attachment, and the step.
+
+## Next steps
+
+For questions about AEC, contact developer@logicgate.com. To locate parent records programmatically, see [Risk Cloud API: Record Search](/guides/api-usage/risk-cloud-api-record-search).

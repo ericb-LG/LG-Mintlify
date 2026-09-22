@@ -1,0 +1,122 @@
+---
+title: "Risk Cloud API: Export Roles"
+sidebarTitle: "Export Roles"
+description: "Retrieve all Roles in a Risk Cloud environment, including their permission sets, entitlements, and users."
+---
+
+Roles correspond to functions within your organization's hierarchy (e.g. Compliance, Audit, IT
+Operations) and can contain permission sets and entitlements that define the access of the
+members of the role.
+
+With the Risk Cloud API, role information — including associated entitlements, permission sets,
+and users — can be exported for tracking access or aligning your role structure with external
+systems.
+
+Obtain your [API Access Token](/guides/api-usage/authentication) to get started. For more on
+roles, refer to the Help Center articles on Creating Roles and Modular Entitlements for Roles.
+
+## Retrieve Roles endpoint
+
+The Roles API offers the following endpoint, which returns a list of all roles in the Risk Cloud
+environment.
+
+```
+GET /api/v1/roles
+```
+
+### Response
+
+The response is a JSON array of all roles in the environment, including information on
+associated permission sets, entitlements, and users. A sample entry is shown below.
+
+```json
+{
+  "id": "y6z7a8b9",
+  "active": true,
+  "created": 1678070118163,
+  "updated": null,
+  "name": "Build Access",
+  "locked": false,
+  "superAdmin": false,
+  "defaultRoleForNewUsers": false,
+  "autoprovisioned": false,
+  "externalId": null,
+  "stepPermissionSets": [
+    {
+      "id": "u2v3w4x5",
+      "active": true,
+      "created": 1678069970011,
+      "updated": null,
+      "name": "[Quantify] Analysis Reviewer",
+      "locked": false,
+      "defaultStepPermissionSetForNewUsers": false,
+      "permissions": [],
+      "users": [],
+      "application": null,
+      "applicationId": null,
+      "userIds": []
+    }
+  ],
+  "moduleEntitlements": [
+    {
+      "type": "MODULE",
+      "created": 1678070118301,
+      "updated": null,
+      "end": {
+        "id": "q8r9s0t1",
+        "active": true,
+        "created": 1517517792850,
+        "updated": 1591623597460,
+        "value": "A_BUILD",
+        "onlyUse": true,
+        "tab": "Application",
+        "name": "Build"
+      },
+      "operationType": "EDIT",
+      "module": {
+        "id": "q8r9s0t1",
+        "active": true,
+        "created": 1517517792850,
+        "updated": 1591623597460,
+        "value": "A_BUILD",
+        "onlyUse": true,
+        "tab": "Application",
+        "name": "Build"
+      },
+      "endId": "q8r9s0t1",
+      "startId": null
+    }
+  ],
+  "users": [
+    {
+      "status": "Active",
+      "id": "m4n5o6p7",
+      "active": true,
+      "created": 1599984017146,
+      "updated": 1699904531204,
+      "email": "jane.doe@example.com",
+      "imageS3Key": null,
+      "first": "Jane",
+      "last": "Doe",
+      "roleIds": [
+        "a1b2c3d4",
+        "e5f7g8h9",
+        "i0j1k2l3"
+      ],
+      "stepPermissionSetIds": [],
+      "empty": false,
+      "idOrTransientId": "m4n5o6p7",
+      "transientIdOrId": "m4n5o6p7"
+    }
+  ],
+  "moduleCount": 14,
+  "userCount": 1
+}
+```
+
+## Next steps
+
+For step-level permission exports (rather than role-level), see
+[Risk Cloud API: Export Step Permission Sets](/guides/api-usage/risk-cloud-api-export-step-permission-sets).
+To manage which users and permission sets are attached to a role, see
+[Risk Cloud API: Update Users and Permission Sets on Role](/guides/api-usage/risk-cloud-api-update-users-and-permission-sets-on-role).

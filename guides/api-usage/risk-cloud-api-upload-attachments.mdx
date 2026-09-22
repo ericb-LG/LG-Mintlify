@@ -1,0 +1,94 @@
+---
+title: "Risk Cloud API: Upload Attachments"
+sidebarTitle: "Upload Attachments"
+description: "Upload a file, then link it to a record's Attachment field using the attachments and valueMaps endpoints."
+---
+
+Attaching a file to a Risk Cloud record via the API is a multi-step process: upload the file to
+get an attachment object, then link that attachment to the record's Attachment field. Before
+making any of these calls you'll need a bearer token — see
+[Authentication](/guides/api-usage/authentication).
+
+## Step 1: Obtain the field ID
+
+First, find the Workflow that contains the Attachment field:
+
+```
+GET /api/v1/workflows
+```
+
+Then request the Workflow's Fields:
+
+```
+GET /api/v1/fields/workflow/{WORKFLOW_ID}/values
+```
+
+Identify the Attachment field in the response and note its `id` — this is the `FIELD_ID` used in
+the next step. See [Viewing Fields](/guides/api-usage/risk-cloud-api-viewing-fields) for more on
+retrieving field metadata.
+
+## Step 2: Upload a file
+
+Submit the file as `multipart/form-data`:
+
+```
+POST /api/v1/attachments?field={FIELD_ID}
+```
+
+```bash
+curl --location 'https://your-company.logicgate.com/api/v1/attachments?field={FIELD_ID}' \
+--header 'Authorization: Bearer {API_TOKEN}' \
+--form 'file=@"/the/path/to/attachment.pdf"'
+```
+
+The response returns the attachment object, including its `id`, file metadata, and version count:
+
+```json
+{
+    "attachmentStatus": "CLEAN",
+    "id": "QoZy9k73",
+    "valueType": "Attachment",
+    "textValue": "FILE NAME",
+    "contentType": "image/png",
+    "fileSize": NUMBER,
+    "fileExtension": "png",
+    "versionCount": 1
+}
+```
+
+Save the `id` from this response — you'll need it to link the file to a record.
+
+## Step 3: Attach the file to a record
+
+Build a request body referencing the attachment from Step 2 and the target Attachment field, then
+submit it against the record:
+
+```
+POST /api/v1/valueMaps?record={RECORD_ID}
+```
+
+```json
+{
+  "currentValues": [
+      {}
+  ],
+  "field": {
+    "valueType": "Attachment",
+    "fieldType": "ATTACHMENT",
+    "id": "FIELD_ID"
+  }
+}
+```
+
+The response confirms the attachment is now linked to the specified record.
+
+## Step 4: Version an existing attachment (optional)
+
+To upload a new version of a file that's already attached, submit the updated file to:
+
+```
+POST /api/v1/internal/attachments/{attachmentId}
+```
+
+The attachment's `versionCount` increments automatically. Because the attachment already exists on
+the record, Step 3 is not needed when versioning.

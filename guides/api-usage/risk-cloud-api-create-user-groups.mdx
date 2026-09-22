@@ -1,0 +1,112 @@
+---
+title: "Risk Cloud API: Create User Groups"
+sidebarTitle: "Create User Groups"
+description: "Dynamically create User Groups via the internal User Group API for record-level access restriction."
+---
+
+User Groups give you the ability to provide more detailed access to particular records in your
+application, similar to how permission sets allow you to restrict access on steps. User Group
+access enables tagging specific users or User Groups to records with restricted access to only
+those tagged. The Risk Cloud API allows dynamic User Group creation for custom integrations.
+
+Obtain your [API Access Token](/guides/api-usage/authentication) or pull the Risk Cloud Postman
+Collection to get started.
+
+## Create User Group endpoint
+
+The internal User Group API offers the following endpoint:
+
+```
+POST /api/v1/internal/userGroups
+```
+
+This endpoint returns a summary of the created group, including its name and ID.
+
+## Use cases
+
+### Get User IDs
+
+User IDs for the newly created group can be obtained from the Risk Cloud web app or API.
+
+#### Get User ID (web app)
+
+A user ID can be located within the Risk Cloud web app environment:
+
+1. Navigate to **Admin > Users**.
+2. Search for and select a user by clicking their email.
+3. The user ID can be found under the **User ID** label.
+
+#### Get User ID (Risk Cloud API)
+
+A user ID can be located via the User API in the `id` property of returned user objects. To
+obtain all users, see [Risk Cloud API: Viewing Users](/guides/api-usage/risk-cloud-api-viewing-users).
+
+To obtain a user ID by particular email, use the following internal User API endpoint:
+
+```
+GET /api/v1/internal/users?search-type=EMAIL&query={email}
+```
+
+**Response**
+
+```json
+{
+  "content": [
+    {
+      "id": "a1b2c3d4",
+      "email": "first.last@example.com"
+    }
+  ],
+  "pageable": {}
+}
+```
+
+### Create User Group
+
+With the User IDs of users to be added to the new User Group, the group can be created via the
+following API endpoint and request body payload.
+
+```
+POST /api/v1/internal/userGroups
+```
+
+**Request body**
+
+`"status": "Active"` is required to accompany all user IDs. Populate the User IDs obtained above
+into JSON objects and add them to the `users` array. Set `title` to the desired title of the user
+group, which is recommended to be unique.
+
+```json
+{
+    "users": [
+        {
+            "status": "Active",
+            "id": "user-id-1"
+        },
+        {
+            "status": "Active",
+            "id": "user-id-2"
+        }
+    ],
+    "title": "New User Group Title"
+}
+```
+
+**Response**
+
+The response contains the newly created User Group's ID, its title, and an indicator that it's
+not a record default User Group (which is expected).
+
+```json
+{
+    "id": "user-group-id",
+    "recordDefault": false,
+    "title": "New User Group Title"
+}
+```
+
+## Next steps
+
+Once the group exists, tag it to a record's User Group field, or see
+[Risk Cloud API: Update Record User Groups](/guides/api-usage/risk-cloud-api-update-record-user-groups)
+to manage which User Groups are attached to a specific record.

@@ -1,0 +1,88 @@
+---
+title: "Risk Cloud API: Assign Records"
+sidebarTitle: "Assign Records"
+description: "Assign a Risk Cloud user to a record via the internal Record API, and how to look up the record and user IDs it requires."
+---
+
+## Assign Records endpoint
+
+The internal Record API provides the following endpoint for assigning a user to a record. It's available to any user with Application and Assign entitlements.
+
+**`PATCH /api/v1/internal/records/assign/{record-id}`**
+
+### Path parameters
+
+| Parameter | Description |
+|---|---|
+| `record-id` | The unique ID of the record to assign the passed user to. |
+
+### Request body
+
+```json
+{
+  "id": "a1b2c3d4",
+  "status": "Active"
+}
+```
+
+| Property | Description |
+|---|---|
+| `id` | The unique ID of the user to assign to the record. |
+| `status` | Required alongside the request. A value of `"Active"` is expected. |
+
+A successful call returns `200 OK` confirming the assignment.
+
+## Getting a record ID
+
+The `record-id` can be obtained from the Risk Cloud web application, from outbound emails, or via the Risk Cloud API.
+
+### From the web application
+
+Open the record in the Risk Cloud web application and take the ID from the end of the URL:
+
+```
+https://your-company.logicgate.com/records/{record-id}
+```
+
+### From email
+
+Contextual Notifications can include the Record ID system field in outbound emails, which can then be parsed out of the email body for use with this endpoint.
+
+### From the API
+
+See [Risk Cloud API: Record Search](/guides/api-usage/risk-cloud-api-record-search) for obtaining record IDs via the API.
+
+## Getting a user ID
+
+### From the web application
+
+Navigate to **Admin > Users**, search for and select the user by clicking their email, and the user ID is shown under the **User ID** label.
+
+### From the API
+
+Use the `id` property of the user objects returned by the User API. To retrieve all users, see [Risk Cloud API: Viewing Users](/guides/api-usage/risk-cloud-api-viewing-users). To look up a single user by email, use the internal User API:
+
+**`GET /api/v1/internal/users?search-type=EMAIL&query={email}`**
+
+```json
+{
+  "content": [
+    {
+      "id": "a1b2c3d4",
+      "email": "first.last@example.com"
+    }
+  ],
+  "pageable": { }
+}
+```
+
+## Putting it together
+
+1. Look up the record ID and the user ID using the methods above.
+2. Call `PATCH /api/v1/internal/records/assign/{record-id}`, substituting the record ID in the path.
+3. Send `{ "id": "{user-id}", "status": "Active" }` as the request body.
+4. Expect a `200` response confirming the assignment.
+
+## Next steps
+
+Obtain your API Access Token from [Authentication](/guides/api-usage/authentication), or pull the Risk Cloud Postman Collection from the [Postman guide](/guides/quick-start/postman) to try this endpoint.

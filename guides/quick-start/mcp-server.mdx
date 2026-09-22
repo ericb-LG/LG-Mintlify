@@ -1,0 +1,66 @@
+---
+title: "Risk Cloud Developer Portal: MCP Server"
+sidebarTitle: "MCP Server"
+description: "Connect Claude, Cursor, VS Code, or any MCP client to this site so it can search the guides and inspect real API schemas."
+---
+
+This site exposes itself as an [MCP](https://modelcontextprotocol.io) server, so an AI agent can
+search these guides and inspect the Public, Internal, Data Repositories, and Legacy Auth OpenAPI
+specs directly — with real, `$ref`-resolved request/response schemas — instead of guessing field
+names from prose.
+
+## Available tools
+
+| Tool | Description |
+|---|---|
+| `search_docs` | Full-text search across the documentation. Returns ranked matches with URL, title, category, and snippet. |
+| `read_doc` | Full markdown of a documentation page, given a URL from `search_docs`. |
+| `list_doc_categories` | List documentation categories with a page count for each. |
+| `list_apis` | List the indexed OpenAPI specs with title, version, server URLs, and operation/webhook counts. |
+| `search_api` | Search API endpoints and webhook events by path, operation ID, summary, or tag. |
+| `get_endpoint` | Full detail of one API operation: parameters, request body, and responses, with `$ref`s resolved. |
+
+Everything is read-only.
+
+## Connect
+
+The endpoint is `https://developer.logicgate.com/mcp`.
+
+### Claude Code
+
+```bash
+claude mcp add --transport http risk-cloud-docs https://developer.logicgate.com/mcp
+```
+
+### Cursor / VS Code
+
+Add to `.cursor/mcp.json` or `.vscode/mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "risk-cloud-docs": {
+      "url": "https://developer.logicgate.com/mcp"
+    }
+  }
+}
+```
+
+### Any other MCP client
+
+Point it at `https://developer.logicgate.com/mcp` using Streamable HTTP transport.
+
+## How it's hosted
+
+`docusaurus-plugin-mcp` needs a real Node process (it doesn't run on edge/web-standard runtimes),
+so it's shipped separately from the static site as its own small container —
+[`deploy/Dockerfile`](https://gitlab.logicgate.dev/eric.belisle/logicgate/-/tree/main/docs-site/deploy/Dockerfile)
+builds the site, then runs the `docusaurus-plugin-mcp` CLI server against the resulting snapshot.
+`.gitlab-ci.yml` builds and pushes that image to ECR on every merge to `main`, following the same
+pattern as `devops-portal`. Whatever serves `developer.logicgate.com` routes `/mcp` to this
+container; everything else goes to the static build.
+
+## Next steps
+
+See [Getting Started](/guides/quick-start/getting-started) for the API itself, or
+[Postman](/guides/quick-start/postman) for a GUI alternative to querying the API by hand.

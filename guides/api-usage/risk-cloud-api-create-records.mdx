@@ -1,0 +1,64 @@
+---
+title: "Risk Cloud API: Create Records"
+sidebarTitle: "Create Records"
+description: "Create a new Risk Cloud record on a step, including field values, due date, and assignee, via the Record API."
+---
+
+The Record API lets you create new Risk Cloud records, populate field data, schedule due dates, and set assignees. Obtain your API Access Token or pull the Risk Cloud Postman Collection to get started — see [Authentication](/guides/api-usage/authentication) and the [Postman guide](/guides/quick-start/postman).
+
+## Create Records endpoint
+
+Creates a record on a given step with configurable field values and an assignee. The requesting user's token must have Write access to create records on the given step.
+
+**POST /api/v1/records/steps**
+
+### Request body
+
+```json
+{
+  "stepId": "a1b2c3d4",
+  "assigneeEmailAddress": "first.last@logicgate.com",
+  "recordDueDate": "1767268800",
+  "fields": [
+    {
+      "fieldId": "e5f6g7h8",
+      "values": [
+        "The string value of the field"
+      ]
+    }
+  ]
+}
+```
+
+| Property | Required | Description |
+|---|---|---|
+| `stepId` | Yes | The unique ID of the step to create the record on. |
+| `assigneeEmailAddress` | No | The email of the Risk Cloud user to assign the record to. |
+| `recordDueDate` | No | The due date to set on the created record. Accepts either an epoch timestamp without milliseconds (e.g. `1770033600`) or the format `MM-DD-YY HH:MM:SS` (e.g. `2026-01-01 12:00:00`). |
+| `fields` | No | An array of field IDs and values to set on the created record. |
+| `fields[].fieldId` | Yes (within `fields`) | The unique ID of the field to set. |
+| `fields[].values` | Yes (within `fields`) | An array of string values to set on the corresponding field. |
+
+## Getting a step ID
+
+### From the web application
+
+Navigate to **Build > Applications**, open the application and workflow containing the step, then open the step. The step ID is in the URL: `https://environment.logicgate.com/build/steps/{step-id}`.
+
+### From the API
+
+**GET /api/v2/steps**
+
+Returns step objects with an `id` property in the response's `content` array.
+
+## Getting a field ID
+
+### From the web application
+
+Navigate to **Build > Applications**, open the application and workflow containing the step, open the step, then open the field for editing. The field ID is shown in the **Field ID** section.
+
+### From the API
+
+**GET /api/v2/fields**
+
+Returns field objects with an `id` property in the response's `content` array.

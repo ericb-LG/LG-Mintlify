@@ -1,0 +1,164 @@
+---
+title: "Risk Cloud API: Navigating Risk Cloud Data with API v2"
+sidebarTitle: "Navigating Data with API v2"
+description: "The Application/Workflow/Step/Field/Record hierarchy and how to traverse it with the v2 API."
+---
+
+## Hierarchy
+
+Every object in the Risk Cloud API belongs to a five-level hierarchy:
+
+```
+Application
+└── Workflow            (belongs to one Application)
+    ├── Step            (belongs to one Workflow)
+    │   └── Field       (assigned to a Step, scoped to a Workflow or Global)
+    └── Record          (an instance of a Workflow; lives on a Step)
+        └── Field value (the Field plus the value captured on this Record)
+```
+
+- **Application** — a collection of Workflows, Steps, and logic that together solve a business
+  use case.
+- **Workflow** — a combination of Steps, Paths, Fields, and routing logic that forms a system
+  inside an Application.
+- **Step** — lives in a Workflow and is configured with Sections, Subsections, and Fields to form
+  a page.
+- **Field** — the template used to capture or display information. Has a `type` (e.g. `SELECT`,
+  `NUMBER`, `DATE`) and may define `optionValues`.
+- **Record** — a form that captures information and moves through the Steps of a Workflow. Its
+  `fields` array holds the captured values.
+
+## Parent references in responses
+
+Every response carries pointers to its parents and an `object` discriminator, so you can read the
+parent chain directly without extra requests.
+
+- **Application** has no parent.
+- **Workflow** has an `applicationId`.
+- **Step** has an embedded `workflow` reference.
+- **Field** has embedded `application` and `workflow` references — both `null` when `global` is
+  `true`.
+- **Record** has embedded `application`, `workflow`, `currentStep`, and `originStep` references.
+
+## Listing children by parent ID
+
+Every list endpoint at a child level accepts the parent's ID as a query parameter.
+
+**Workflows in an Application**
+
+```
+GET /api/v2/workflows?application-id={application-id}
+```
+
+**Steps in a Workflow**
+
+```
+GET /api/v2/steps?workflow-id={workflow-id}
+```
+
+Steps have a `type` of `ORIGIN`, `CHAIN`, or `END`. Records of a Workflow are created on the
+`ORIGIN` Step; Records reaching an `END` Step are considered complete.
+
+**Fields in an Application, Workflow, or Step**
+
+```
+GET /api/v2/fields?application-id={application-id}
+GET /api/v2/fields?workflow-id={workflow-id}
+GET /api/v2/fields?step-id={step-id}
+```
+
+Two extra parameters narrow the response:
+
+- `field-type` — repeatable, restricts to specific types such as `SELECT` or `DATE`.
+- `scope` — one of `ALL` (default), `GLOBAL`, or `WORKFLOW`. Global Fields aren't bound to a
+  Workflow.
+
+**Records in an Application, Workflow, or Step**
+
+```
+GET /api/v2/records?application-id={application-id}
+GET /api/v2/records?step-id={step-id}
+GET /api/v2/records?workflow-id={workflow-id}&updated-min={timestamp}
+```
+
+`updated-min` accepts a Unix epoch timestamp in milliseconds; the response includes only Records
+modified at or after that time. This is the basis for incremental sync.
+
+## Reading a Record's parents
+
+```
+GET /api/v2/records/{record-id}
+```
+
+The response includes:
+
+- `application` — `id`, `name`, `object: "application"`.
+- `workflow` — `id`, `name`, `recordPrefix`, `object: "workflow"`.
+- `currentStep` — `id`, `name`, `type`, `object: "step"`.
+- `originStep` — the Step where the Record was created.
+- `fields` — the Record's captured field values.
+
+## Field definition vs. Field on a Record
+
+- A **Field definition** (from `/api/v2/fields`) describes the Field's `type`, `label`,
+  `helpText`, allowed `optionValues`, and whether it's `required`, plus `application`/`workflow`
+  parent references.
+- A **Field on a Record** (inside a Record's `fields` array) carries the same `id`, `name`,
+  `label`, and `type` as the underlying definition, plus a `values` array with what was captured.
+
+Captured values carry both a `textValue` and a `numericValue` — read the one that matches the
+field's `valueType`:
+
+| `valueType` | `numericValue` | `textValue` |
+|---|---|---|
+| `NUMBER` | the number | formatted string, e.g. `"42"` |
+| `OPTION` (`SELECT`, `RADIO`, `MULTI_SELECT`, `CHECKBOX`, `E_SIGNATURE`) | the option's numeric weight | the option label, e.g. `"Medium Risk"` |
+| `DATE` | Unix epoch (ms) | formatted in the user's locale |
+| `USER` | `null` | `"First Last (email@example.com)"` |
+| `TEXT` | `null` | the text |
+| `ATTACHMENT` | version count | the filename |
+| `CALCULATION` | the computed number | the labeled result, if configured |
+
+## Linked Records
+
+Records relate to other Records through Workflow Maps:
+
+```
+GET /api/v2/records/{record-id}/linked?workflow-id={workflow-id}&depth=10
+```
+
+`workflow-id` is required and specifies which target Workflow's Records to return. `depth`
+(default `10`) bounds how many relationship hops the response covers — this is the API equivalent
+of a Relationship Report.
+
+## Pagination
+
+All v2 list endpoints use the same two query parameters — see the
+[Pagination guide](/guides/api-usage/pagination) for the full contract:
+
+- `page` — zero-indexed, defaults to `0`.
+- `size` — defaults to `20`, minimum `1`.
+
+The response envelope has three top-level keys:
+
+- `content` — the array of items.
+- `page` — metadata for the current page, including total pages and total elements.
+- `links` — pre-built URLs for `first`, `prev`, `next`, `last`. Following `links.next` until it's
+  absent is a safe way to iterate without computing page numbers.
+
+## Top-down traversal
+
+A full top-down sync iterates each level of the hierarchy:
+
+```text
+for application in GET /api/v2/applications:
+    for workflow in GET /api/v2/workflows?application-id={application.id}:
+        for step in GET /api/v2/steps?workflow-id={workflow.id}:
+            ...                     # capture form structure
+        for field in GET /api/v2/fields?workflow-id={workflow.id}:
+            ...                     # capture field definitions
+        for record in GET /api/v2/records?workflow-id={workflow.id}:
+            ...                     # capture data; record.fields holds captured values
+```
+
+For ongoing sync, add `updated-min` set to the latest `updated` timestamp from the previous run.

@@ -10,28 +10,62 @@
   "favicon": "/favicon.svg",
   "navigation": {
     "pages": [
+      "index",
       {
-        "group": "Getting Started",
+        "group": "Quick Start Guides",
         "pages": [
-          "index",
-          "quickstart"
+          "guides/quick-start/getting-started",
+          "guides/quick-start/mcp-server",
+          "guides/quick-start/postman",
+          "guides/quick-start/risk-cloud-power-bi-connection",
+          "guides/quick-start/risk-cloud-webhooks"
+        ]
+      },
+      {
+        "group": "API Usage Guides",
+        "pages": [
+          "guides/api-usage/authentication",
+          "guides/api-usage/navigating-risk-cloud-data-with-v2",
+          "guides/api-usage/pagination",
+          "guides/api-usage/risk-cloud-api-about-users-roles-and-permissions",
+          "guides/api-usage/risk-cloud-api-assign-records",
+          "guides/api-usage/risk-cloud-api-automated-evidence-collection",
+          "guides/api-usage/risk-cloud-api-build-audit-log",
+          "guides/api-usage/risk-cloud-api-bulk-import-records",
+          "guides/api-usage/risk-cloud-api-bulk-link-records",
+          "guides/api-usage/risk-cloud-api-create-records",
+          "guides/api-usage/risk-cloud-api-create-user-groups",
+          "guides/api-usage/risk-cloud-api-create-users",
+          "guides/api-usage/risk-cloud-api-data-repositories",
+          "guides/api-usage/risk-cloud-api-export-attachments",
+          "guides/api-usage/risk-cloud-api-export-roles",
+          "guides/api-usage/risk-cloud-api-export-step-permission-sets",
+          "guides/api-usage/risk-cloud-api-export-table-report",
+          "guides/api-usage/risk-cloud-api-export-user-groups",
+          "guides/api-usage/risk-cloud-api-grant-users-record-access",
+          "guides/api-usage/risk-cloud-api-link-records",
+          "guides/api-usage/risk-cloud-api-linked-record-search",
+          "guides/api-usage/risk-cloud-api-moving-records",
+          "guides/api-usage/risk-cloud-api-post-record-comments",
+          "guides/api-usage/risk-cloud-api-record-search",
+          "guides/api-usage/risk-cloud-api-update-field-configuration",
+          "guides/api-usage/risk-cloud-api-update-record-user-groups",
+          "guides/api-usage/risk-cloud-api-update-records",
+          "guides/api-usage/risk-cloud-api-update-user-details-and-roles",
+          "guides/api-usage/risk-cloud-api-update-users-and-permission-sets-on-role",
+          "guides/api-usage/risk-cloud-api-upload-attachments",
+          "guides/api-usage/risk-cloud-api-view-applications-workflows-and-steps",
+          "guides/api-usage/risk-cloud-api-view-field-audits",
+          "guides/api-usage/risk-cloud-api-view-record-audits",
+          "guides/api-usage/risk-cloud-api-viewing-fields",
+          "guides/api-usage/risk-cloud-api-viewing-user-access-audits",
+          "guides/api-usage/risk-cloud-api-viewing-users",
+          "guides/api-usage/risk-cloud-api-webhook-urls",
+          "guides/api-usage/risk-cloud-export-record-data",
+          "guides/api-usage/service-accounts"
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
+    ]
   },
   "logo": {
     "light": "/logo/light.svg",

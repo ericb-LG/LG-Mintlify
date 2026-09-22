@@ -1,0 +1,50 @@
+---
+title: "Risk Cloud API: About Users, Roles, and Permissions"
+sidebarTitle: "About Users, Roles, and Permissions"
+description: "How Risk Cloud's role-based permission model applies identically to API and UI access, and how to troubleshoot 401/403 responses."
+---
+
+## Overview
+
+The Risk Cloud API enforces the same permission model as the Risk Cloud web application. Every API call is evaluated against the access of the user behind the token — if that user can perform an action in the UI, they can perform it through the API, and if they can't, the API call is rejected the same way.
+
+## Authorization categories
+
+API endpoints fall into four broad categories of authorization requirement:
+
+- **Any authenticated user** — a valid token is sufficient.
+- **Specific module permission required** — e.g. the `RECORDS` or `BUILD` module entitlement.
+- **Access to a specific entity required** — e.g. Read access to the Application or Step the record belongs to.
+- **Combined requirements** — e.g. the `BUILD` module entitlement plus Build Access on the specific Application.
+
+## Permission components
+
+A user's effective access is determined by five components:
+
+| Component | Description |
+|---|---|
+| Role | A named bundle of module entitlements and permission sets assigned to a user. A user can belong to multiple Roles; their effective permissions are the union of everything those Roles grant. |
+| Module entitlement | Coarse-grained access to a functional area, such as `BUILD`, `ADMIN`, `RECORDS`, `ASSIGN`, `IMPORT`, `DELETE_RECORDS`, `STATUS`, `TABLE_REPORTS_READ`, `DASHBOARDS_READ`, or `APPLICATION`. |
+| Application entitlement | Per-Application Read or Edit access. |
+| Step permission set | Per-Step Read or Edit permissions. |
+| Build Access | Per-Application rights to modify workflow design. |
+
+## List endpoints filter rather than reject
+
+List endpoints don't return a 403 for objects the caller can't see — they simply omit them. For example, a call to `GET /api/v2/records` returns only the Records the requesting user has Read access to, rather than erroring or returning every record in the environment.
+
+## Troubleshooting
+
+| Symptom | Likely cause |
+|---|---|
+| 401 Unauthorized on every call | The user's API access permission is disabled, or the token is invalid or expired. Enable API access on the user and regenerate the token. |
+| 403 Forbidden | The user lacks the required module entitlement, Application Entitlement, Build Access, or Step Permission Set for the requested action. |
+| Empty or incomplete results from a list endpoint | Permission filtering is active — check the user's Step Permission Sets and Application Entitlements for the Steps and Applications the missing records belong to. |
+
+## User types
+
+Both regular users (who authenticate via password or SSO) and service accounts must have the **API access** permission enabled before they can generate a token. See [Service Accounts](/guides/api-usage/service-accounts) for setting up dedicated, non-personal credentials for integrations.
+
+## Next steps
+
+See [Risk Cloud API: Viewing Users](/guides/api-usage/risk-cloud-api-viewing-users) to look up user records via the API, and [Authentication](/guides/api-usage/authentication) for how tokens and Access Keys are issued.

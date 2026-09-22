@@ -1,0 +1,93 @@
+---
+title: "Risk Cloud API: Export Step Permission Sets"
+sidebarTitle: "Export Step Permission Sets"
+description: "Search and retrieve Step Permission Sets, including their steps, users, and roles."
+---
+
+Step Permission Sets are an access type that encompass a collection of steps within an
+application. Application builders can create step permission sets corresponding to different
+step combinations. The Risk Cloud API enables exporting step permission set information along
+with associated user details.
+
+Obtain your [API Access Token](/guides/api-usage/authentication) to get started. For additional
+context, refer to the Help Center article on Creating Permission Sets for your Applications.
+
+## Retrieve Step Permission Sets
+
+Returns a paginated list of step permission sets in the environment.
+
+```
+GET /api/v1/step-permission-sets/search?application-id=&query=&search-type=
+```
+
+| Query parameter | Description |
+|---|---|
+| `application-id` | The unique ID of an application where, if provided, the response will only contain step permission sets from the identified application. |
+| `query` | A query parameter flag where, if provided, the response will only contain step permission sets that match the name. |
+| `search-type` | Specifies which property name the `query` applies to. Values include `APPLICATION`, `PERMISSIONSET`, and `BOTH`. |
+
+### Response
+
+```json
+{
+  "content": [
+    {
+      "id": "a1b2c3d4",
+      "name": "Manage Documents",
+      "defaultStepPermissionSetForNewUsers": false,
+      "stepCount": 2,
+      "userCount": 4,
+      "roleCount": 3,
+      "application": {
+        "id": "e5f6g7h8",
+        "name": "Cyber Risk Management Application",
+        "color": "#00a3de"
+      }
+    }
+  ],
+  "totalElements": 1,
+  "totalPages": 1
+}
+```
+
+See [Pagination](/guides/api-usage/pagination) for details on `content`, `totalElements`, and
+`totalPages`.
+
+## Retrieve a Step Permission Set
+
+Returns the detailed information for a single step permission set, including its users.
+
+```
+GET /api/v1/step-permission-sets/{step-permission-set-id}
+```
+
+| Path parameter | Description |
+|---|---|
+| `step-permission-set-id` | The unique ID of the step permission set to return. |
+
+### Response
+
+```json
+{
+  "id": "a1b2c3d4",
+  "active": true,
+  "name": "Manage Documents",
+  "defaultStepPermissionSetForNewUsers": false,
+  "users": [
+    {
+      "id": "m3n4o5p6",
+      "email": "jane.doe@example.com",
+      "first": "Jane",
+      "last": "Doe",
+      "stepPermissionSetIds": ["a1b2c3d4"]
+    }
+  ],
+  "applicationId": "q7r8s9t0",
+  "userIds": ["m3n4o5p6"]
+}
+```
+
+## Next steps
+
+For role-level exports (rather than step-level), see
+[Risk Cloud API: Export Roles](/guides/api-usage/risk-cloud-api-export-roles).

@@ -1,0 +1,119 @@
+---
+title: "Risk Cloud API: View Field Audits"
+sidebarTitle: "View Field Audits"
+description: "Retrieve and export field-level audit history by record ID or value map ID."
+---
+
+Field audits track the value history of individual fields — who set a value, when, and through
+what mechanism. Before making any of these calls you'll need a bearer token — see
+[Authentication](/guides/api-usage/authentication).
+
+## Field Audit
+
+### Find all field audits by record ID
+
+Retrieve all field audits for a given record.
+
+```
+GET /api/v1/audit/fields/record/{recordId}
+```
+
+**Required path parameter**
+
+| Parameter | Description |
+|---|---|
+| `recordId` | The unique ID of a record. The response contains only field audits from this record. |
+
+**Optional query parameters**
+
+| Parameter | Description |
+|---|---|
+| `page` | The zero-indexed page number (must not be less than 0, defaults to 0). |
+| `size` | The size of the page and maximum number of items returned (must not be less than 1, defaults to 20). |
+
+See [Pagination](/guides/api-usage/pagination) for details on the page response envelope.
+
+**Result fields**
+
+| Field | Description |
+|---|---|
+| `id` | The unique ID of the field audit. |
+| `fieldId` | The unique ID of the field audit. |
+| `fieldLabel` | The label of the field, presented to end users. |
+| `fieldName` | The name of the field, used to identify it in the Build and Reports modules. |
+| `created` | The created date of the field audit in epoch milliseconds, e.g. `1712168746685`. |
+| `recordId` | The unique ID of the record. |
+| `userName` | The name of the creator. |
+| `userEmail` | The email of the creator. |
+| `fieldValues` | The list of field values. |
+| `executorId` | The unique ID of the executor. |
+| `executorName` | The name of the executor. |
+| `executorType` | The type of executor, e.g. `USER_ACTION`. |
+| `defaultValue` | Whether this value is the default field value, e.g. `false`. |
+
+### Get most recent field audit by value map
+
+Retrieve the most recent field audit for a given value map.
+
+```
+GET /api/v1/audit/fields/value-map/{valueMapId}
+```
+
+**Required path parameter**
+
+| Parameter | Description |
+|---|---|
+| `valueMapId` | The unique ID of a value map. The response contains only field audits from this value map. |
+
+**Result fields**
+
+| Field | Description |
+|---|---|
+| `id` | The unique ID of the field audit. |
+| `fieldId` | The unique ID of the field. |
+| `fieldLabel` | The label of the field, presented to end users. |
+| `fieldName` | The name of the field, used to identify it in the Build and Reports modules. |
+| `fieldType` | The type of field, e.g. `Common`. |
+| `created` | The created date of the field audit in epoch milliseconds, e.g. `1712168746685`. |
+| `recordId` | The unique ID of the record. |
+| `userId` | The unique ID of the user. |
+| `userName` | The name of the user. |
+| `userEmail` | The email of the user. |
+| `fieldValues` | The list of field values. |
+
+## Field Audit Export
+
+### Export all field audits by record ID
+
+Export all field audits for a given record. Results can optionally be ordered by pageable
+parameters and restricted to a min/max created date range.
+
+```
+GET /api/v1/internal/audit/fields/export/record/{recordId}
+```
+
+**Required path parameter**
+
+| Parameter | Description |
+|---|---|
+| `recordId` | The unique ID of a record. The response contains only field audits from this record. |
+
+**Optional query parameters**
+
+| Parameter | Description |
+|---|---|
+| `page` | The zero-indexed page number (must not be less than 0, defaults to 0). |
+| `size` | The size of the page and maximum number of items returned (must not be less than 1, defaults to 20). |
+| `minCreated` | The minimum created date in epoch milliseconds (oldest date lower bound), e.g. `1711997926000`. |
+| `maxCreated` | The maximum created date in epoch milliseconds (newest date upper bound), e.g. `1712170726000`. |
+
+**Result**
+
+A view containing all field audit results related to the record. The response can be saved as CSV,
+XLSX, TXT, or another appropriate format for later viewing.
+
+```text
+Created Date,Field Id,Field Label,Field Name,Field Type,Field Values,Record Id,User Email,User Name,Executor ID,Executor Name,Execution Type,Is Default Value
+2024-04-03 18:25:53,LkTGrIvx,Select the date by which the record must be completed.,Due Date,DueDateFieldTransient,[1717261200000],bnWzIMRy,admin+localhost@logicgate.com,LogicGate Administrator,gMLjJcmK,LogicGate Administrator,USER_ACTION,false
+2024-04-03 18:25:47,3PvdkyZM,t,t,InfiniteTextField,[new 11],bnWzIMRy,admin+localhost@logicgate.com,LogicGate Administrator,gMLjJcmK,LogicGate Administrator,USER_ACTION,false
+```

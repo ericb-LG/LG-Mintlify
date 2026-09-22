@@ -1,0 +1,91 @@
+---
+title: "Risk Cloud API: Update User Details and Roles"
+sidebarTitle: "Update User Details and Roles"
+description: "Retrieve a user and update their details or role assignments with the User API."
+---
+
+Updating roles on a single user is a common task in Risk Cloud, and the User API supports it
+directly.
+
+## Prerequisites
+
+- Obtain your [API Access Token](/guides/api-usage/authentication) or pull the Risk Cloud Postman
+  Collection (see the [Postman guide](/guides/quick-start/postman)) to get started.
+- Required user role: `Admin`, for the `PUT` endpoints at minimum.
+- You cannot update users who are auto-provisioned — those users must be managed through your IDP.
+
+## 1. Get User
+
+Retrieve the user you want to update:
+
+```
+GET /api/v1/internal/users/{userId}
+```
+
+| Path parameter | Required | Description |
+|---|---|---|
+| `userId` | Yes | The User ID you want to update. |
+
+## 2. Update User Details
+
+Update the user's individual details, such as email address, time zone, first name, or last name.
+
+```
+PUT /api/v1/internal/users/admin-modal
+```
+
+### Request
+
+```json
+{
+    "email": "test.user@logicgate.com",
+    "status": "Active",
+    "first": "test",
+    "last": "user",
+    "name": "test user"
+}
+```
+
+### Response
+
+Returns the updated `User` object. Re-run step 1 to verify the changes (allow a few seconds for
+the cache to update).
+
+## 3. Update User Roles
+
+Update the user's role assignments. Specify the `userId`, then update the `roles` array in the
+request body to add and/or remove roles.
+
+```
+PUT /api/v1/internal/users/{userId}
+```
+
+| Path parameter | Required | Description |
+|---|---|---|
+| `userId` | Yes | The User ID you want to update. |
+
+### Request
+
+```json
+{
+    "status": "Active",
+    "roles": [
+        {
+            "id": "<roleId that already exists — keep it as-is>"
+        },
+        {
+            "id": "<roleId you want to add>"
+        }
+    ],
+    "transientIdOrId": "<transientIdOrId>"
+}
+```
+
+Include an `id` object for each role you want the user to keep, and add a new `id` object for each
+role you want to grant. Update the `roles` array to reflect the full set of roles you want the user
+to have after the change.
+
+### Response
+
+Returns the updated `User` object. Re-run step 1 to verify the changes (allow a few seconds for
+the cache to update).

@@ -1,0 +1,99 @@
+---
+title: "Risk Cloud API: Viewing Fields"
+sidebarTitle: "Viewing Fields"
+description: "Look up a Workflow's Fields and their IDs, used for updating Records and reading current field values."
+---
+
+## Background
+
+When working with the Risk Cloud API, Field IDs are commonly required for tasks such as updating
+Records. The following endpoint returns an array of Field objects that exist within a given
+Workflow.
+
+Before making these requests you'll need a bearer token — see
+[Authentication](/guides/api-usage/authentication).
+
+## Usage
+
+Obtaining all Fields of a Workflow requires two steps:
+
+1. Obtain a Workflow ID.
+2. Request the Workflow's Fields.
+
+### Step 1: Obtain a Workflow ID
+
+To retrieve Workflow IDs in your environment, make the following request:
+
+```
+GET /api/v1/applications?generic=true
+```
+
+```bash
+curl --request GET 'https://your-company.logicgate.com/api/v1/applications?generic=true' \
+--header 'Authorization: Bearer {ACCESS_TOKEN}'
+```
+
+The response contains an array of all Applications. Workflow IDs are located as the values of
+`id` properties within `workflows` objects in the JSON:
+
+```json
+[
+  {
+    "workflows": [
+      {
+        "id": null
+      }
+    ]
+  }
+]
+```
+
+See [View Applications, Workflows, and Steps](/guides/api-usage/risk-cloud-api-view-applications-workflows-and-steps)
+for the full response shape.
+
+### Step 2: Request the Workflow's Fields
+
+With a Workflow ID in hand, retrieve all Fields on that Workflow:
+
+```
+GET /api/v1/fields/workflow/{workflowId}/values
+```
+
+```bash
+curl --request GET 'https://your-company.logicgate.com/api/v1/fields/workflow/{workflowId}/values' \
+--header 'Authorization: Bearer {ACCESS_TOKEN}'
+```
+
+The response contains a list of all Fields on the given Workflow. Field IDs from this response can
+be used to update Records or read current Field values.
+
+**Response fields**
+
+| Field | Description |
+|---|---|
+| `active` | Whether the field is active. |
+| `convertibleTo` | Field types this field's value can be converted to. |
+| `created` | The field's creation timestamp. |
+| `currentValues` | The field's current values. |
+| `defaultValues` | The field's default values. |
+| `discrete` | Whether the field has a discrete (fixed) set of values. |
+| `fieldType` | The field's type, e.g. `ATTACHMENT`. |
+| `global` | Whether the field is global. |
+| `id` | The unique ID of the field. |
+| `label` | The label presented to end users. |
+| `labels` | Locale-specific labels. |
+| `name` | The name used to identify the field in Build and Reports. |
+| `operators` | Operators valid for this field type. |
+| `tooltip` | The field's tooltip text. |
+| `updated` | The field's last-updated timestamp. |
+| `validTypeForCalculationInput` | Whether the field can be used as calculation input. |
+| `valueType` | The field's value type. |
+| `workflow` | The parent workflow object. |
+| `workflowId` | The unique ID of the parent workflow. |
+
+## Next steps
+
+Use a Field ID from this response with
+[Upload Attachments](/guides/api-usage/risk-cloud-api-upload-attachments) to attach a file, or with
+[View Field Audits](/guides/api-usage/risk-cloud-api-view-field-audits) to see that field's value
+history.
