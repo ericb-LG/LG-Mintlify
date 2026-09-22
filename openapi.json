@@ -1265,10 +1265,10 @@
         "name": "api_key",
         "in": "header"
       },
-      "ApiToken": {
+      "basic": {
         "type": "http",
-        "scheme": "bearer",
-        "bearerFormat": "API Token"
+        "scheme": "basic",
+        "bearerFormat": "basic"
       }
     }
   }
