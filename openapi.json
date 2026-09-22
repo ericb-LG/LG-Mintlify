@@ -15,13 +15,8 @@
   },
   "servers": [
     {
-      "url": "https://{env}.logicgate.com",
-      "description": "The LogicGate API application.",
-      "variables": {
-        "env": {
-          "default": "qa"
-        }
-      }
+      "url": "https://qa.logicgate.com",
+      "description": "The LogicGate API application."
     }
   ],
   "security": [
@@ -59,12 +54,12 @@
           {
             "name": "Authorization",
             "in": "header",
-            "description": "A basic authorization header containing a Risk Cloud API access token in the format `Authorization: Basic {TOKEN}`.\n\nTo obtain a Risk Cloud API access token, refer to [Obtain an API Access Token](https://www.logicgate.com/developer/risk-cloud-api-authentication/) in the [LogicGate Help Center](https://help.logicgate.com/hc/en-us).",
+            "description": "A basic authorization header containing a Risk Cloud API access token in the format `Authorization: Basic TOKEN`.\n\nTo obtain a Risk Cloud API access token, refer to [Obtain an API Access Token](https://www.logicgate.com/developer/risk-cloud-api-authentication/) in the [LogicGate Help Center](https://help.logicgate.com/hc/en-us).",
             "required": true,
             "schema": {
               "type": "string"
             },
-            "example": "Basic {ENCODED}"
+            "example": "Basic ENCODED"
           }
         ],
         "requestBody": {
@@ -108,12 +103,12 @@
           {
             "name": "Authorization",
             "in": "header",
-            "description": "A basic authorization header containing a Risk Cloud API access token in the format `Authorization: Basic {TOKEN}`.\n\nTo obtain a Risk Cloud API access token, refer to [Obtain an API Access Token](https://www.logicgate.com/developer/risk-cloud-api-authentication/) in the [LogicGate Help Center](https://help.logicgate.com/hc/en-us).",
+            "description": "A basic authorization header containing a Risk Cloud API access token in the format `Authorization: Basic TOKEN`.\n\nTo obtain a Risk Cloud API access token, refer to [Obtain an API Access Token](https://www.logicgate.com/developer/risk-cloud-api-authentication/) in the [LogicGate Help Center](https://help.logicgate.com/hc/en-us).",
             "required": true,
             "schema": {
               "type": "string"
             },
-            "example": "Basic {ENCODED}"
+            "example": "Basic ENCODED"
           }
         ],
         "responses": {
@@ -253,12 +248,12 @@
           {
             "name": "Authorization",
             "in": "header",
-            "description": "A bearer authorization header containing a Risk Cloud API access token in the format `Authorization: Bearer {TOKEN}`.\n\nTo obtain a Risk Cloud API access token, refer to [Obtain an API Access Token](https://www.logicgate.com/developer/risk-cloud-api-authentication/) in the [LogicGate Help Center](https://help.logicgate.com/hc/en-us).",
+            "description": "A bearer authorization header containing a Risk Cloud API access token in the format `Authorization: Bearer TOKEN`.\n\nTo obtain a Risk Cloud API access token, refer to [Obtain an API Access Token](https://www.logicgate.com/developer/risk-cloud-api-authentication/) in the [LogicGate Help Center](https://help.logicgate.com/hc/en-us).",
             "required": true,
             "schema": {
               "type": "string"
             },
-            "example": "Bearer {TOKEN}"
+            "example": "Bearer TOKEN"
           }
         ],
         "responses": {
@@ -373,12 +368,12 @@
           {
             "name": "Authorization",
             "in": "header",
-            "description": "A bearer authorization header containing a Risk Cloud API access token in the format `Authorization: Bearer {TOKEN}`.\n\nTo obtain a Risk Cloud API access token, refer to [Obtain an API Access Token](https://www.logicgate.com/developer/risk-cloud-api-authentication/) in the [LogicGate Help Center](https://help.logicgate.com/hc/en-us).",
+            "description": "A bearer authorization header containing a Risk Cloud API access token in the format `Authorization: Bearer TOKEN`.\n\nTo obtain a Risk Cloud API access token, refer to [Obtain an API Access Token](https://www.logicgate.com/developer/risk-cloud-api-authentication/) in the [LogicGate Help Center](https://help.logicgate.com/hc/en-us).",
             "required": true,
             "schema": {
               "type": "string"
             },
-            "example": "Bearer {TOKEN}"
+            "example": "Bearer TOKEN"
           }
         ],
         "responses": {
