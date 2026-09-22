@@ -210,7 +210,7 @@
     }
   },
   "api": {
-    "openapi": "https://cdn.jsdelivr.net/gh/LogicGateTech/openapi@main/openapi.json"
+    "openapi": "openapi.json"
   },
   "description": "Build integrations with the Risk Cloud API.",
   "redirects": [
