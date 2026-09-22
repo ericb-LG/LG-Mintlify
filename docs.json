@@ -3,9 +3,9 @@
   "theme": "mint",
   "name": "Risk Cloud Developer Portal",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#0027D6",
+    "light": "#00E0DF",
+    "dark": "#08075F"
   },
   "favicon": "/favicon.svg",
   "navigation": {
@@ -218,5 +218,13 @@
       "destination": "/api-reference",
       "permanent": true
     }
-  ]
+  ],
+  "fonts": {
+    "heading": {
+      "family": "Archivo"
+    },
+    "body": {
+      "family": "Inter"
+    }
+  }
 }
