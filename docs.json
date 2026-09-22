@@ -15,7 +15,6 @@
         "group": "Quick Start Guides",
         "pages": [
           "guides/quick-start/getting-started",
-          "guides/quick-start/mcp-server",
           "guides/quick-start/postman",
           "guides/quick-start/risk-cloud-power-bi-connection",
           "guides/quick-start/risk-cloud-webhooks"
