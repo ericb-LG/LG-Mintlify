@@ -1,0 +1,4343 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Risk Cloud API (Legacy v1) — Auth",
+    "description": "The Risk Cloud API is a collection of RESTful API endpoints that empower you and your team to directly integrate, automate, and build with the Risk Cloud. Risk Cloud API endpoint payloads are JSON based, with some endpoints supporting exports in CSV and XSLX formats for flexible integration.\n\nThis API documentation showcases our Risk Cloud API v1, containing a variety of endpoints with continued support for enabling integrations with the Risk Cloud.\n\nVisit the [LogicGate Risk Cloud Developer Portal](https://www.logicgate.com/developer/) to get started with building your custom integration with quick start guides, usage guides, release notes, and more. Or download the [v1 OpenAPI specification](/legacy-openapi.json).\n\nExplore our [Risk Cloud API v2](https://docs.logicgate.com/v2/index.html) endpoints and documentation as well. [Risk Cloud API v2](https://docs.logicgate.com/v2/index.html) is our collection of API-First endpoints that are tailor made for our developer users, offer concise and highly documented details, are supported by a [Postman collection](https://www.postman.com/logicgate-postman/workspace/logicgate-risk-cloud-api/collection/29257227-de8d264b-6eeb-4177-bea6-2da0a8cabffc) and [v2 OpenAPI specification](https://github.com/LogicGateTech/openapi), and contain our latest API endpoint releases.",
+    "contact": {
+      "name": "developer-relations@logicgate.com",
+      "email": "developer-relations@logicgate.com"
+    },
+    "version": "v2026.8.2"
+  },
+  "externalDocs": {
+    "description": "Developer Portal",
+    "url": "https://www.logicgate.com/developer/"
+  },
+  "servers": [
+    {
+      "url": "https://{subdomain}.logicgate.com",
+      "description": "Your Risk Cloud environment.",
+      "variables": {
+        "subdomain": {
+          "default": "your-instance",
+          "description": "Your Risk Cloud environment's subdomain (e.g. `qa`)."
+        }
+      }
+    }
+  ],
+  "security": [
+    {
+      "ApiToken": []
+    },
+    {
+      "basic": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Authentication",
+      "description": "Getting Started: How to create an [API Access Token](https://www.logicgate.com/developer/risk-cloud-api-authentication/) to begin integrating with the Risk Cloud API"
+    },
+    {
+      "name": "Principal",
+      "description": "Endpoints for the authenticated principal to view and manage their own details."
+    },
+    {
+      "name": "SCIM",
+      "description": "SCIM (System for Cross-domain Identity Management) endpoints for provisioning and managing Users and Groups from an external identity provider."
+    },
+    {
+      "name": "External User",
+      "description": "Endpoints for creating and managing external (non-employee) users who access Risk Cloud via record-scoped tokens rather than standard login."
+    },
+    {
+      "name": "Account",
+      "description": "Endpoints for retrieving details about the current Risk Cloud account/environment."
+    }
+  ],
+  "paths": {
+    "/scim/v2/Users/{userId}": {
+      "get": {
+        "tags": [
+          "SCIM"
+        ],
+        "operationId": "userById",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/scim+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScimUserOut"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Retrieve a SCIM user"
+      },
+      "put": {
+        "tags": [
+          "SCIM"
+        ],
+        "operationId": "updateUser2",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScimUserIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/scim+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScimUserOut"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Replace a SCIM user"
+      },
+      "delete": {
+        "tags": [
+          "SCIM"
+        ],
+        "operationId": "deactivateUser",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "summary": "Deactivate a SCIM user"
+      },
+      "patch": {
+        "tags": [
+          "SCIM"
+        ],
+        "operationId": "updateUser",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchOp"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/scim+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScimUserOut"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Update a SCIM user"
+      }
+    },
+    "/scim/v2/Groups/{groupId}": {
+      "get": {
+        "tags": [
+          "SCIM"
+        ],
+        "operationId": "group",
+        "parameters": [
+          {
+            "name": "groupId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "queryParameters",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ScimResourceRequestQueryParameters"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/scim+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScimGroup"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Retrieve a SCIM group"
+      },
+      "put": {
+        "tags": [
+          "SCIM"
+        ],
+        "operationId": "updateGroup",
+        "parameters": [
+          {
+            "name": "groupId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScimGroup"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/scim+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScimGroup"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Replace a SCIM group"
+      },
+      "delete": {
+        "tags": [
+          "SCIM"
+        ],
+        "operationId": "deleteGroup",
+        "parameters": [
+          {
+            "name": "groupId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "summary": "Delete a SCIM group"
+      },
+      "patch": {
+        "tags": [
+          "SCIM"
+        ],
+        "operationId": "patchGroup",
+        "parameters": [
+          {
+            "name": "groupId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchOp"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/scim+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScimGroup"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Update a SCIM group"
+      }
+    },
+    "/scim/v2/Users": {
+      "get": {
+        "tags": [
+          "SCIM"
+        ],
+        "operationId": "users",
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pageRequest",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ScimPageRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/scim+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Users"
+                }
+              }
+            }
+          }
+        },
+        "summary": "List SCIM users"
+      },
+      "post": {
+        "tags": [
+          "SCIM"
+        ],
+        "operationId": "addUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScimUserIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/scim+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScimUserOut"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Create a SCIM user"
+      }
+    },
+    "/scim/v2/Groups": {
+      "get": {
+        "tags": [
+          "SCIM"
+        ],
+        "operationId": "groups",
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "queryParameters",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ScimResourceRequestQueryParameters"
+            }
+          },
+          {
+            "name": "pageRequest",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ScimPageRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/scim+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Groups"
+                }
+              }
+            }
+          }
+        },
+        "summary": "List SCIM groups"
+      },
+      "post": {
+        "tags": [
+          "SCIM"
+        ],
+        "operationId": "addGroup",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScimGroup"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/scim+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScimGroup"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Create a SCIM group"
+      }
+    },
+    "/api/v2/account/token": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Refresh an API token",
+        "description": "Issue a fresh access token and rotated refresh token for a previously-created named API token. The presented refresh token is invalidated.",
+        "operationId": "refreshApiToken",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "A basic authorization header containing a Risk Cloud API access token in the format `Authorization: Basic ENCODED` — replace `ENCODED` with your base64-encoded Client Key:Secret Key credentials.\n\nTo obtain a Risk Cloud API access token, refer to [Obtain an API Access Token](https://www.logicgate.com/developer/risk-cloud-api-authentication/) in the [LogicGate Help Center](https://help.logicgate.com/hc/en-us).",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Basic ENCODED"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshTokenIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiTokenRefreshedOut"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ]
+      }
+    },
+    "/api/v1/users/external": {
+      "post": {
+        "tags": [
+          "External User"
+        ],
+        "summary": "Create an external user with no attached roles.",
+        "operationId": "create_2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User_BasicUserSummary"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User_UserSummary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/users/external/verify-mfa": {
+      "post": {
+        "tags": [
+          "External User"
+        ],
+        "summary": "Verify MFA for external user",
+        "description": "Verify the code that was emailed to the user.",
+        "operationId": "verifyMfaCode_1",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalUserMfaVerificationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MfaVerificationResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/users/external/email": {
+      "post": {
+        "tags": [
+          "External User"
+        ],
+        "summary": "Send an email containing an MFA code to the specified email.",
+        "operationId": "initiateMfa",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalUserMfaRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/users/external/bulk-create": {
+      "post": {
+        "tags": [
+          "External User"
+        ],
+        "summary": "Bulk-create external users with no attached roles.",
+        "operationId": "bulkCreate",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/User_BasicUserSummary"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User_UserSummary"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/account/tokens": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "List the current user's API tokens",
+        "description": "Returns a paginated list of the current user's user-managed API tokens. Excludes system-issued tokens which are not directly managed by the user. Sorted by creation time descending by default.",
+        "operationId": "listTokens",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "A bearer authorization header containing a Risk Cloud API access token in the format `Authorization: Bearer TOKEN` — replace `TOKEN` with your actual access token.\n\nTo obtain a Risk Cloud API access token, refer to [Obtain an API Access Token](https://www.logicgate.com/developer/risk-cloud-api-authentication/) in the [LogicGate Help Center](https://help.logicgate.com/hc/en-us).",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Bearer TOKEN"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageUserApiTokenOut"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Create a new user-managed API token",
+        "description": "Creates a named API token for the current user and returns the plaintext access token and refresh token exactly once. Neither can be recovered from the server afterward, so the caller must persist both values before navigating away. The refresh token can be used against POST /api/v2/account/token to obtain a fresh access token without re-creating from the UI.",
+        "operationId": "createToken",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "A bearer authorization header containing a Risk Cloud API access token in the format `Authorization: Bearer TOKEN` — replace `TOKEN` with your actual access token.\n\nTo obtain a Risk Cloud API access token, refer to [Obtain an API Access Token](https://www.logicgate.com/developer/risk-cloud-api-authentication/) in the [LogicGate Help Center](https://help.logicgate.com/hc/en-us).",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Bearer TOKEN"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserApiTokenIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserApiTokenCreatedOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/account/token": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Create an API Access Token",
+        "description": "**Permissions:** Authenticated User\n\nGenerates a new, expiring access token from the provided Client and Secret keys.",
+        "operationId": "getApiToken",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "A basic authorization header containing a Risk Cloud API access token in the format `Authorization: Basic ENCODED` — replace `ENCODED` with your base64-encoded Client Key:Secret Key credentials.\n\nTo obtain a Risk Cloud API access token, refer to [Obtain an API Access Token](https://www.logicgate.com/developer/risk-cloud-api-authentication/) in the [LogicGate Help Center](https://help.logicgate.com/hc/en-us).",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Basic ENCODED"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LegacyApiTokenOut"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ]
+      }
+    },
+    "/scim/v2/ServiceProviderConfig": {
+      "get": {
+        "tags": [
+          "SCIM"
+        ],
+        "operationId": "serviceProviderConfig",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/scim+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceProviderConfig"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Retrieve SCIM service provider configuration"
+      }
+    },
+    "/scim/v2/Schemas": {
+      "get": {
+        "tags": [
+          "SCIM"
+        ],
+        "operationId": "schemas",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/scim+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Schemas"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Retrieve SCIM schemas"
+      }
+    },
+    "/scim/v2/ResourceTypes": {
+      "get": {
+        "tags": [
+          "SCIM"
+        ],
+        "operationId": "resourceTypes",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/scim+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EndpointResources"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Retrieve SCIM resource types"
+      }
+    },
+    "/api/v1/users/external/{userId}/record-tokens": {
+      "get": {
+        "tags": [
+          "External User"
+        ],
+        "summary": "Return all record tokens authorizing the given user.",
+        "operationId": "getRecordTokensForUser",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/users/external/tokens/{recordId}": {
+      "get": {
+        "tags": [
+          "External User"
+        ],
+        "summary": "Retrieve an external token based off the associated record entity.",
+        "operationId": "getExternalTokenByRecord",
+        "parameters": [
+          {
+            "name": "recordId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicToken_PublicTokenSummary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/principal": {
+      "get": {
+        "tags": [
+          "Principal"
+        ],
+        "summary": "Get the authenticated principal.",
+        "description": "Returns details for the currently authenticated principal (user or API client). Throws an unauthorized error when there is no authenticated principal.",
+        "operationId": "getPrincipal",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GraphEntity_ExtendedUserSummary"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppBadRequestResponse_ExtendedUserSummary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/internal/account/details": {
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Retrieve account overview details",
+        "description": "**Permissions:** Admin access\n\nRetrieve summary overview details for the current account.",
+        "operationId": "getOverviewSummary",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SummaryResult"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/api/v1/account": {
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Retrieve account details",
+        "description": "**Permissions:** Authenticated User\n\nRetrieve account details for the authenticated session, including the principal's timezone and locale.",
+        "operationId": "getAuthenticatedAccountDetails",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Account_AccountSummary"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/v1/account/session": {
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Retrieve session information",
+        "description": "**Permissions:** Authenticated User\n\nRetrieve session information for the authenticated session.",
+        "operationId": "getSessionInfo",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionInfoOut"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/v1/account/public": {
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Retrieve public account details",
+        "description": "**Permissions:** None (public endpoint)\n\nRetrieve publicly available account details.",
+        "operationId": "getPublicAccountDetails",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Account_PublicAccountSummary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/account/external/token": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "operationId": "getExternalAccessToken",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LegacyApiTokenOut"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Retrieve an external access token"
+      },
+      "delete": {
+        "tags": [
+          "Authentication"
+        ],
+        "operationId": "removeExternalAccessToken",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "summary": "Revoke an external access token"
+      }
+    },
+    "/api/v1/account/tokens/{id}": {
+      "delete": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Revoke a user-managed API token",
+        "description": "Revokes the specified API token owned by the current user. Responds with 404 if the token does not exist or is owned by another user. The response is the same in both cases to avoid leaking the existence of other users' tokens.",
+        "operationId": "revokeToken",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The unique ID of the API token to revoke.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "A bearer authorization header containing a Risk Cloud API access token in the format `Authorization: Bearer TOKEN` — replace `TOKEN` with your actual access token.\n\nTo obtain a Risk Cloud API access token, refer to [Obtain an API Access Token](https://www.logicgate.com/developer/risk-cloud-api-authentication/) in the [LogicGate Help Center](https://help.logicgate.com/hc/en-us).",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Bearer TOKEN"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Name": {
+        "type": "object",
+        "properties": {
+          "givenName": {
+            "type": "string"
+          },
+          "familyName": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "familyName",
+          "givenName"
+        ]
+      },
+      "ScimUserIn": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "userName": {
+            "type": "string"
+          },
+          "name": {
+            "$ref": "#/components/schemas/Name"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "externalId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "userName"
+        ]
+      },
+      "Email": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "primary": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Meta": {
+        "type": "object",
+        "properties": {
+          "resourceType": {
+            "type": "string"
+          },
+          "created": {
+            "type": "string"
+          },
+          "lastModified": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      },
+      "ScimGroupSummary": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          },
+          "display": {
+            "type": "string"
+          },
+          "ref": {
+            "type": "string"
+          }
+        }
+      },
+      "ScimUserOut": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "$ref": "#/components/schemas/Name"
+          },
+          "userName": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "externalId": {
+            "type": "string"
+          },
+          "emails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Email"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
+          "groups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ScimGroupSummary"
+            }
+          },
+          "schemas": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Member": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          },
+          "display": {
+            "type": "string"
+          },
+          "$ref": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      },
+      "ScimGroup": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "externalId": {
+            "type": "string"
+          },
+          "displayName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "members": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Member"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
+          "schemas": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "displayName"
+        ]
+      },
+      "AccessAudit_ExtendedRecordSummary": {
+        "type": "object",
+        "description": "Entity used to track authentication attempts.",
+        "discriminator": {
+          "propertyName": "accessType"
+        },
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "accessType": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "accessType"
+        ]
+      },
+      "CredentialsRolled_ExtendedRecordSummary": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AccessAudit_ExtendedRecordSummary"
+          },
+          {
+            "$ref": "#/components/schemas/AccessAudit_ExtendedJobSummary"
+          },
+          {
+            "$ref": "#/components/schemas/AccessAudit_PublicRecordSummary"
+          }
+        ]
+      },
+      "CurrentValue_ExtendedRecordSummary": {
+        "type": "object",
+        "description": "Entity used to manage record's field data.",
+        "discriminator": {
+          "propertyName": "discriminator"
+        },
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "idOrTransientId": {
+            "type": "string"
+          },
+          "transientIdOrId": {
+            "type": "string"
+          },
+          "textOrNumericValue": {
+            "type": "string"
+          },
+          "empty": {
+            "type": "boolean"
+          },
+          "discriminator": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "discriminator"
+        ]
+      },
+      "AccessAudit_ExtendedJobSummary": {
+        "type": "object",
+        "description": "Entity used to track authentication attempts.",
+        "discriminator": {
+          "propertyName": "accessType"
+        },
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "accessType": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "accessType"
+        ]
+      },
+      "ApiTokenRefreshedOut": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "description": "An API access token to be used within the bearer authorization header of subsequent Risk Cloud API requests"
+          },
+          "refresh_token": {
+            "type": "string",
+            "description": "A rotated refresh token. The previously-presented refresh token is invalidated; this new refresh token must be stored by the caller for the next refresh cycle."
+          },
+          "token_type": {
+            "type": "string",
+            "description": "The token type, expected to be \"bearer\" for the Risk Cloud API"
+          },
+          "expires_in": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The remaining time in seconds until the token expires"
+          },
+          "scope": {
+            "type": "string",
+            "description": "The privilege scope of the token, expected to be \"read write\" for the Risk Cloud API"
+          }
+        },
+        "title": "Refreshed Api Token"
+      },
+      "RefreshTokenIn": {
+        "type": "object",
+        "description": "Refresh-token-bearing request to issue a fresh access token.",
+        "properties": {
+          "refresh_token": {
+            "type": "string",
+            "description": "The refresh token plaintext returned at token creation time.",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "refresh_token"
+        ],
+        "title": "Refresh Token Request"
+      },
+      "Pageable": {
+        "type": "object",
+        "properties": {
+          "unpaged": {
+            "type": "boolean"
+          },
+          "paged": {
+            "type": "boolean"
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          },
+          "offset": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "SortObject": {
+        "type": "object",
+        "properties": {
+          "sorted": {
+            "type": "boolean"
+          },
+          "unsorted": {
+            "type": "boolean"
+          },
+          "empty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ApplicationEntitlement_BasicUserSummary": {
+        "type": "object",
+        "properties": {
+          "neo4jId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end": {
+            "$ref": "#/components/schemas/Application_BasicUserSummary"
+          },
+          "endId": {
+            "type": "string"
+          },
+          "startId": {
+            "type": "string"
+          }
+        }
+      },
+      "Application_BasicUserSummary": {
+        "type": "object",
+        "description": "An entity for managing top-level application data. A application represents the highest level of organization for other entities within the application.",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the application."
+          },
+          "createdBy": {
+            "description": "Circular reference to User_BasicUserSummary"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the application.",
+            "maxLength": 2000,
+            "minLength": 0
+          },
+          "color": {
+            "type": "string",
+            "description": "Icon color of the application."
+          },
+          "icon": {
+            "type": "string",
+            "description": "Icon type of the application.",
+            "enum": [
+              "fa-bookmark, fa-bolt, fa-bullhorn, fa-certificate,fa-check-square-o, fa-cloud, fa-comments, fa-dollar, fa-exclamation-triangle, fa-file-text-o,fa-folder, fa-gift, fa-globe, fa-heartbeat, fa-leaf, fa-legal, fa-life-ring, fa-medkit, fa-money,fa-percent, fa-rocket, fa-signal, fa-university, fa-user-circle"
+            ]
+          },
+          "type": {
+            "type": "string"
+          },
+          "sourceApplicationId": {
+            "type": "string"
+          },
+          "sourceEnvironment": {
+            "type": "string"
+          },
+          "permissionsEnabled": {
+            "type": "boolean"
+          },
+          "imported": {
+            "type": "boolean"
+          },
+          "copied": {
+            "type": "boolean"
+          },
+          "live": {
+            "type": "boolean"
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "EUR",
+              "GBP",
+              "USD"
+            ]
+          },
+          "uxriEnabled": {
+            "type": "boolean",
+            "description": "Whether or not UXRI is enabled on this application."
+          },
+          "shortCode": {
+            "type": "string",
+            "description": "Short display code for the application in navigation.",
+            "pattern": "^(?! +$)[a-zA-Z0-9 ][a-zA-Z0-9 ]?[a-zA-Z0-9 ]?[a-zA-Z0-9 ]?[a-zA-Z0-9 ]?[a-zA-Z0-9 ]?[a-zA-Z0-9 ]?[a-zA-Z0-9 ]?[a-zA-Z0-9 ]?[a-zA-Z0-9 ]?$"
+          },
+          "defaultHomeScreen": {
+            "$ref": "#/components/schemas/HomeScreen_BasicUserSummary"
+          }
+        }
+      },
+      "HomeScreen_BasicUserSummary": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Record_BasicUserSummary": {
+        "type": "object",
+        "description": "records",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "ARCHIVED",
+              "LIVE"
+            ]
+          },
+          "sequenceId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "recordName": {
+            "type": "string"
+          },
+          "lastUpdated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "viewableTitle": {
+            "type": "string"
+          },
+          "workflowDueDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "recordType": {
+            "type": "string",
+            "enum": [
+              "RECORD",
+              "JIRA_RECORD"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "INACTIVE",
+              "NOT_ASSIGNED",
+              "ASSIGNED",
+              "IN_PROGRESS",
+              "COMPLETE"
+            ]
+          },
+          "initialStateEndStep": {
+            "type": "boolean"
+          },
+          "name": {
+            "type": "string"
+          },
+          "isPublic": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Role_BasicUserSummary": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "name": {
+            "type": "string"
+          },
+          "locked": {
+            "type": "boolean"
+          },
+          "superAdmin": {
+            "type": "boolean"
+          },
+          "defaultRoleForNewUsers": {
+            "type": "boolean"
+          },
+          "autoprovisioned": {
+            "type": "boolean"
+          },
+          "externalId": {
+            "type": "string"
+          },
+          "userCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "StepPermissionSet_BasicUserSummary": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "User_BasicUserSummary": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CurrentValue_ExtendedRecordSummary"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string"
+              },
+              "company": {
+                "type": "string"
+              },
+              "imageUrl": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              },
+              "tier": {
+                "type": "string",
+                "enum": [
+                  "PRIMARY",
+                  "SECONDARY",
+                  "LIMITED"
+                ]
+              },
+              "pricingUserTier": {
+                "type": "string",
+                "enum": [
+                  "STANDARD",
+                  "POWER"
+                ]
+              },
+              "first": {
+                "type": "string"
+              },
+              "last": {
+                "type": "string"
+              },
+              "languageTag": {
+                "type": "string"
+              },
+              "timeZone": {
+                "type": "string"
+              },
+              "mfaEnabled": {
+                "type": "boolean"
+              },
+              "mfaSetup": {
+                "type": "boolean"
+              },
+              "autoprovisioned": {
+                "type": "boolean"
+              },
+              "scimStatus": {
+                "type": "string"
+              },
+              "sendEmail": {
+                "type": "boolean"
+              },
+              "automatedUser": {
+                "type": "boolean"
+              },
+              "automatedUserFieldLabels": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "roles": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Role_BasicUserSummary"
+                }
+              },
+              "stepPermissionSets": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/StepPermissionSet_BasicUserSummary"
+                }
+              },
+              "applicationEntitlements": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ApplicationEntitlement_BasicUserSummary"
+                }
+              },
+              "records": {
+                "type": "array",
+                "description": "records",
+                "items": {
+                  "$ref": "#/components/schemas/Record_BasicUserSummary"
+                }
+              },
+              "lastLogin": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/CredentialsRolled_ExtendedRecordSummary"
+                  },
+                  {
+                    "description": "And other types: LogInFail_ExtendedRecordSummary, LogIn_ExtendedRecordSummary, LogOut_ExtendedRecordSummary, TokenRolled_ExtendedRecordSummary"
+                  }
+                ]
+              },
+              "lastDeactivated": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "serviceAccount": {
+                "type": "boolean"
+              },
+              "disabled": {
+                "type": "boolean"
+              },
+              "superUser": {
+                "type": "boolean"
+              },
+              "external": {
+                "type": "boolean"
+              },
+              "name": {
+                "type": "string"
+              },
+              "locked": {
+                "type": "boolean"
+              }
+            }
+          }
+        ],
+        "description": "Entity for storing all information pertaining to a user.",
+        "discriminator": {
+          "propertyName": "status"
+        },
+        "properties": {
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "MfaVerificationResult": {
+        "type": "object",
+        "properties": {
+          "isValidCode": {
+            "type": "boolean",
+            "writeOnly": true
+          },
+          "failedAttempts": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "remainingAttempts": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "validCode": {
+            "type": "boolean"
+          }
+        }
+      },
+      "User_UserSummary": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CurrentValue_ExtendedRecordSummary"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string"
+              },
+              "company": {
+                "type": "string"
+              },
+              "imageUrl": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              },
+              "tier": {
+                "type": "string",
+                "enum": [
+                  "PRIMARY",
+                  "SECONDARY",
+                  "LIMITED"
+                ]
+              },
+              "pricingUserTier": {
+                "type": "string",
+                "enum": [
+                  "STANDARD",
+                  "POWER"
+                ]
+              },
+              "mfaEnabled": {
+                "type": "boolean"
+              },
+              "mfaSetup": {
+                "type": "boolean"
+              },
+              "autoprovisioned": {
+                "type": "boolean"
+              },
+              "scimStatus": {
+                "type": "string"
+              },
+              "automatedUser": {
+                "type": "boolean"
+              },
+              "automatedUserFieldLabels": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "lastLogin": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/CredentialsRolled_ExtendedRecordSummary"
+                  },
+                  {
+                    "description": "And other types: LogInFail_ExtendedRecordSummary, LogIn_ExtendedRecordSummary, LogOut_ExtendedRecordSummary, TokenRolled_ExtendedRecordSummary"
+                  }
+                ]
+              },
+              "lastDeactivated": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "serviceAccount": {
+                "type": "boolean"
+              },
+              "disabled": {
+                "type": "boolean"
+              },
+              "superUser": {
+                "type": "boolean"
+              },
+              "external": {
+                "type": "boolean"
+              },
+              "name": {
+                "type": "string"
+              },
+              "locked": {
+                "type": "boolean"
+              }
+            }
+          }
+        ],
+        "description": "Entity for storing all information pertaining to a user.",
+        "discriminator": {
+          "propertyName": "status"
+        },
+        "properties": {
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "ExternalUserMfaVerificationRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "code": {
+            "type": "string",
+            "minLength": 1
+          },
+          "token": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "code",
+          "token"
+        ]
+      },
+      "ExternalUserMfaRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "recordId": {
+            "type": "string"
+          }
+        }
+      },
+      "Sort": {
+        "type": "object",
+        "properties": {
+          "sort": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "AccessAudit_PublicRecordSummary": {
+        "type": "object",
+        "description": "Entity used to track authentication attempts.",
+        "discriminator": {
+          "propertyName": "accessType"
+        },
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "accessType": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "accessType"
+        ]
+      },
+      "CreateUserApiTokenIn": {
+        "type": "object",
+        "description": "Request body for creating a new user-managed API token.",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Human-readable label for the token (e.g. \"My Zapier integration\").",
+            "maxLength": 100,
+            "minLength": 0
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "UserApiTokenCreatedOut": {
+        "type": "object",
+        "description": "Newly created token including the one-time plaintext access and refresh secrets. Neither plaintext can be retrieved later.",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "description": "The access token to use as a Bearer credential. Shown once."
+          },
+          "refreshToken": {
+            "type": "string",
+            "description": "The refresh token to use against POST /api/v2/account/token to create a fresh access token without UI re-creation. Shown once."
+          },
+          "token": {
+            "$ref": "#/components/schemas/UserApiTokenOut",
+            "description": "The persisted token row's metadata. Mirrors a single row from GET /api/v1/account/tokens so a client can populate the Access Keys table without a follow-up request after creation."
+          }
+        }
+      },
+      "UserApiTokenOut": {
+        "type": "object",
+        "description": "Metadata for a user-managed API token (no secret).",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Token id"
+          },
+          "name": {
+            "type": "string",
+            "description": "Human-readable label set at creation"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp the token was minted"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp the token expires"
+          },
+          "lastUsedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp of the last successful authentication using this token; null if never used"
+          }
+        }
+      },
+      "LegacyApiTokenOut": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "description": "An API access token to be used within the bearer authorization header of subsequent Risk Cloud API requests"
+          },
+          "token_type": {
+            "type": "string",
+            "description": "The token type, expected to be \"bearer\" for the Risk Cloud API"
+          },
+          "expires_in": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The remaining time in seconds until the token expires"
+          },
+          "scope": {
+            "type": "string",
+            "description": "The privilege scope of the token, expected to be \"read write\" for the Risk Cloud API"
+          }
+        },
+        "title": "Api Token"
+      },
+      "PatchOp": {
+        "type": "object",
+        "properties": {
+          "Operations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ScimOperation"
+            }
+          },
+          "schemas": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ScimOperation": {
+        "type": "object",
+        "properties": {
+          "op": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "value": {}
+        }
+      },
+      "ScimPageRequest": {
+        "type": "object",
+        "properties": {
+          "startIndex": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1
+          },
+          "count": {
+            "type": "integer",
+            "format": "int32",
+            "maximum": 1000,
+            "minimum": 1
+          },
+          "effectiveStartIndex": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "Users": {
+        "type": "object",
+        "properties": {
+          "totalResults": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "itemsPerPage": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "startIndex": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Resources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ScimUserOut"
+            }
+          },
+          "schemas": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "AuthenticationScheme": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "primary": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Bulk": {
+        "type": "object",
+        "properties": {
+          "supported": {
+            "type": "boolean"
+          },
+          "maxOperations": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxPayloadSize": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ChangePassword": {
+        "type": "object",
+        "properties": {
+          "supported": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ETag": {
+        "type": "object",
+        "properties": {
+          "supported": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Filter": {
+        "type": "object",
+        "properties": {
+          "supported": {
+            "type": "boolean"
+          },
+          "maxResults": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "Patch": {
+        "type": "object",
+        "properties": {
+          "supported": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ServiceProviderConfig": {
+        "type": "object",
+        "properties": {
+          "schemas": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "patch": {
+            "$ref": "#/components/schemas/Patch"
+          },
+          "bulk": {
+            "$ref": "#/components/schemas/Bulk"
+          },
+          "filter": {
+            "$ref": "#/components/schemas/Filter"
+          },
+          "changePassword": {
+            "$ref": "#/components/schemas/ChangePassword"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/Sort"
+          },
+          "etag": {
+            "$ref": "#/components/schemas/ETag"
+          },
+          "authenticationSchemes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AuthenticationScheme"
+            }
+          }
+        }
+      },
+      "EndpointResource": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "endpoint": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "schema": {
+            "type": "string"
+          }
+        }
+      },
+      "Schemas": {
+        "type": "object",
+        "properties": {
+          "schemas": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "Resources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EndpointResource"
+            }
+          }
+        }
+      },
+      "EndpointResources": {
+        "type": "object",
+        "properties": {
+          "schemas": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "Resources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EndpointResource"
+            }
+          }
+        }
+      },
+      "ScimResourceRequestQueryParameters": {},
+      "Groups": {
+        "type": "object",
+        "properties": {
+          "Resources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ScimGroup"
+            }
+          },
+          "totalResults": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "itemsPerPage": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "startIndex": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "schemas": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "PublicToken_PublicTokenSummary": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expires": {
+            "type": "boolean"
+          },
+          "mfaRequired": {
+            "type": "boolean"
+          },
+          "interval": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "intervalUnit": {
+            "type": "string",
+            "enum": [
+              "Nanos",
+              "Micros",
+              "Millis",
+              "Seconds",
+              "Minutes",
+              "Hours",
+              "HalfDays",
+              "Days",
+              "Weeks",
+              "Months",
+              "Years",
+              "Decades",
+              "Centuries",
+              "Millennia",
+              "Eras",
+              "Forever"
+            ]
+          },
+          "token": {
+            "type": "string"
+          },
+          "expired": {
+            "type": "boolean"
+          }
+        }
+      },
+      "AppBadRequestResponse_ExtendedUserSummary": {
+        "type": "object",
+        "properties": {
+          "property": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "GraphEntity_ExtendedUserSummary": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "@id": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "Account": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "flags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Flag"
+            },
+            "uniqueItems": true
+          },
+          "mfa": {
+            "$ref": "#/components/schemas/Mfa"
+          },
+          "jobCenterConfig": {
+            "$ref": "#/components/schemas/JobCenterConfig"
+          },
+          "sso": {
+            "$ref": "#/components/schemas/Sso"
+          },
+          "theme": {
+            "$ref": "#/components/schemas/Theme"
+          },
+          "application": {
+            "$ref": "#/components/schemas/AppProperties"
+          },
+          "textConcatenationsProperties": {
+            "$ref": "#/components/schemas/TextConcatenationsProperties"
+          },
+          "pendo": {
+            "$ref": "#/components/schemas/PendoProperties"
+          },
+          "vpc": {
+            "type": "string"
+          },
+          "scimProperties": {
+            "$ref": "#/components/schemas/ScimProperties"
+          },
+          "scim": {
+            "$ref": "#/components/schemas/Scim"
+          },
+          "hideUserData": {
+            "$ref": "#/components/schemas/HideUserData"
+          },
+          "api": {
+            "$ref": "#/components/schemas/Api"
+          },
+          "formstack": {
+            "$ref": "#/components/schemas/Formstack"
+          },
+          "inAppNotification": {
+            "$ref": "#/components/schemas/InAppNotification"
+          },
+          "emailSummary": {
+            "$ref": "#/components/schemas/EmailSummary"
+          },
+          "tagManager": {
+            "$ref": "#/components/schemas/TagManager"
+          },
+          "googleAnalytics": {
+            "$ref": "#/components/schemas/GoogleAnalytics"
+          },
+          "aec": {
+            "$ref": "#/components/schemas/Aec"
+          },
+          "workflowAgents": {
+            "$ref": "#/components/schemas/WorkflowAgents"
+          },
+          "googleDrive": {
+            "$ref": "#/components/schemas/GoogleDrive"
+          },
+          "sharepoint": {
+            "$ref": "#/components/schemas/Sharepoint"
+          },
+          "datadog": {
+            "$ref": "#/components/schemas/Datadog"
+          },
+          "datadogRum": {
+            "$ref": "#/components/schemas/DatadogRumProperties"
+          },
+          "datadogBrowser": {
+            "$ref": "#/components/schemas/DatadogBrowserProperties"
+          },
+          "fullstory": {
+            "$ref": "#/components/schemas/FullstoryProperties"
+          },
+          "jira": {
+            "$ref": "#/components/schemas/Jira"
+          },
+          "customEmailDomain": {
+            "$ref": "#/components/schemas/CustomEmailDomain"
+          },
+          "hvdr": {
+            "$ref": "#/components/schemas/Hvdr"
+          },
+          "lockRecordPrintAndDownload": {
+            "$ref": "#/components/schemas/LockRecordPrintAndDownload"
+          },
+          "openAi": {
+            "$ref": "#/components/schemas/OpenAi"
+          },
+          "slack": {
+            "$ref": "#/components/schemas/Slack"
+          },
+          "webhook": {
+            "$ref": "#/components/schemas/Webhook"
+          },
+          "defaultLocale": {
+            "$ref": "#/components/schemas/DefaultLocale"
+          },
+          "defaultUserTier": {
+            "$ref": "#/components/schemas/DefaultUserTier"
+          },
+          "restrictRcxInstall": {
+            "$ref": "#/components/schemas/RestrictRcxInstall"
+          },
+          "riskQuantification": {
+            "$ref": "#/components/schemas/RiskQuantification"
+          },
+          "riskQuantificationPremium": {
+            "$ref": "#/components/schemas/RiskQuantificationPremium"
+          },
+          "msTeams": {
+            "$ref": "#/components/schemas/MsTeams"
+          },
+          "workato": {
+            "$ref": "#/components/schemas/Workato"
+          },
+          "shortCommitSha": {
+            "type": "string"
+          },
+          "dateFormats": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "timeFormats": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "powerUserCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "forceVisualReportMouseInteraction": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Aec": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "superAdminRequired": {
+            "type": "boolean"
+          },
+          "superAdminDisallowed": {
+            "type": "boolean"
+          },
+          "parentSetting": {
+            "$ref": "#/components/schemas/Setting"
+          }
+        }
+      },
+      "Api": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "superAdminRequired": {
+            "type": "boolean"
+          },
+          "superAdminDisallowed": {
+            "type": "boolean"
+          },
+          "parentSetting": {
+            "$ref": "#/components/schemas/Setting"
+          }
+        }
+      },
+      "AppProperties": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "string"
+          },
+          "maxFileSize": {
+            "type": "string"
+          },
+          "domain": {
+            "type": "string"
+          },
+          "subdomain": {
+            "type": "string"
+          },
+          "useWopiSubdomain": {
+            "type": "boolean"
+          },
+          "resetPasswordTokenExpiration": {
+            "type": "integer",
+            "format": "int32",
+            "maximum": 86400
+          }
+        }
+      },
+      "CustomEmailDomain": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "superAdminRequired": {
+            "type": "boolean"
+          },
+          "superAdminDisallowed": {
+            "type": "boolean"
+          },
+          "parentSetting": {
+            "$ref": "#/components/schemas/Setting"
+          },
+          "emailAddress": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "DISABLED",
+              "PENDING",
+              "VERIFIED",
+              "ERROR"
+            ]
+          },
+          "lastError": {
+            "type": "string"
+          },
+          "dateVerified": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dateRequestSaved": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dnsEntries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CustomEmailDomainDnsEntry"
+            }
+          }
+        }
+      },
+      "CustomEmailDomainDnsEntry": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "type": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "keyType": {
+            "type": "string"
+          }
+        }
+      },
+      "Datadog": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "superAdminRequired": {
+            "type": "boolean"
+          },
+          "superAdminDisallowed": {
+            "type": "boolean"
+          },
+          "parentSetting": {
+            "$ref": "#/components/schemas/Setting"
+          },
+          "appId": {
+            "type": "string"
+          }
+        }
+      },
+      "DatadogBrowserProperties": {
+        "type": "object",
+        "properties": {
+          "clientToken": {
+            "type": "string"
+          }
+        }
+      },
+      "DatadogRumProperties": {
+        "type": "object",
+        "properties": {
+          "appId": {
+            "type": "string"
+          },
+          "apiKey": {
+            "type": "string"
+          }
+        }
+      },
+      "DefaultLocale": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "superAdminRequired": {
+            "type": "boolean"
+          },
+          "superAdminDisallowed": {
+            "type": "boolean"
+          },
+          "parentSetting": {
+            "$ref": "#/components/schemas/Setting"
+          },
+          "languageTag": {
+            "type": "string"
+          },
+          "timeZone": {
+            "type": "string"
+          }
+        }
+      },
+      "DefaultUserTier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "superAdminRequired": {
+            "type": "boolean"
+          },
+          "superAdminDisallowed": {
+            "type": "boolean"
+          },
+          "parentSetting": {
+            "$ref": "#/components/schemas/Setting"
+          },
+          "tier": {
+            "type": "string",
+            "enum": [
+              "PRIMARY",
+              "SECONDARY",
+              "LIMITED"
+            ]
+          }
+        }
+      },
+      "EmailSummary": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "superAdminRequired": {
+            "type": "boolean"
+          },
+          "superAdminDisallowed": {
+            "type": "boolean"
+          },
+          "parentSetting": {
+            "$ref": "#/components/schemas/Setting"
+          }
+        }
+      },
+      "Flag": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "superAdminRequired": {
+            "type": "boolean"
+          },
+          "superAdminDisallowed": {
+            "type": "boolean"
+          },
+          "parentSetting": {
+            "$ref": "#/components/schemas/Setting"
+          },
+          "name": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "svgIcon": {
+            "type": "string"
+          },
+          "displayToggle": {
+            "type": "boolean"
+          },
+          "permanentOnceEnabled": {
+            "type": "boolean"
+          },
+          "toggleable": {
+            "type": "boolean"
+          },
+          "toggledByEndpoint": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Formstack": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "superAdminRequired": {
+            "type": "boolean"
+          },
+          "superAdminDisallowed": {
+            "type": "boolean"
+          },
+          "parentSetting": {
+            "$ref": "#/components/schemas/Setting"
+          }
+        }
+      },
+      "FullstoryProperties": {
+        "type": "object",
+        "properties": {
+          "orgId": {
+            "type": "string"
+          }
+        }
+      },
+      "GoogleAnalytics": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "superAdminRequired": {
+            "type": "boolean"
+          },
+          "superAdminDisallowed": {
+            "type": "boolean"
+          },
+          "parentSetting": {
+            "$ref": "#/components/schemas/Setting"
+          }
+        }
+      },
+      "GoogleDrive": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "superAdminRequired": {
+            "type": "boolean"
+          },
+          "superAdminDisallowed": {
+            "type": "boolean"
+          },
+          "parentSetting": {
+            "$ref": "#/components/schemas/Setting"
+          }
+        }
+      },
+      "HideUserData": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "superAdminRequired": {
+            "type": "boolean"
+          },
+          "superAdminDisallowed": {
+            "type": "boolean"
+          },
+          "parentSetting": {
+            "$ref": "#/components/schemas/Setting"
+          }
+        }
+      },
+      "Hvdr": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "superAdminRequired": {
+            "type": "boolean"
+          },
+          "superAdminDisallowed": {
+            "type": "boolean"
+          },
+          "parentSetting": {
+            "$ref": "#/components/schemas/Setting"
+          }
+        }
+      },
+      "InAppNotification": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "superAdminRequired": {
+            "type": "boolean"
+          },
+          "superAdminDisallowed": {
+            "type": "boolean"
+          },
+          "parentSetting": {
+            "$ref": "#/components/schemas/Setting"
+          }
+        }
+      },
+      "Jira": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "superAdminRequired": {
+            "type": "boolean"
+          },
+          "superAdminDisallowed": {
+            "type": "boolean"
+          },
+          "parentSetting": {
+            "$ref": "#/components/schemas/Setting"
+          }
+        }
+      },
+      "JobCenterConfig": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "superAdminRequired": {
+            "type": "boolean"
+          },
+          "superAdminDisallowed": {
+            "type": "boolean"
+          },
+          "parentSetting": {
+            "$ref": "#/components/schemas/Setting"
+          },
+          "emailSender": {
+            "type": "string"
+          },
+          "emailHeader": {
+            "type": "string"
+          },
+          "emailFooter": {
+            "type": "string"
+          }
+        }
+      },
+      "LockRecordPrintAndDownload": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "superAdminRequired": {
+            "type": "boolean"
+          },
+          "superAdminDisallowed": {
+            "type": "boolean"
+          },
+          "parentSetting": {
+            "$ref": "#/components/schemas/Setting"
+          }
+        }
+      },
+      "Mfa": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "superAdminRequired": {
+            "type": "boolean"
+          },
+          "superAdminDisallowed": {
+            "type": "boolean"
+          },
+          "parentSetting": {
+            "$ref": "#/components/schemas/Setting"
+          }
+        }
+      },
+      "MsTeams": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "superAdminRequired": {
+            "type": "boolean"
+          },
+          "superAdminDisallowed": {
+            "type": "boolean"
+          },
+          "parentSetting": {
+            "$ref": "#/components/schemas/Setting"
+          },
+          "clientId": {
+            "type": "string"
+          },
+          "tenantId": {
+            "type": "string"
+          }
+        }
+      },
+      "OpenAi": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "superAdminRequired": {
+            "type": "boolean"
+          },
+          "superAdminDisallowed": {
+            "type": "boolean"
+          },
+          "parentSetting": {
+            "$ref": "#/components/schemas/Setting"
+          },
+          "tinyMceAiAssistantEnabled": {
+            "type": "boolean"
+          },
+          "recordLinkingEnabled": {
+            "type": "boolean"
+          },
+          "autofillEnabled": {
+            "type": "boolean"
+          },
+          "automatedControlsTestingEnabled": {
+            "type": "boolean"
+          },
+          "reportingInsightsEnabled": {
+            "type": "boolean"
+          },
+          "reportingInsightsToggled": {
+            "type": "boolean"
+          },
+          "workflowAgentsEnabled": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PendoProperties": {
+        "type": "object",
+        "properties": {
+          "apiKey": {
+            "type": "string"
+          },
+          "publicAppId": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        }
+      },
+      "RestrictRcxInstall": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "superAdminRequired": {
+            "type": "boolean"
+          },
+          "superAdminDisallowed": {
+            "type": "boolean"
+          },
+          "parentSetting": {
+            "$ref": "#/components/schemas/Setting"
+          }
+        }
+      },
+      "RiskQuantification": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "superAdminRequired": {
+            "type": "boolean"
+          },
+          "superAdminDisallowed": {
+            "type": "boolean"
+          },
+          "parentSetting": {
+            "$ref": "#/components/schemas/Setting"
+          }
+        }
+      },
+      "RiskQuantificationPremium": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "superAdminRequired": {
+            "type": "boolean"
+          },
+          "superAdminDisallowed": {
+            "type": "boolean"
+          },
+          "parentSetting": {
+            "$ref": "#/components/schemas/Setting"
+          }
+        }
+      },
+      "Scim": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "superAdminRequired": {
+            "type": "boolean"
+          },
+          "superAdminDisallowed": {
+            "type": "boolean"
+          },
+          "parentSetting": {
+            "$ref": "#/components/schemas/Setting"
+          }
+        }
+      },
+      "ScimProperties": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Setting": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "superAdminRequired": {
+            "type": "boolean"
+          },
+          "superAdminDisallowed": {
+            "type": "boolean"
+          },
+          "parentSetting": {}
+        }
+      },
+      "Sharepoint": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "superAdminRequired": {
+            "type": "boolean"
+          },
+          "superAdminDisallowed": {
+            "type": "boolean"
+          },
+          "parentSetting": {
+            "$ref": "#/components/schemas/Setting"
+          },
+          "domain": {
+            "type": "string"
+          },
+          "site": {
+            "type": "string"
+          },
+          "tenantId": {
+            "type": "string"
+          }
+        }
+      },
+      "Slack": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "superAdminRequired": {
+            "type": "boolean"
+          },
+          "superAdminDisallowed": {
+            "type": "boolean"
+          },
+          "parentSetting": {
+            "$ref": "#/components/schemas/Setting"
+          },
+          "workspaceName": {
+            "type": "string"
+          }
+        }
+      },
+      "Sso": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "superAdminRequired": {
+            "type": "boolean"
+          },
+          "superAdminDisallowed": {
+            "type": "boolean"
+          },
+          "parentSetting": {
+            "$ref": "#/components/schemas/Setting"
+          },
+          "configured": {
+            "type": "boolean"
+          }
+        }
+      },
+      "SummaryResult": {
+        "type": "object",
+        "properties": {
+          "account": {
+            "$ref": "#/components/schemas/Account"
+          },
+          "records": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "attachments": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "draftApplications": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "liveApplications": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "workflows": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "steps": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "fields": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "layouts": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "activeUsers": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "externalUsers": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "powerUsers": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "autoprovisionedUsers": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "usersWithApiAccess": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "stepsWithActivePublicToken": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "autoprovisionedRoles": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "TagManager": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "superAdminRequired": {
+            "type": "boolean"
+          },
+          "superAdminDisallowed": {
+            "type": "boolean"
+          },
+          "parentSetting": {
+            "$ref": "#/components/schemas/Setting"
+          },
+          "appId": {
+            "type": "string"
+          }
+        }
+      },
+      "TextConcatenationsProperties": {
+        "type": "object",
+        "properties": {
+          "classSpecificReaches": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        },
+        "required": [
+          "classSpecificReaches"
+        ]
+      },
+      "Theme": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "superAdminRequired": {
+            "type": "boolean"
+          },
+          "superAdminDisallowed": {
+            "type": "boolean"
+          },
+          "parentSetting": {
+            "$ref": "#/components/schemas/Setting"
+          },
+          "name": {
+            "type": "string"
+          },
+          "skin": {
+            "type": "string"
+          },
+          "bgColor": {
+            "type": "string"
+          },
+          "textColor": {
+            "type": "string"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ThemeImage"
+            }
+          }
+        }
+      },
+      "ThemeImage": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "awsS3Url": {
+            "type": "string"
+          },
+          "awsS3Bucket": {
+            "type": "string"
+          },
+          "s3Directory": {
+            "type": "string",
+            "enum": [
+              "ALM",
+              "ATTACHMENT",
+              "ATTACHMENTS",
+              "METADATA",
+              "PROFILE_PICTURE",
+              "ACCOUNT_PICTURE",
+              "UPLOADS",
+              "BATCH_RECORD_IMPORT",
+              "BULK_LINK_RECORDS",
+              "IMPORT_FILES",
+              "IMPORT_VALIDATION",
+              "TR_EXPORT",
+              "VR_EXPORT"
+            ]
+          },
+          "awsS3Key": {
+            "type": "string"
+          },
+          "contentType": {
+            "type": "string"
+          },
+          "fileSize": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "fileExtension": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "NAVIGATION",
+              "LOGIN"
+            ]
+          }
+        }
+      },
+      "Webhook": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "superAdminRequired": {
+            "type": "boolean"
+          },
+          "superAdminDisallowed": {
+            "type": "boolean"
+          },
+          "parentSetting": {
+            "$ref": "#/components/schemas/Setting"
+          }
+        }
+      },
+      "Workato": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "superAdminRequired": {
+            "type": "boolean"
+          },
+          "superAdminDisallowed": {
+            "type": "boolean"
+          },
+          "parentSetting": {
+            "$ref": "#/components/schemas/Setting"
+          }
+        }
+      },
+      "WorkflowAgents": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "superAdminRequired": {
+            "type": "boolean"
+          },
+          "superAdminDisallowed": {
+            "type": "boolean"
+          },
+          "parentSetting": {
+            "$ref": "#/components/schemas/Setting"
+          }
+        }
+      },
+      "Account_AccountSummary": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "flags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Flag"
+            },
+            "uniqueItems": true
+          },
+          "mfa": {
+            "$ref": "#/components/schemas/Mfa"
+          },
+          "jobCenterConfig": {
+            "$ref": "#/components/schemas/JobCenterConfig"
+          },
+          "sso": {
+            "$ref": "#/components/schemas/Sso"
+          },
+          "theme": {
+            "$ref": "#/components/schemas/Theme"
+          },
+          "application": {
+            "$ref": "#/components/schemas/AppProperties"
+          },
+          "textConcatenationsProperties": {
+            "$ref": "#/components/schemas/TextConcatenationsProperties"
+          },
+          "pendo": {
+            "$ref": "#/components/schemas/PendoProperties"
+          },
+          "vpc": {
+            "type": "string"
+          },
+          "scimProperties": {
+            "$ref": "#/components/schemas/ScimProperties"
+          },
+          "scim": {
+            "$ref": "#/components/schemas/Scim"
+          },
+          "hideUserData": {
+            "$ref": "#/components/schemas/HideUserData"
+          },
+          "api": {
+            "$ref": "#/components/schemas/Api"
+          },
+          "formstack": {
+            "$ref": "#/components/schemas/Formstack"
+          },
+          "inAppNotification": {
+            "$ref": "#/components/schemas/InAppNotification"
+          },
+          "emailSummary": {
+            "$ref": "#/components/schemas/EmailSummary"
+          },
+          "tagManager": {
+            "$ref": "#/components/schemas/TagManager"
+          },
+          "googleAnalytics": {
+            "$ref": "#/components/schemas/GoogleAnalytics"
+          },
+          "aec": {
+            "$ref": "#/components/schemas/Aec"
+          },
+          "workflowAgents": {
+            "$ref": "#/components/schemas/WorkflowAgents"
+          },
+          "googleDrive": {
+            "$ref": "#/components/schemas/GoogleDrive"
+          },
+          "sharepoint": {
+            "$ref": "#/components/schemas/Sharepoint"
+          },
+          "datadog": {
+            "$ref": "#/components/schemas/Datadog"
+          },
+          "datadogRum": {
+            "$ref": "#/components/schemas/DatadogRumProperties"
+          },
+          "datadogBrowser": {
+            "$ref": "#/components/schemas/DatadogBrowserProperties"
+          },
+          "fullstory": {
+            "$ref": "#/components/schemas/FullstoryProperties"
+          },
+          "jira": {
+            "$ref": "#/components/schemas/Jira"
+          },
+          "customEmailDomain": {
+            "$ref": "#/components/schemas/CustomEmailDomain"
+          },
+          "hvdr": {
+            "$ref": "#/components/schemas/Hvdr"
+          },
+          "lockRecordPrintAndDownload": {
+            "$ref": "#/components/schemas/LockRecordPrintAndDownload"
+          },
+          "openAi": {
+            "$ref": "#/components/schemas/OpenAi"
+          },
+          "slack": {
+            "$ref": "#/components/schemas/Slack"
+          },
+          "webhook": {
+            "$ref": "#/components/schemas/Webhook"
+          },
+          "defaultLocale": {
+            "$ref": "#/components/schemas/DefaultLocale"
+          },
+          "defaultUserTier": {
+            "$ref": "#/components/schemas/DefaultUserTier"
+          },
+          "restrictRcxInstall": {
+            "$ref": "#/components/schemas/RestrictRcxInstall"
+          },
+          "riskQuantification": {
+            "$ref": "#/components/schemas/RiskQuantification"
+          },
+          "riskQuantificationPremium": {
+            "$ref": "#/components/schemas/RiskQuantificationPremium"
+          },
+          "msTeams": {
+            "$ref": "#/components/schemas/MsTeams"
+          },
+          "workato": {
+            "$ref": "#/components/schemas/Workato"
+          },
+          "shortCommitSha": {
+            "type": "string"
+          },
+          "dateFormats": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "timeFormats": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "powerUserCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "forceVisualReportMouseInteraction": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PageUserApiTokenOut": {
+        "type": "object",
+        "properties": {
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/Pageable"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserApiTokenOut"
+            }
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "empty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "SessionInfoOut": {
+        "type": "object",
+        "properties": {
+          "timeout": {
+            "type": "integer",
+            "format": "int32",
+            "description": "The max inactive session timeout for this account in seconds.",
+            "example": 3600
+          }
+        },
+        "title": "SessionInfoOut"
+      },
+      "Account_PublicAccountSummary": {
+        "type": "object",
+        "properties": {
+          "flags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Flag"
+            },
+            "uniqueItems": true
+          },
+          "mfa": {
+            "$ref": "#/components/schemas/Mfa"
+          },
+          "jobCenterConfig": {
+            "$ref": "#/components/schemas/JobCenterConfig"
+          },
+          "sso": {
+            "$ref": "#/components/schemas/Sso"
+          },
+          "theme": {
+            "$ref": "#/components/schemas/Theme"
+          },
+          "application": {
+            "$ref": "#/components/schemas/AppProperties"
+          },
+          "textConcatenationsProperties": {
+            "$ref": "#/components/schemas/TextConcatenationsProperties"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "ApiToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "API Token",
+        "description": "Bearer token issued via the Authentication endpoints."
+      },
+      "basic": {
+        "type": "http",
+        "scheme": "basic",
+        "description": "HTTP Basic auth using base64-encoded Client Key:Secret Key credentials, used only to obtain or refresh a bearer token via the Authentication endpoints."
+      }
+    }
+  }
+}

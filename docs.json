@@ -70,7 +70,7 @@
         ]
       },
       {
-        "tab": "API Reference",
+        "tab": "API v2",
         "pages": [
           "api-reference",
           {
@@ -169,6 +169,72 @@
               "api-reference/workflow-map/retrieve-a-workflow-map",
               "api-reference/workflow-map/delete-a-workflow-map",
               "api-reference/workflow-map/update-a-workflow-map"
+            ]
+          }
+        ],
+        "openapi": "openapi.json"
+      },
+      {
+        "tab": "API v1",
+        "openapi": "openapi-v1.json",
+        "pages": [
+          "api-v1",
+          {
+            "group": "Account",
+            "pages": [
+              "api-v1/account/retrieve-account-overview-details",
+              "api-v1/account/retrieve-account-details",
+              "api-v1/account/retrieve-session-information",
+              "api-v1/account/retrieve-public-account-details"
+            ]
+          },
+          {
+            "group": "Authentication",
+            "pages": [
+              "api-v1/authentication/refresh-an-api-token",
+              "api-v1/authentication/list-the-current-user-s-api-tokens",
+              "api-v1/authentication/create-a-new-user-managed-api-token",
+              "api-v1/authentication/create-an-api-access-token",
+              "api-v1/authentication/retrieve-an-external-access-token",
+              "api-v1/authentication/revoke-an-external-access-token",
+              "api-v1/authentication/revoke-a-user-managed-api-token"
+            ]
+          },
+          {
+            "group": "External User",
+            "pages": [
+              "api-v1/external-user/create-an-external-user-with-no-attached-roles",
+              "api-v1/external-user/verify-mfa-for-external-user",
+              "api-v1/external-user/send-an-email-containing-an-mfa-code-to-the-specified-email",
+              "api-v1/external-user/bulk-create-external-users-with-no-attached-roles",
+              "api-v1/external-user/return-all-record-tokens-authorizing-the-given-user",
+              "api-v1/external-user/retrieve-an-external-token-based-off-the-associated-record-entity"
+            ]
+          },
+          {
+            "group": "Principal",
+            "pages": [
+              "api-v1/principal/get-the-authenticated-principal"
+            ]
+          },
+          {
+            "group": "SCIM",
+            "pages": [
+              "api-v1/scim/retrieve-a-scim-user",
+              "api-v1/scim/replace-a-scim-user",
+              "api-v1/scim/deactivate-a-scim-user",
+              "api-v1/scim/update-a-scim-user",
+              "api-v1/scim/retrieve-a-scim-group",
+              "api-v1/scim/replace-a-scim-group",
+              "api-v1/scim/delete-a-scim-group",
+              "api-v1/scim/update-a-scim-group",
+              "api-v1/scim/list-scim-users",
+              "api-v1/scim/create-a-scim-user",
+              "api-v1/scim/list-scim-groups",
+              "api-v1/scim/create-a-scim-group",
+              "api-v1/scim/retrieve-scim-service-provider-configuration",
+              "api-v1/scim/retrieve-scim-schemas",
+              "api-v1/scim/retrieve-scim-resource-types"
             ]
           }
         ]
