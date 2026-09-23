@@ -2645,7 +2645,7 @@
         "tags": [
           "Next Path"
         ],
-        "summary": "Create a default next path",
+        "summary": "Retrieve a default next path",
         "description": "Build privileges and step access are required.\n\nThis route is shared with **Update a default next path** (PATCH) and **Delete a default next path** (DELETE) — all three operate on the same default next path resource, identified by the same path parameter.",
         "operationId": "readNextPath",
         "parameters": [
