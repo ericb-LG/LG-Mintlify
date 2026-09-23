@@ -1,0 +1,2639 @@
+---
+title: "Release Notes"
+description: "Public API (v2) release notes, generated from the openapi.json diff between releases."
+---
+
+<Info>
+**Source**
+
+Copied directly from [CHANGELOG.md](https://gitlab.logicgate.dev/eric.belisle/openapi/-/blob/main/CHANGELOG.md)
+in the `openapi` repo, which is auto-generated from the diff between each release's `openapi.json`.
+This is the authoritative version — more complete than the portal's per-version pages, which only
+go back to v2021.1.0.
+</Info>
+
+## v2026.6.0
+
+No API updates.
+
+## v2026.5.1
+
+No API updates.
+
+## v2026.5.0
+
+No API updates.
+
+## v2026.4.1
+
+No API updates.
+
+## v2026.4.0
+
+No API updates.
+
+## v2026.3.2
+
+No API updates.
+
+## v2026.3.1
+
+No API updates.
+
+## v2026.3.0
+
+No API updates.
+
+## v2026.2.1
+
+No API updates.
+
+## v2026.2.0
+
+No API updates.
+
+## v2026.1.1
+
+No API updates.
+
+## v2026.1.0
+
+No API updates.
+
+## v2025.12.0
+
+No API updates.
+
+## v2025.11.1
+
+No API updates.
+
+## v2025.11.0
+
+#### What's Changed
+
+##### `GET` /api/v2/paths/redirect
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Added property `links` (object)
+        > A collection of page URL links for navigation and iteration
+
+        * Property `first` (string)
+            > A URL path to the first page of requested data
+
+        * Property `prev` (string)
+            > A URL path to the next page of requested data or `null` if currently on first page
+
+        * Property `self` (string)
+            > A URL path to the current page of requested data
+
+        * Property `next` (string)
+            > A URL link to the next page of requested data or `null` if currently on last page
+
+        * Property `last` (string)
+            > A URL link to the last page of requested data
+
+    * Added property `page` (object)
+        > A collection page metadata
+
+        * Property `size` (integer)
+            > The size of the page and maximum number of items to be returned (must not be less than 1, defaults to 20)
+
+        * Property `totalElements` (integer)
+            > The total number of items available
+
+        * Property `totalPages` (integer)
+            > The total number of pages available based on the size
+
+        * Property `number` (integer)
+            > The zero-indexed page number (must not be less than 0, defaults to 0)
+
+    * Deleted property `totalElements` (integer)
+
+    * Deleted property `totalPages` (integer)
+
+    * Deleted property `first` (boolean)
+
+    * Deleted property `last` (boolean)
+
+    * Deleted property `size` (integer)
+
+    * Deleted property `number` (integer)
+
+    * Deleted property `sort` (array)
+
+    * Deleted property `numberOfElements` (integer)
+
+    * Deleted property `pageable` (object)
+
+    * Deleted property `empty` (boolean)
+
+    * Changed property `content` (array)
+        > A array of returned items
+
+##### `GET` /api/v2/paths/next
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Added property `links` (object)
+        > A collection of page URL links for navigation and iteration
+
+        * Property `first` (string)
+            > A URL path to the first page of requested data
+
+        * Property `prev` (string)
+            > A URL path to the next page of requested data or `null` if currently on first page
+
+        * Property `self` (string)
+            > A URL path to the current page of requested data
+
+        * Property `next` (string)
+            > A URL link to the next page of requested data or `null` if currently on last page
+
+        * Property `last` (string)
+            > A URL link to the last page of requested data
+
+    * Added property `page` (object)
+        > A collection page metadata
+
+        * Property `size` (integer)
+            > The size of the page and maximum number of items to be returned (must not be less than 1, defaults to 20)
+
+        * Property `totalElements` (integer)
+            > The total number of items available
+
+        * Property `totalPages` (integer)
+            > The total number of pages available based on the size
+
+        * Property `number` (integer)
+            > The zero-indexed page number (must not be less than 0, defaults to 0)
+
+    * Deleted property `totalElements` (integer)
+
+    * Deleted property `totalPages` (integer)
+
+    * Deleted property `first` (boolean)
+
+    * Deleted property `last` (boolean)
+
+    * Deleted property `size` (integer)
+
+    * Deleted property `number` (integer)
+
+    * Deleted property `sort` (array)
+
+    * Deleted property `numberOfElements` (integer)
+
+    * Deleted property `pageable` (object)
+
+    * Deleted property `empty` (boolean)
+
+    * Changed property `content` (array)
+        > A array of returned items
+
+##### `GET` /api/v2/paths/edge
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Added property `links` (object)
+        > A collection of page URL links for navigation and iteration
+
+        * Property `first` (string)
+            > A URL path to the first page of requested data
+
+        * Property `prev` (string)
+            > A URL path to the next page of requested data or `null` if currently on first page
+
+        * Property `self` (string)
+            > A URL path to the current page of requested data
+
+        * Property `next` (string)
+            > A URL link to the next page of requested data or `null` if currently on last page
+
+        * Property `last` (string)
+            > A URL link to the last page of requested data
+
+    * Added property `page` (object)
+        > A collection page metadata
+
+        * Property `size` (integer)
+            > The size of the page and maximum number of items to be returned (must not be less than 1, defaults to 20)
+
+        * Property `totalElements` (integer)
+            > The total number of items available
+
+        * Property `totalPages` (integer)
+            > The total number of pages available based on the size
+
+        * Property `number` (integer)
+            > The zero-indexed page number (must not be less than 0, defaults to 0)
+
+    * Deleted property `totalElements` (integer)
+
+    * Deleted property `totalPages` (integer)
+
+    * Deleted property `first` (boolean)
+
+    * Deleted property `last` (boolean)
+
+    * Deleted property `size` (integer)
+
+    * Deleted property `number` (integer)
+
+    * Deleted property `sort` (array)
+
+    * Deleted property `numberOfElements` (integer)
+
+    * Deleted property `pageable` (object)
+
+    * Deleted property `empty` (boolean)
+
+    * Changed property `content` (array)
+        > A array of returned items
+
+## v2025.10.1
+
+#### What's New
+
+##### `GET` /api/v2/paths/next
+
+> List all default next paths
+
+##### `POST` /api/v2/paths/next
+
+> Create a default next path
+
+##### `PATCH` /api/v2/paths/next/\{id\}
+
+> Update a default next path
+
+##### `GET` /api/v2/paths/next/\{next-path\}
+
+> Create a default next path
+
+##### `DELETE` /api/v2/paths/next/\{next-path\}
+
+> Delete a default next path
+
+#### What's Changed
+
+##### `PATCH` /api/v2/paths/redirect/\{id\}
+
+
+###### Request:
+
+Changed content type : `application/json`
+
+##### `GET` /api/v2/paths/redirect
+
+
+###### Parameters:
+
+Changed: `pageable` in `query`
+> Wrapper for the parameters page, size, and sort. Available sort properties: id.
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `sort` (object -> array)
+
+    * Changed property `pageable` (object)
+
+        * Changed property `sort` (object -> array)
+
+##### `POST` /api/v2/steps
+
+
+###### Request:
+
+Changed content type : `application/json`
+
+* Added property `type` (string)
+    > The type of the step
+
+    Enum values:
+
+    * `ORIGIN`
+    * `CHAIN`
+    * `END`
+##### `GET` /api/v2/paths/edge/\{id\}
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `option` (object)
+        > Value to be compared against.
+
+        * Deleted property `aiGenerated` (boolean)
+            > Whether this value was generated by AI
+
+##### `PATCH` /api/v2/paths/edge/\{id\}
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `option` (object)
+        > Value to be compared against.
+
+        * Deleted property `aiGenerated` (boolean)
+            > Whether this value was generated by AI
+
+##### `GET` /api/v2/records/\{id\}
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `fields` (array)
+        > The fields and values of the record
+
+        Changed items (object):
+            > The fields and values of the record
+
+        * Changed property `values` (array)
+            > The values of the record field
+
+            Changed items (object):
+                > Value to be compared against.
+
+            * Deleted property `aiGenerated` (boolean)
+                > Whether this value was generated by AI
+
+##### `GET` /api/v2/fields
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `content` (array)
+        > A array of returned items
+
+        Changed items (object):
+            > Field that is to be evaluated for the edge.
+
+        * Changed property `optionValues` (array)
+            > The option values of the field for Select, Multi-Select, Radio, Checkbox, and E-Signature field types
+
+            Changed items (object):
+                > Value to be compared against.
+
+            * Deleted property `aiGenerated` (boolean)
+                > Whether this value was generated by AI
+
+##### `POST` /api/v2/paths/edge
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `option` (object)
+        > Value to be compared against.
+
+        * Deleted property `aiGenerated` (boolean)
+            > Whether this value was generated by AI
+
+##### `GET` /api/v2/paths/edge
+
+
+###### Parameters:
+
+Changed: `pageable` in `query`
+> Wrapper for the parameters page, size, and sort. Available sort properties: id.
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `sort` (object -> array)
+
+    * Changed property `pageable` (object)
+
+        * Changed property `sort` (object -> array)
+
+    * Changed property `content` (array)
+
+        Changed items (object):
+
+        * Changed property `option` (object)
+            > Value to be compared against.
+
+            * Deleted property `aiGenerated` (boolean)
+                > Whether this value was generated by AI
+
+##### `GET` /api/v2/records
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `content` (array)
+        > A array of returned items
+
+        Changed items (object):
+            > A array of returned items
+
+        * Changed property `fields` (array)
+            > The fields and values of the record
+
+            Changed items (object):
+                > The fields and values of the record
+
+            * Changed property `values` (array)
+                > The values of the record field
+
+                Changed items (object):
+                    > Value to be compared against.
+
+                * Deleted property `aiGenerated` (boolean)
+                    > Whether this value was generated by AI
+
+##### `GET` /api/v2/records/\{id\}/linked
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `content` (array)
+        > A array of returned items
+
+        Changed items (object):
+            > A array of returned items
+
+        * Changed property `fields` (array)
+            > The fields and values of the record
+
+            Changed items (object):
+                > The fields and values of the record
+
+            * Changed property `values` (array)
+                > The values of the record field
+
+                Changed items (object):
+                    > Value to be compared against.
+
+                * Deleted property `aiGenerated` (boolean)
+                    > Whether this value was generated by AI
+
+## v2025.10.0
+
+#### What's New
+
+##### `GET` /api/v2/paths/redirect
+
+> List all redirect paths
+
+##### `POST` /api/v2/paths/redirect
+
+> Create a redirect path
+
+##### `GET` /api/v2/paths/edge
+
+> List all conditional edge paths
+
+##### `POST` /api/v2/paths/edge
+
+> Create a conditional edge path
+
+##### `GET` /api/v2/paths/redirect/\{id\}
+
+> Retrieve a redirect path
+
+##### `DELETE` /api/v2/paths/redirect/\{id\}
+
+> Delete a redirect path
+
+##### `PATCH` /api/v2/paths/redirect/\{id\}
+
+> Update a redirect path
+
+##### `GET` /api/v2/paths/edge/\{id\}
+
+> Retrieve a conditional edge path
+
+##### `DELETE` /api/v2/paths/edge/\{id\}
+
+> Delete a conditional edge path
+
+##### `PATCH` /api/v2/paths/edge/\{id\}
+
+> Update a conditional edge path
+
+#### What's Changed
+
+##### `GET` /api/v2/records/\{id\}
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `application` (object)
+        > The parent application of the field, or null for global fields
+
+    * Changed property `fields` (array)
+        > The fields and values of the record
+
+        Changed items (object):
+            > The fields and values of the record
+
+        * Changed property `values` (array)
+            > The values of the record field
+
+            Changed items (object):
+                > Value to be compared against.
+
+##### `GET` /api/v2/fields
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `content` (array)
+        > A array of returned items
+
+        Changed items (object):
+            > Field that is to be evaluated for the edge.
+
+        * Changed property `application` (object)
+            > The parent application of the field, or null for global fields
+
+        * Changed property `optionValues` (array)
+            > The option values of the field for Select, Multi-Select, Radio, Checkbox, and E-Signature field types
+
+            Changed items (object):
+                > Value to be compared against.
+
+##### `GET` /api/v2/records
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `content` (array)
+        > A array of returned items
+
+        Changed items (object):
+            > A array of returned items
+
+        * Changed property `application` (object)
+            > The parent application of the field, or null for global fields
+
+        * Changed property `fields` (array)
+            > The fields and values of the record
+
+            Changed items (object):
+                > The fields and values of the record
+
+            * Changed property `values` (array)
+                > The values of the record field
+
+                Changed items (object):
+                    > Value to be compared against.
+
+##### `GET` /api/v2/records/\{id\}/linked
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `content` (array)
+        > A array of returned items
+
+        Changed items (object):
+            > A array of returned items
+
+        * Changed property `application` (object)
+            > The parent application of the field, or null for global fields
+
+        * Changed property `fields` (array)
+            > The fields and values of the record
+
+            Changed items (object):
+                > The fields and values of the record
+
+            * Changed property `values` (array)
+                > The values of the record field
+
+                Changed items (object):
+                    > Value to be compared against.
+
+## v2025.9.2
+
+No API updates.
+
+## v2025.9.1
+
+No API updates.
+
+## v2025.9.0
+
+#### What's Changed
+
+##### `GET` /api/v2/fields
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `content` (array)
+        > A array of returned items
+
+        Changed items (object):
+            > A array of returned items
+
+        * Added property `required` (boolean)
+            > Whether the field is required for the current step
+
+## v2025.8.1
+
+No API updates.
+
+## v2025.8.0
+
+No API updates.
+
+## v2025.7.1
+
+No API updates.
+
+## v2025.7.0
+
+#### What's Changed
+
+##### `GET` /api/v2/records/\{id\}
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `fields` (array)
+        > The fields and values of the record
+
+        Changed items (object):
+            > The fields and values of the record
+
+        * Changed property `values` (array)
+            > The values of the record field
+
+            Changed items (object):
+                > The values of the record field
+
+            * Added property `aiGenerated` (boolean)
+                > Whether this value was generated by AI
+
+##### `GET` /api/v2/fields
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `content` (array)
+        > A array of returned items
+
+        Changed items (object):
+            > A array of returned items
+
+        * Changed property `optionValues` (array)
+            > The option values of the field for Select, Multi-Select, Radio, Checkbox, and E-Signature field types
+
+            Changed items (object):
+                > The values of the record field
+
+            * Added property `aiGenerated` (boolean)
+                > Whether this value was generated by AI
+
+##### `GET` /api/v2/records
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `content` (array)
+        > A array of returned items
+
+        Changed items (object):
+            > A array of returned items
+
+        * Changed property `fields` (array)
+            > The fields and values of the record
+
+            Changed items (object):
+                > The fields and values of the record
+
+            * Changed property `values` (array)
+                > The values of the record field
+
+                Changed items (object):
+                    > The values of the record field
+
+                * Added property `aiGenerated` (boolean)
+                    > Whether this value was generated by AI
+
+##### `GET` /api/v2/records/\{id\}/linked
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `content` (array)
+        > A array of returned items
+
+        Changed items (object):
+            > A array of returned items
+
+        * Changed property `fields` (array)
+            > The fields and values of the record
+
+            Changed items (object):
+                > The fields and values of the record
+
+            * Changed property `values` (array)
+                > The values of the record field
+
+                Changed items (object):
+                    > The values of the record field
+
+                * Added property `aiGenerated` (boolean)
+                    > Whether this value was generated by AI
+
+## v2025.6.1
+
+No API updates.
+
+## v2025.6.0
+
+No API updates.
+
+## v2025.5.1
+
+#### What's New
+
+##### `GET` /api/v2/audits/access
+
+> Retrieve access audits
+
+## v2025.5.0
+
+No API updates.
+
+## v2025.4.1
+
+No API updates.
+
+## v2025.4.0
+
+No API updates.
+
+## v2025.3.2
+
+No API updates.
+
+## v2025.2.0
+
+No API updates.
+
+## v2025.1.0
+
+No API updates.
+
+## v2024.12.0
+
+#### What's Changed
+
+##### `GET` /api/v2/steps/\{id\}
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Added property `description` (string)
+        > The description of the step
+
+##### `PATCH` /api/v2/steps/\{id\}
+
+
+###### Request:
+
+Changed content type : `application/json`
+
+* Added property `description` (string)
+    > The description of the step
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Added property `description` (string)
+        > The description of the step
+
+##### `POST` /api/v2/steps
+
+
+###### Request:
+
+Changed content type : `application/json`
+
+* Added property `description` (string)
+    > The description of the step
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Added property `description` (string)
+        > The description of the step
+
+##### `GET` /api/v2/steps
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `content` (array)
+        > A array of returned items
+
+        Changed items (object):
+
+        * Added property `description` (string)
+            > The description of the step
+
+##### `GET` /api/v2/fields
+
+
+###### Parameters:
+
+Changed: `field-type` in `query`
+> A field type where, if provided, the response will only contain fields of the identified field type
+
+## v2024.11.1
+
+No API updates.
+
+## v2024.11.0
+
+No API updates.
+
+## v2024.10.1
+
+No API updates.
+
+## v2024.10.0
+
+#### What's Changed
+
+##### `GET` /api/v2/records/\{id\}
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `fields` (array)
+        > The fields and values of the record
+
+        Changed items (object):
+            > The fields and values of the record
+
+        * Changed property `type` (string)
+            > The type of the field
+
+            Added enum value:
+
+            * `LINKED_RECORDS_COUNT`
+            Removed enum value:
+
+            * `LINKED_RECORDS_CALCULATION`
+##### `GET` /api/v2/fields
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `content` (array)
+        > A array of returned items
+
+        Changed items (object):
+            > A array of returned items
+
+        * Changed property `type` (string)
+            > The type of the field
+
+            Added enum value:
+
+            * `LINKED_RECORDS_COUNT`
+            Removed enum value:
+
+            * `LINKED_RECORDS_CALCULATION`
+##### `GET` /api/v2/records
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `content` (array)
+        > A array of returned items
+
+        Changed items (object):
+            > A array of returned items
+
+        * Changed property `fields` (array)
+            > The fields and values of the record
+
+            Changed items (object):
+                > The fields and values of the record
+
+            * Changed property `type` (string)
+                > The type of the field
+
+                Added enum value:
+
+                * `LINKED_RECORDS_COUNT`
+                Removed enum value:
+
+                * `LINKED_RECORDS_CALCULATION`
+##### `GET` /api/v2/records/\{id\}/linked
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `content` (array)
+        > A array of returned items
+
+        Changed items (object):
+            > A array of returned items
+
+        * Changed property `fields` (array)
+            > The fields and values of the record
+
+            Changed items (object):
+                > The fields and values of the record
+
+            * Changed property `type` (string)
+                > The type of the field
+
+                Added enum value:
+
+                * `LINKED_RECORDS_COUNT`
+                Removed enum value:
+
+                * `LINKED_RECORDS_CALCULATION`
+
+## v2024.9.2
+
+#### What's Changed
+
+##### `GET` /api/v2/records/\{id\}
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `fields` (array)
+        > The fields and values of the record
+
+        Changed items (object):
+            > The fields and values of the record
+
+        * Added property `required` (boolean)
+            > Whether the field is required for the current step
+
+##### `GET` /api/v2/records
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `content` (array)
+        > A array of returned items
+
+        Changed items (object):
+            > A array of returned items
+
+        * Changed property `fields` (array)
+            > The fields and values of the record
+
+            Changed items (object):
+                > The fields and values of the record
+
+            * Added property `required` (boolean)
+                > Whether the field is required for the current step
+
+##### `GET` /api/v2/records/\{id\}/linked
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `content` (array)
+        > A array of returned items
+
+        Changed items (object):
+            > A array of returned items
+
+        * Changed property `fields` (array)
+            > The fields and values of the record
+
+            Changed items (object):
+                > The fields and values of the record
+
+            * Added property `required` (boolean)
+                > Whether the field is required for the current step
+
+## v2024.9.1
+
+No API updates.
+
+## v2024.9.0
+
+#### What's Changed
+
+##### `GET` /api/v2/workflows/\{id\}
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `type` (string)
+        > The type of workflow
+
+        Added enum value:
+
+        * `CONTROL_WORKFLOW`
+##### `PATCH` /api/v2/workflows/\{id\}
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `type` (string)
+        > The type of workflow
+
+        Added enum value:
+
+        * `CONTROL_WORKFLOW`
+##### `POST` /api/v2/workflows
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `type` (string)
+        > The type of workflow
+
+        Added enum value:
+
+        * `CONTROL_WORKFLOW`
+##### `GET` /api/v2/workflows
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `content` (array)
+        > A array of returned items
+
+        Changed items (object):
+
+        * Changed property `type` (string)
+            > The type of workflow
+
+            Added enum value:
+
+            * `CONTROL_WORKFLOW`
+##### `GET` /api/v2/records/\{id\}
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `fields` (array)
+        > The fields and values of the record
+
+        Changed items (object):
+            > The fields and values of the record
+
+        * Changed property `type` (string)
+            > The type of the field
+
+            Added enum value:
+
+            * `LINKED_RECORDS_CALCULATION`
+##### `GET` /api/v2/fields
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `content` (array)
+        > A array of returned items
+
+        Changed items (object):
+            > A array of returned items
+
+        * Changed property `type` (string)
+            > The type of the field
+
+            Added enum value:
+
+            * `LINKED_RECORDS_CALCULATION`
+##### `GET` /api/v2/records
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `content` (array)
+        > A array of returned items
+
+        Changed items (object):
+            > A array of returned items
+
+        * Changed property `fields` (array)
+            > The fields and values of the record
+
+            Changed items (object):
+                > The fields and values of the record
+
+            * Changed property `type` (string)
+                > The type of the field
+
+                Added enum value:
+
+                * `LINKED_RECORDS_CALCULATION`
+##### `GET` /api/v2/records/\{id\}/linked
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `content` (array)
+        > A array of returned items
+
+        Changed items (object):
+            > A array of returned items
+
+        * Changed property `fields` (array)
+            > The fields and values of the record
+
+            Changed items (object):
+                > The fields and values of the record
+
+            * Changed property `type` (string)
+                > The type of the field
+
+                Added enum value:
+
+                * `LINKED_RECORDS_CALCULATION`
+
+## v2024.8.1
+
+No API updates.
+
+## v2024.8.0
+
+#### What's Changed
+
+##### `GET` /api/v2/workflows/\{id\}
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Added property `description` (string)
+        > The description of the workflow
+
+##### `PATCH` /api/v2/workflows/\{id\}
+
+
+###### Request:
+
+Changed content type : `application/json`
+
+* Added property `description` (string)
+    > The description of the workflow
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Added property `description` (string)
+        > The description of the workflow
+
+##### `POST` /api/v2/workflows
+
+
+###### Request:
+
+Changed content type : `application/json`
+
+* Added property `description` (string)
+    > The description of the workflow
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Added property `description` (string)
+        > The description of the workflow
+
+##### `GET` /api/v2/workflows
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `content` (array)
+        > A array of returned items
+
+        Changed items (object):
+
+        * Added property `description` (string)
+            > The description of the workflow
+
+## 2024.7.1
+
+No API updates.
+
+## v2024.7.0
+
+No API updates.
+
+## v2024.6.1
+
+#### What's New
+
+##### `GET` /api/v2/records/\{id\}
+
+> Retrieve a record
+
+## v2024.6.0
+
+No API updates.
+
+## v2024.5.1
+
+#### What's New
+
+##### `GET` /api/v2/records/\{id\}/linked
+
+> Retrieve all linked records
+
+#### What's Changed
+
+##### `GET` /api/v2/fields
+
+
+###### Parameters:
+
+Changed: `field-type` in `query`
+> A field type where, if provided, the response will only contain fields of the identified field type
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `content` (array)
+        > A array of returned items
+
+        Changed items (object):
+            > A array of returned items
+
+        * Changed property `type` (string)
+            > The type of the field
+
+            Added enum value:
+
+            * `TEXT_CONCATENATION`
+            Removed enum value:
+
+            * `TEXT_CALCULATION`
+##### `GET` /api/v2/records
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `content` (array)
+        > A array of returned items
+
+        Changed items (object):
+            > A array of returned items
+
+        * Changed property `fields` (array)
+            > The fields and values of the record
+
+            Changed items (object):
+                > The fields and values of the record
+
+            * Changed property `type` (string)
+                > The type of the field
+
+                Added enum value:
+
+                * `TEXT_CONCATENATION`
+                Removed enum value:
+
+                * `TEXT_CALCULATION`
+
+## v2024.5.0
+
+No API updates.
+
+## v2024.4.2
+
+No API updates.
+
+## v2024.4.1
+
+#### What's Changed
+
+##### `GET` /api/v2/fields
+
+
+###### Parameters:
+
+Changed: `field-type` in `query`
+> A field type where, if provided, the response will only contain fields of the identified field type
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `content` (array)
+        > A array of returned items
+
+        Changed items (object):
+            > A array of returned items
+
+        * Changed property `type` (string)
+            > The type of the field
+
+            Added enum value:
+
+            * `TEXT_CALCULATION`
+##### `GET` /api/v2/records
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `content` (array)
+        > A array of returned items
+
+        Changed items (object):
+            > A array of returned items
+
+        * Changed property `fields` (array)
+            > The fields and values of the record
+
+            Changed items (object):
+                > The fields and values of the record
+
+            * Changed property `type` (string)
+                > The type of the field
+
+                Added enum value:
+
+                * `TEXT_CALCULATION`
+
+## v2024.4.0
+
+#### What's Changed
+
+##### `DELETE` /api/v2/workflows/\{id\}
+
+
+###### Return Type:
+
+New response : **204 No Content**
+> No Content
+Deleted response : **200 OK**
+> OK
+##### `GET` /api/v2/workflows/\{id\}
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Added property `type` (string)
+        > The type of workflow
+
+        Enum values:
+
+        * `WORKFLOW`
+        * `JIRA_WORKFLOW`
+        * `ANALYSIS_WORKFLOW`
+##### `PATCH` /api/v2/workflows/\{id\}
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Added property `type` (string)
+        > The type of workflow
+
+        Enum values:
+
+        * `WORKFLOW`
+        * `JIRA_WORKFLOW`
+        * `ANALYSIS_WORKFLOW`
+##### `DELETE` /api/v2/workflow-maps/\{id\}
+
+
+###### Return Type:
+
+New response : **204 No Content**
+> No Content
+Deleted response : **200 OK**
+> OK
+##### `DELETE` /api/v2/applications/\{id\}
+
+
+###### Return Type:
+
+New response : **204 No Content**
+> No Content
+Deleted response : **200 OK**
+> OK
+##### `POST` /api/v2/workflows
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Added property `type` (string)
+        > The type of workflow
+
+        Enum values:
+
+        * `WORKFLOW`
+        * `JIRA_WORKFLOW`
+        * `ANALYSIS_WORKFLOW`
+##### `GET` /api/v2/workflows
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `content` (array)
+        > A array of returned items
+
+        Changed items (object):
+
+        * Added property `type` (string)
+            > The type of workflow
+
+            Enum values:
+
+            * `WORKFLOW`
+            * `JIRA_WORKFLOW`
+            * `ANALYSIS_WORKFLOW`
+##### `DELETE` /api/v2/steps/\{id\}
+
+
+###### Return Type:
+
+New response : **204 No Content**
+> No Content
+Deleted response : **200 OK**
+> OK
+
+## v2024.3.1
+
+No API updates.
+
+## v2024.3.0
+
+Specified auth, servers, and alphabetical order in OpenAPI Specification.
+
+## v2024.2.1
+
+No API updates.
+
+## v2024.2.0
+
+No API updates.
+
+## v2024.1.1
+
+No API updates.
+
+## v2024.1.0
+
+No API updates.
+
+## v2023.12.0
+
+No API updates.
+
+## v2023.11.0
+
+No API updates.
+
+## v2023.10.2
+
+No API updates.
+
+## v2023.10.1
+
+No API updates.
+
+## v2023.10.0
+
+#### What's New
+
+##### `GET` /api/v2/records
+
+> Retrieve records
+
+#### What's Changed
+
+##### `GET` /api/v2/fields
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `content` (array)
+        > A array of returned items
+
+        Changed items (object):
+            > A array of returned items
+
+        * Changed property `application` (object)
+            > The parent application of the record
+
+        * Changed property `optionValues` (array)
+            > The option values of the field for Select, Multi-Select, Radio, Checkbox, and E-Signature field types
+
+            Changed items (object):
+                > The values of the record field
+
+## v2023.9.1
+
+No API updates.
+
+## v2023.9.0
+
+#### What's Changed
+
+##### `POST` /api/v2/steps
+
+###### Request:
+
+Changed content type : `application/json`
+
+* Changed property `assignableUserType` (string)
+    > Indicates which users are allowed to be assigned this step on a record (defaults to APP_USERS)
+
+## v2023.8.1
+
+#### What's New
+
+##### `GET` /api/v2/fields
+
+> Retrieve fields
+
+## v2023.8.0
+
+No API updates.
+
+## v2023.7.1
+
+No API updates.
+
+## v2023.7.0
+
+#### What's New
+
+##### `GET` /api/v2/steps
+
+> Retrieve steps
+
+##### `POST` /api/v2/steps
+
+> Create a step
+
+##### `GET` /api/v2/steps/\{id\}
+
+> Retrieve a step
+
+##### `DELETE` /api/v2/steps/\{id\}
+
+> Delete a step
+
+##### `PATCH` /api/v2/steps/\{id\}
+
+> Update a step
+
+#### What's Changed
+
+##### `POST` /api/v1/account/token
+
+
+###### Parameters:
+
+Changed: `Authorization` in `header`
+> A basic authorization header containing a Risk Cloud API access token in the format `Authorization: Basic \{TOKEN\}`.
+> 
+> To obtain a Risk Cloud API access token, refer to [Obtain an API Access Token](https://www.logicgate.com/developer/risk-cloud-api-authentication/) in the [LogicGate Help Center](https://help.logicgate.com/hc/en-us).
+
+##### `GET` /api/v2/workflows/\{id\}
+
+
+###### Parameters:
+
+Changed: `Authorization` in `header`
+> A bearer authorization header containing a Risk Cloud API access token in the format `Authorization: Bearer \{TOKEN\}`.
+> 
+> To obtain a Risk Cloud API access token, refer to [Obtain an API Access Token](https://www.logicgate.com/developer/risk-cloud-api-authentication/) in the [LogicGate Help Center](https://help.logicgate.com/hc/en-us).
+
+##### `DELETE` /api/v2/workflows/\{id\}
+
+
+###### Parameters:
+
+Changed: `Authorization` in `header`
+> A bearer authorization header containing a Risk Cloud API access token in the format `Authorization: Bearer \{TOKEN\}`.
+> 
+> To obtain a Risk Cloud API access token, refer to [Obtain an API Access Token](https://www.logicgate.com/developer/risk-cloud-api-authentication/) in the [LogicGate Help Center](https://help.logicgate.com/hc/en-us).
+
+##### `PATCH` /api/v2/workflows/\{id\}
+
+
+###### Parameters:
+
+Changed: `Authorization` in `header`
+> A bearer authorization header containing a Risk Cloud API access token in the format `Authorization: Bearer \{TOKEN\}`.
+> 
+> To obtain a Risk Cloud API access token, refer to [Obtain an API Access Token](https://www.logicgate.com/developer/risk-cloud-api-authentication/) in the [LogicGate Help Center](https://help.logicgate.com/hc/en-us).
+
+##### `GET` /api/v2/workflow-maps/\{id\}
+
+
+###### Parameters:
+
+Changed: `Authorization` in `header`
+> A bearer authorization header containing a Risk Cloud API access token in the format `Authorization: Bearer \{TOKEN\}`.
+> 
+> To obtain a Risk Cloud API access token, refer to [Obtain an API Access Token](https://www.logicgate.com/developer/risk-cloud-api-authentication/) in the [LogicGate Help Center](https://help.logicgate.com/hc/en-us).
+
+##### `DELETE` /api/v2/workflow-maps/\{id\}
+
+
+###### Parameters:
+
+Changed: `Authorization` in `header`
+> A bearer authorization header containing a Risk Cloud API access token in the format `Authorization: Bearer \{TOKEN\}`.
+> 
+> To obtain a Risk Cloud API access token, refer to [Obtain an API Access Token](https://www.logicgate.com/developer/risk-cloud-api-authentication/) in the [LogicGate Help Center](https://help.logicgate.com/hc/en-us).
+
+##### `PATCH` /api/v2/workflow-maps/\{id\}
+
+
+###### Parameters:
+
+Changed: `Authorization` in `header`
+> A bearer authorization header containing a Risk Cloud API access token in the format `Authorization: Bearer \{TOKEN\}`.
+> 
+> To obtain a Risk Cloud API access token, refer to [Obtain an API Access Token](https://www.logicgate.com/developer/risk-cloud-api-authentication/) in the [LogicGate Help Center](https://help.logicgate.com/hc/en-us).
+
+##### `GET` /api/v2/applications/\{id\}
+
+
+###### Parameters:
+
+Changed: `Authorization` in `header`
+> A bearer authorization header containing a Risk Cloud API access token in the format `Authorization: Bearer \{TOKEN\}`.
+> 
+> To obtain a Risk Cloud API access token, refer to [Obtain an API Access Token](https://www.logicgate.com/developer/risk-cloud-api-authentication/) in the [LogicGate Help Center](https://help.logicgate.com/hc/en-us).
+
+##### `DELETE` /api/v2/applications/\{id\}
+
+
+###### Parameters:
+
+Changed: `Authorization` in `header`
+> A bearer authorization header containing a Risk Cloud API access token in the format `Authorization: Bearer \{TOKEN\}`.
+> 
+> To obtain a Risk Cloud API access token, refer to [Obtain an API Access Token](https://www.logicgate.com/developer/risk-cloud-api-authentication/) in the [LogicGate Help Center](https://help.logicgate.com/hc/en-us).
+
+##### `PATCH` /api/v2/applications/\{id\}
+
+
+###### Parameters:
+
+Changed: `Authorization` in `header`
+> A bearer authorization header containing a Risk Cloud API access token in the format `Authorization: Bearer \{TOKEN\}`.
+> 
+> To obtain a Risk Cloud API access token, refer to [Obtain an API Access Token](https://www.logicgate.com/developer/risk-cloud-api-authentication/) in the [LogicGate Help Center](https://help.logicgate.com/hc/en-us).
+
+##### `POST` /api/v2/workflows
+
+
+###### Parameters:
+
+Changed: `Authorization` in `header`
+> A bearer authorization header containing a Risk Cloud API access token in the format `Authorization: Bearer \{TOKEN\}`.
+> 
+> To obtain a Risk Cloud API access token, refer to [Obtain an API Access Token](https://www.logicgate.com/developer/risk-cloud-api-authentication/) in the [LogicGate Help Center](https://help.logicgate.com/hc/en-us).
+
+##### `GET` /api/v2/workflows
+
+
+###### Parameters:
+
+Changed: `Authorization` in `header`
+> A bearer authorization header containing a Risk Cloud API access token in the format `Authorization: Bearer \{TOKEN\}`.
+> 
+> To obtain a Risk Cloud API access token, refer to [Obtain an API Access Token](https://www.logicgate.com/developer/risk-cloud-api-authentication/) in the [LogicGate Help Center](https://help.logicgate.com/hc/en-us).
+
+##### `POST` /api/v2/workflow-maps
+
+
+###### Parameters:
+
+Changed: `Authorization` in `header`
+> A bearer authorization header containing a Risk Cloud API access token in the format `Authorization: Bearer \{TOKEN\}`.
+> 
+> To obtain a Risk Cloud API access token, refer to [Obtain an API Access Token](https://www.logicgate.com/developer/risk-cloud-api-authentication/) in the [LogicGate Help Center](https://help.logicgate.com/hc/en-us).
+
+##### `GET` /api/v2/workflow-maps
+
+
+###### Parameters:
+
+Changed: `Authorization` in `header`
+> A bearer authorization header containing a Risk Cloud API access token in the format `Authorization: Bearer \{TOKEN\}`.
+> 
+> To obtain a Risk Cloud API access token, refer to [Obtain an API Access Token](https://www.logicgate.com/developer/risk-cloud-api-authentication/) in the [LogicGate Help Center](https://help.logicgate.com/hc/en-us).
+
+##### `POST` /api/v2/applications
+
+
+###### Parameters:
+
+Changed: `Authorization` in `header`
+> A bearer authorization header containing a Risk Cloud API access token in the format `Authorization: Bearer \{TOKEN\}`.
+> 
+> To obtain a Risk Cloud API access token, refer to [Obtain an API Access Token](https://www.logicgate.com/developer/risk-cloud-api-authentication/) in the [LogicGate Help Center](https://help.logicgate.com/hc/en-us).
+
+##### `GET` /api/v2/applications
+
+
+###### Parameters:
+
+Changed: `Authorization` in `header`
+> A bearer authorization header containing a Risk Cloud API access token in the format `Authorization: Bearer \{TOKEN\}`.
+> 
+> To obtain a Risk Cloud API access token, refer to [Obtain an API Access Token](https://www.logicgate.com/developer/risk-cloud-api-authentication/) in the [LogicGate Help Center](https://help.logicgate.com/hc/en-us).
+
+## v2023.6.1
+
+No API updates.
+
+## v2023.6.0
+
+#### What's Changed
+
+##### `GET` /api/v2/applications/\{id\}
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `restrictBuildAccess` (boolean)
+        > Whether users with the Build entitlement must be explicitly granted permission to edit this application
+
+##### `PATCH` /api/v2/applications/\{id\}
+
+
+###### Request:
+
+Changed content type : `application/json`
+
+* Changed property `restrictBuildAccess` (boolean)
+    > Whether users with the Build entitlement must be explicitly granted permission to edit this application
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `restrictBuildAccess` (boolean)
+        > Whether users with the Build entitlement must be explicitly granted permission to edit this application
+
+##### `POST` /api/v2/applications
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `restrictBuildAccess` (boolean)
+        > Whether users with the Build entitlement must be explicitly granted permission to edit this application
+
+##### `GET` /api/v2/applications
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `content` (array)
+        > A array of returned items
+
+        Changed items (object):
+
+        * Changed property `restrictBuildAccess` (boolean)
+            > Whether users with the Build entitlement must be explicitly granted permission to edit this application
+
+## v2023.5.2
+
+No API updates.
+
+## v2023.5.1
+
+#### What's Changed
+
+##### `GET` /api/v2/workflows/\{id\}
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Added property `recordPrefix` (string)
+        > The prefix to be used in the name of every record created from this workflow
+
+    * Added property `applicationId` (string)
+        > The unique ID of the parent application of the workflow
+
+    * Deleted property `record-prefix` (string)
+        > The prefix to be used in the name of every record created from this workflow
+
+    * Deleted property `application-id` (string)
+        > The unique ID of the parent application of the workflow
+
+##### `PATCH` /api/v2/workflows/\{id\}
+
+
+###### Request:
+
+Changed content type : `application/json`
+
+* Added property `recordPrefix` (string)
+    > The prefix to be used in the name of every record created from this workflow
+
+* Deleted property `record-prefix` (string)
+    > The prefix to be used in the name of every record created from this workflow
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Added property `recordPrefix` (string)
+        > The prefix to be used in the name of every record created from this workflow
+
+    * Added property `applicationId` (string)
+        > The unique ID of the parent application of the workflow
+
+    * Deleted property `record-prefix` (string)
+        > The prefix to be used in the name of every record created from this workflow
+
+    * Deleted property `application-id` (string)
+        > The unique ID of the parent application of the workflow
+
+##### `GET` /api/v2/applications/\{id\}
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Added property `restrictBuildAccess` (boolean)
+        > Whether users with the Build entitlement must be granted permission to edit this application explicitly
+
+    * Deleted property `restrict-build-access` (boolean)
+        > Whether users with the Build entitlement must be granted permission to edit this application explicitly
+
+##### `PATCH` /api/v2/applications/\{id\}
+
+
+###### Request:
+
+Changed content type : `application/json`
+
+* Added property `restrictBuildAccess` (boolean)
+    > Whether users with the Build entitlement must be granted permission to edit this application explicitly
+
+* Deleted property `restrict-build-access` (boolean)
+    > Whether users with the Build entitlement must be granted permission to edit this application explicitly
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Added property `restrictBuildAccess` (boolean)
+        > Whether users with the Build entitlement must be granted permission to edit this application explicitly
+
+    * Deleted property `restrict-build-access` (boolean)
+        > Whether users with the Build entitlement must be granted permission to edit this application explicitly
+
+##### `POST` /api/v2/workflows
+
+
+###### Request:
+
+Changed content type : `application/json`
+
+New required properties:
+- `applicationId`
+- `recordPrefix`
+
+New optional properties:
+- `application-id`
+- `record-prefix`
+
+* Added property `recordPrefix` (string)
+    > The prefix to be used in the name of every record created from this workflow
+
+* Added property `applicationId` (string)
+    > The unique ID of the parent application of the workflow
+
+* Deleted property `record-prefix` (string)
+    > The prefix to be used in the name of every record created from this workflow
+
+* Deleted property `application-id` (string)
+    > The unique ID of the parent application of the workflow
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Added property `recordPrefix` (string)
+        > The prefix to be used in the name of every record created from this workflow
+
+    * Added property `applicationId` (string)
+        > The unique ID of the parent application of the workflow
+
+    * Deleted property `record-prefix` (string)
+        > The prefix to be used in the name of every record created from this workflow
+
+    * Deleted property `application-id` (string)
+        > The unique ID of the parent application of the workflow
+
+##### `GET` /api/v2/workflows
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `content` (array)
+        > A array of returned items
+
+        Changed items (object):
+
+        * Added property `recordPrefix` (string)
+            > The prefix to be used in the name of every record created from this workflow
+
+        * Added property `applicationId` (string)
+            > The unique ID of the parent application of the workflow
+
+        * Deleted property `record-prefix` (string)
+            > The prefix to be used in the name of every record created from this workflow
+
+        * Deleted property `application-id` (string)
+            > The unique ID of the parent application of the workflow
+
+    * Changed property `page` (object)
+        > A collection page metadata
+
+        * Added property `totalElements` (integer)
+            > The total number of items available
+
+        * Added property `totalPages` (integer)
+            > The total number of pages available based on the size
+
+        * Deleted property `total-elements` (integer)
+            > The total number of items available
+
+        * Deleted property `total-pages` (integer)
+            > The total number of pages available based on the size
+
+##### `GET` /api/v2/workflow-maps
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `page` (object)
+        > A collection page metadata
+
+        * Added property `totalElements` (integer)
+            > The total number of items available
+
+        * Added property `totalPages` (integer)
+            > The total number of pages available based on the size
+
+        * Deleted property `total-elements` (integer)
+            > The total number of items available
+
+        * Deleted property `total-pages` (integer)
+            > The total number of pages available based on the size
+
+##### `POST` /api/v2/applications
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Added property `restrictBuildAccess` (boolean)
+        > Whether users with the Build entitlement must be granted permission to edit this application explicitly
+
+    * Deleted property `restrict-build-access` (boolean)
+        > Whether users with the Build entitlement must be granted permission to edit this application explicitly
+
+##### `GET` /api/v2/applications
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* Changed content type : `application/json`
+
+    * Changed property `content` (array)
+        > A array of returned items
+
+        Changed items (object):
+
+        * Added property `restrictBuildAccess` (boolean)
+            > Whether users with the Build entitlement must be granted permission to edit this application explicitly
+
+        * Deleted property `restrict-build-access` (boolean)
+            > Whether users with the Build entitlement must be granted permission to edit this application explicitly
+
+    * Changed property `page` (object)
+        > A collection page metadata
+
+        * Added property `totalElements` (integer)
+            > The total number of items available
+
+        * Added property `totalPages` (integer)
+            > The total number of pages available based on the size
+
+        * Deleted property `total-elements` (integer)
+            > The total number of items available
+
+        * Deleted property `total-pages` (integer)
+            > The total number of pages available based on the size
+
+## v2023.5.0
+
+#### What's Changed
+
+##### `POST` /api/v1/account/token
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* New content type : `application/json`
+
+* Deleted content type : `*/*`
+
+##### `GET` /api/v2/workflows
+
+
+###### Parameters:
+
+Added: `application-id` in `query`
+> The unique ID of a parent application where, if provided, the response will only contain workflows from the identified application
+
+Added: `include-jira-workflows` in `query`
+> Whether [Jira workflows](https://help.logicgate.com/hc/en-us) are to be included in the response in addition to regular workflows (defaults to true)
+
+Deleted: `applicationId` in `query`
+> The unique ID of a parent application where, if provided, the response will only contain workflows from the identified application
+
+Deleted: `includeJiraWorkflows` in `query`
+> Whether [Jira workflows](https://help.logicgate.com/hc/en-us) are to be included in the response in addition to regular workflows (defaults to true)
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* New content type : `application/json`
+
+* Deleted content type : `*/*`
+
+##### `POST` /api/v2/workflows
+
+
+###### Request:
+
+Changed content type : `application/json`
+
+New required properties:
+- `application-id`
+- `record-prefix`
+
+New optional properties:
+- `applicationId`
+- `recordPrefix`
+
+* Added property `record-prefix` (string)
+    > The prefix to be used in the name of every record created from this workflow
+
+* Added property `application-id` (string)
+    > The unique ID of the parent application of the workflow
+
+* Deleted property `recordPrefix` (string)
+    > The prefix to be used in the name of every record created from this workflow
+
+* Deleted property `applicationId` (string)
+    > The unique ID of the parent application of the workflow
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* New content type : `application/json`
+
+* Deleted content type : `*/*`
+
+##### `GET` /api/v2/workflow-maps
+
+
+###### Parameters:
+
+Added: `workflow-id` in `query`
+> The unique ID of a workflow where, if provided, the response will only contain workflow maps from the identified workflow
+
+Deleted: `workflowId` in `query`
+> The unique ID of a workflow where, if provided, the response will only contain workflow maps from the identified workflow
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* New content type : `application/json`
+
+* Deleted content type : `*/*`
+
+##### `POST` /api/v2/workflow-maps
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* New content type : `application/json`
+
+* Deleted content type : `*/*`
+
+##### `GET` /api/v2/applications
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* New content type : `application/json`
+
+* Deleted content type : `*/*`
+
+##### `POST` /api/v2/applications
+
+
+###### Request:
+
+Changed content type : `application/json`
+
+* Changed property `type` (string)
+    > The type of Risk Cloud application (defaults to NONE)
+
+    Added enum values:
+
+    * `CONTROLS_COMPLIANCE`
+    * `CYBER_RISK_MANAGEMENT`
+    * `DATA_PRIVACY_MANAGEMENT`
+    * `ESG`
+    * `INTERNAL_AUDIT_MANAGEMENT`
+    * `OPERATIONAL_RESILIENCY`
+    * `POLICY_MANAGEMENT`
+    * `REPOSITORY`
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* New content type : `application/json`
+
+* Deleted content type : `*/*`
+
+##### `GET` /api/v2/workflows/\{id\}
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* New content type : `application/json`
+
+* Deleted content type : `*/*`
+
+##### `DELETE` /api/v2/workflows/\{id\}
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* New content type : `application/json`
+
+* Deleted content type : `*/*`
+
+##### `PATCH` /api/v2/workflows/\{id\}
+
+
+###### Request:
+
+Changed content type : `application/json`
+
+* Added property `record-prefix` (string)
+    > The prefix to be used in the name of every record created from this workflow
+
+* Deleted property `recordPrefix` (string)
+    > The prefix to be used in the name of every record created from this workflow
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* New content type : `application/json`
+
+* Deleted content type : `*/*`
+
+##### `GET` /api/v2/workflow-maps/\{id\}
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* New content type : `application/json`
+
+* Deleted content type : `*/*`
+
+##### `DELETE` /api/v2/workflow-maps/\{id\}
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* New content type : `application/json`
+
+* Deleted content type : `*/*`
+
+##### `PATCH` /api/v2/workflow-maps/\{id\}
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* New content type : `application/json`
+
+* Deleted content type : `*/*`
+
+##### `GET` /api/v2/applications/\{id\}
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* New content type : `application/json`
+
+* Deleted content type : `*/*`
+
+##### `DELETE` /api/v2/applications/\{id\}
+
+
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* New content type : `application/json`
+
+* Deleted content type : `*/*`
+
+##### `PATCH` /api/v2/applications/\{id\}
+
+
+###### Request:
+
+Changed content type : `application/json`
+
+* Added property `restrict-build-access` (boolean)
+    > Whether users with the Build entitlement must be granted permission to edit this application explicitly
+
+* Deleted property `restrictBuildAccess` (boolean)
+    > Whether users with the Build entitlement must be granted permission to edit this application explicitly
+
+* Changed property `type` (string)
+    > The type of Risk Cloud application
+
+    Added enum values:
+
+    * `CONTROLS_COMPLIANCE`
+    * `CYBER_RISK_MANAGEMENT`
+    * `DATA_PRIVACY_MANAGEMENT`
+    * `ESG`
+    * `INTERNAL_AUDIT_MANAGEMENT`
+    * `OPERATIONAL_RESILIENCY`
+    * `POLICY_MANAGEMENT`
+    * `REPOSITORY`
+###### Return Type:
+
+Changed response : **200 OK**
+> OK
+
+* New content type : `application/json`
+
+* Deleted content type : `*/*`
+
+## v2023.3.0
+
+The original release of the OpenAPI Specification for the Risk Cloud API v2 endpoints (currently in an open beta).

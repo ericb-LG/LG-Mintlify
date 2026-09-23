@@ -1,0 +1,126 @@
+---
+title: "Risk Cloud API: Webhook Delivery Replay"
+sidebarTitle: "Webhook Delivery Replay"
+description: "Manually re-send the payload from the most recent delivery attempt for a job execution, and record a new attempt with the result."
+---
+
+Use this endpoint to recover from a failed webhook delivery, or to re-verify a fix, without
+needing to trigger the job again. The original payload is resent byte-for-byte to the webhook's
+current URL; a new attempt is recorded alongside the one being replayed, which is left untouched.
+For a list of past attempts, see
+[Webhook Delivery Attempts](/guides/api-usage/risk-cloud-api-webhook-delivery-attempts).
+
+## Replay a Webhook Delivery endpoint
+
+```
+POST /api/v1/jobs/webhook-history/{job-execution-operation-id}/replay
+```
+
+### Requirements
+
+- **Build permission.** Your user must have the Build or Admin - All entitlement. Requests
+  without it are rejected with `403`.
+- **Entitlement to the triggering Application.** Same rule as the
+  [Webhook Delivery Attempts](/guides/api-usage/risk-cloud-api-webhook-delivery-attempts#which-attempts-you-see)
+  endpoint: with Build permission only, you can replay a job execution when the job runs on a
+  fixed schedule, its triggering Workflow has no permissions restrictions, or you're entitled to
+  that Application. A job execution ID you're not entitled to responds the same as one that
+  doesn't exist — see [Errors](#errors).
+- **A saved request payload on the attempt.** Only attempts recorded after Webhook Observability
+  was enabled have a saved payload. An attempt from before the feature was turned on can't be
+  replayed.
+
+### Path parameter
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `job-execution-operation-id` | string | Yes | The `jobExecutionOperationId` of the job execution whose most recent delivery attempt you want to replay. This is the same value returned in the `jobExecutionOperationId` field by the [Webhook Delivery Attempts](/guides/api-usage/risk-cloud-api-webhook-delivery-attempts) endpoint. |
+
+Request body: none.
+
+## What happens on replay
+
+- The most recent delivery attempt for the given execution is looked up, and its exact original
+  payload is resent to the webhook's **current** URL — not the URL that was in effect at the
+  time of the original attempt.
+- A new attempt is recorded with `attemptType: REPLAY`. It does not overwrite or modify the
+  attempt it replayed.
+- Exactly one delivery is attempted. A failed replay is not retried automatically.
+- If the resend succeeds, the webhook's status changes from `FAILING` to `ACTIVE` (if it was
+  `FAILING`).
+
+<Warning>
+  A replay whose delivery fails is still a `200` from this endpoint, because the delivery
+  attempt failed — not the API request. Check the `responseBody` and `httpStatusCode` fields on
+  `lastWebhookDeliveryAttempt` to determine the actual result of the replay.
+</Warning>
+
+## Response
+
+`200 OK`.
+
+```json
+{
+  "jeoId": "FJr4xLId",
+  "jeoStatus": "FAILED",
+  "webhookName": "test",
+  "webhookUrl": "https://testing.com",
+  "webhookId": "123",
+  "jobId": "234",
+  "jobName": "webhook job",
+  "recordId": "456",
+  "recordName": "record 54",
+  "recordExists": true,
+  "webhookExists": true,
+  "jobExecutionId": "678",
+  "lastWebhookDeliveryAttempt": {
+    "status": "FAILED",
+    "attemptType": "REPLAY",
+    "responseBody": "{\"error\":\"bad request\"}",
+    "httpStatusCode": 400,
+    "fireDate": "2026-08-14T13:05:22.000+00:00"
+  }
+}
+```
+
+| Field | Description |
+|---|---|
+| `jeoId` | The job execution operation that was replayed. |
+| `jeoStatus` | The job execution's status after the replay: `SUCCESS` or `FAILED`. |
+| `webhookName` | The webhook's name. |
+| `webhookUrl` | The URL the payload was sent to. |
+| `webhookId` | The webhook the payload was sent to. |
+| `jobId` | The job that triggered the delivery. |
+| `jobName` | The job's name. |
+| `recordId` | The record that triggered the job. |
+| `recordName` | The record's name. |
+| `recordExists` | `false` if the record has been deleted. |
+| `webhookExists` | `false` if the webhook has been deleted. |
+| `jobExecutionId` | The job execution that holds the operation being replayed. |
+| `lastWebhookDeliveryAttempt` | The attempt this call just created — see below. |
+
+`lastWebhookDeliveryAttempt` fields:
+
+| Field | Description |
+|---|---|
+| `status` | `DELIVERED` if the webhook endpoint returned a success response, `FAILED` otherwise. |
+| `attemptType` | Always `REPLAY` for a response from this endpoint. |
+| `httpStatusCode` | Integer, may be `null`. The HTTP status the webhook endpoint responded with. `null` on a timeout, DNS failure, or refused connection. |
+| `responseBody` | String, may be `null`. The response body the webhook endpoint returned. `null` under the same conditions as `httpStatusCode`. |
+| `fireDate` | Timestamp when the replay was sent. |
+
+## Errors
+
+| Status | Reason |
+|---|---|
+| `400 Bad Request` | The Webhook Observability feature is not enabled on your account. |
+| `401 Unauthorized` | The request could not be associated with a user. |
+| `403 Forbidden` | Your user does not have the Build or Admin - All entitlement. |
+| `404 Not Found` | The job execution operation ID doesn't exist, or you're not entitled to it. Also returned if the webhook the attempt was sent to has since been deleted. |
+| `409 Conflict` | The most recent attempt for this execution has no saved payload (it predates Webhook Observability), so there is nothing to replay. |
+
+<Tip>
+  Unlike the list-style [Webhook Delivery Attempts](/guides/api-usage/risk-cloud-api-webhook-delivery-attempts)
+  endpoint, this endpoint does return `404` — there's no page of results to come back empty, just
+  one execution that either resolves or doesn't.
+</Tip>

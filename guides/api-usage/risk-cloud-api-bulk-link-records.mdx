@@ -1,0 +1,157 @@
+---
+title: "Risk Cloud API: Bulk Link Records"
+sidebarTitle: "Bulk Link Records"
+description: "Create a Bulk Link Records request, upload and process a file, and monitor the linking result via the Risk Cloud API."
+---
+
+Reference the Bulk Link Records help article for in-depth information about the functionality and the permissions it requires. Obtain your API Access Token to get started — see [Authentication](/guides/api-usage/authentication).
+
+A Bulk Link Record (BLR) request links records between two workflows in bulk from an uploaded file. The workflow is: create a request, upload and verify a file against it, process the file, then check the result.
+
+## Step 1: Set up the request
+
+### Check for an incomplete request
+
+Only one BLR request per unique workflow/step combination can run at a time (the reverse combination is allowed concurrently). The combination becomes available again once the existing request completes or fails.
+
+| New request | Existing request status | Allowed? |
+|---|---|---|
+| wf1/step1 → wf1/step2 | none | Yes — no other active request exists |
+| wf1/step1 → wf1/step2 | wf1/step1 → wf1/step2 [PROCESSING / PENDING UPLOAD / FILE ERRORS / SYSTEM ERROR] | No — another active request exists |
+| wf1/step1 → wf1/step2 | wf1/step1 → wf1/step2 [COMPLETED / COMPLETED WITH ERROR] | Yes — no other active request exists |
+| wf1/step1 → wf1/step2 | wf1/step2 → wf1/step1 [PROCESSING / PENDING UPLOAD / FILE ERRORS / SYSTEM ERROR] | Yes — the reverse direction is unaffected |
+| wf1/step1 → wf1/step2 | wf1/step2 → wf1/step1 [COMPLETED / COMPLETED WITH ERROR] | Yes — the reverse direction is unaffected |
+
+**GET /api/v1/bulk-link-records/hasRequestInProgress**
+
+| Query parameter | Required | Description |
+|---|---|---|
+| `sourceWorkflowId` | No | The first (source) workflow ID. |
+| `targetWorkflowId` | No | The second (target) workflow ID. |
+
+Returns a boolean — `true` if a matching request is already in progress.
+
+### Create the request
+
+Creates a new BLR request. Check for an incomplete request first.
+
+**`POST /api/v1/bulk-link-records/source/{sourceWorkflowId}/target/{targetWorkflowId}`**
+
+Returns a `BulkLinkRecordsResult` object, reused by every endpoint below:
+
+| Property | Description |
+|---|---|
+| `id` | The BLR request ID. |
+| `creator` | The user who created the request. |
+| `submitter` | The user who submitted the request. |
+| `dateCompleted` | Date the request completed. |
+| `dateCreated` | Date the request was created. |
+| `status` | Current status of the request. |
+| `sourceWorkflowId` / `sourceWorkflowName` | The source workflow's ID and name. |
+| `sourceApplicationId` / `sourceApplicationName` / `sourceApplicationIcon` / `sourceApplicationColor` | The source workflow's parent application details. |
+| `targetWorkflowId` / `targetWorkflowName` | The target workflow's ID and name. |
+| `targetApplicationId` / `targetApplicationName` / `targetApplicationIcon` / `targetApplicationColor` | The target workflow's parent application details. |
+| `workflowMapType` | The relationship mapping type between the two workflows. |
+| `fileName` | The name of the uploaded file. |
+| `errorTemplateCount` | Number of errors found in the uploaded file. |
+| `requestTotal` | Total rows to link after processing. |
+| `requestSuccessTotal` | Successful links after processing. |
+| `requestErrorTotal` | Unsuccessful links after processing. |
+
+## Step 2: Upload and verify the file
+
+### Download the template
+
+**`GET /api/v1/bulk-link-records/template/{requestId}`**
+
+| Path parameter | Description |
+|---|---|
+| `requestId` | The BLR request ID. |
+
+Returns the base `.xlsx` template to populate with data.
+
+### Upload the file
+
+Performs a high-level validation check only — it does not perform detailed validation or link any records.
+
+**`POST /api/v1/bulk-link-records/import/{requestId}`**
+
+| Parameter | Description |
+|---|---|
+| `requestId` | The BLR request ID (path). |
+| `file` | The populated file to upload, in `.xlsx` or `.csv` format. |
+
+Returns a `BulkLinkRecordsResult` object (see above).
+
+### Delete the file
+
+Removes the uploaded file so a new one can be uploaded via the endpoint above.
+
+**`DELETE /api/v1/bulk-link-records/{requestId}/file`**
+
+| Path parameter | Description |
+|---|---|
+| `requestId` | The BLR request ID. |
+
+Returns a `BulkLinkRecordsResult` object.
+
+## Step 3: Process the file and complete linking
+
+### Process the file
+
+Runs detailed-level validation and, if it passes, links the records. The file should already have passed the high-level validation from the upload step.
+
+**`POST /api/v1/bulk-link-records/process/{requestId}`**
+
+| Path parameter | Description |
+|---|---|
+| `requestId` | The BLR request ID. |
+
+Returns `200` with an empty body. One of two outcomes follows:
+
+- **Failed detailed-level validation** — the request status becomes `FILE_ERRORS` and no records are linked. Download the validation error summary (below).
+- **Passed detailed-level validation** — the request status becomes `COMPLETED` or `COMPLETED_WITH_ERRORS` and records are linked. Download the completed summary (below).
+
+### Download the file validation error summary
+
+Use this when the request status is `FILE_ERRORS`.
+
+**`GET /api/v1/bulk-link-records/error-template/{requestId}`**
+
+| Path parameter | Description |
+|---|---|
+| `requestId` | The BLR request ID. |
+
+Returns the validation error summary as an `.xlsx` file.
+
+### Download the completed (with errors) summary
+
+Use this when the request status is `COMPLETED` or `COMPLETED_WITH_ERRORS`.
+
+**`GET /api/v1/bulk-link-records/summary/{requestId}`**
+
+| Path parameter | Description |
+|---|---|
+| `requestId` | The BLR request ID. |
+
+Returns the completed/completed-with-errors summary as an `.xlsx` file.
+
+## Other operations
+
+### Find a request
+
+**`GET /api/v1/bulk-link-records/{requestId}`**
+
+Returns a single `BulkLinkRecordsResult`.
+
+### Find all requests
+
+**GET /api/v1/bulk-link-records/all**
+
+Accepts standard [pagination](/guides/api-usage/pagination) parameters (e.g. `sort`, `size`). Returns a page of `BulkLinkRecordsResult` objects that the requesting user has access to.
+
+### Deactivate a request
+
+**`DELETE /api/v1/bulk-link-records/{requestId}/deactivate`**
+
+Returns the deactivated `BulkLinkRecordsResult`.

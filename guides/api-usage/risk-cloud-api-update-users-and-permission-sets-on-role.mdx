@@ -1,0 +1,100 @@
+---
+title: "Risk Cloud API: Update Users and Permission Sets on Role"
+sidebarTitle: "Update Users and Permission Sets on Role"
+description: "Add or remove users and permission sets on a role with the Roles API."
+---
+
+Updating users and permission sets on a role is a common task in Risk Cloud, and the Roles API
+supports it directly.
+
+## Prerequisites
+
+- Obtain your [API Access Token](/guides/api-usage/authentication) or pull the Risk Cloud Postman
+  Collection (see the [Postman guide](/guides/quick-start/postman)) to get started.
+- Required user role: `Admin`.
+
+## Update Role endpoint request
+
+```
+PATCH /api/v1/roles/with-permission-sets/{role}
+```
+
+| Path parameter | Required | Description |
+|---|---|---|
+| `role` | Yes | The role ID you want to update. |
+
+### Case 1: Update users on role
+
+Request body properties for adding or removing users:
+
+```json
+{
+    "usersToAdd": [
+        {
+            "status": "Active",
+            "id": "<user ID>"
+        }
+    ],
+    "usersToRemove": [
+        {
+            "status": "Active",
+            "id": "<user ID>"
+        }
+    ],
+    "name": "<role name>"
+}
+```
+
+### Case 2: Update permission sets on role
+
+Request body properties for adding or removing permission sets:
+
+```json
+{
+    "permissionSetsToAdd": [
+        {
+            "id": "<permission set ID>"
+        }
+    ],
+    "permissionSetsToRemove": [
+        {
+            "id": "<permission set ID>"
+        }
+    ],
+    "name": "<role name>"
+}
+```
+
+<Tip>
+**Combining cases**
+
+You can combine the properties from both request bodies above in a single request if you need to
+add or remove users and permission sets at the same time.
+</Tip>
+
+## Update Role endpoint response
+
+Returns a `Role` object:
+
+```json
+{
+    "id": "<role id>",
+    "active": true,
+    "created": "<created date time in epoch millis>",
+    "updated": "<updated date time in epoch millis>",
+    "name": "<role name>",
+    "locked": false,
+    "superAdmin": false,
+    "defaultRoleForNewUsers": false,
+    "autoprovisioned": false,
+    "externalId": "<role external ID>",
+    "stepPermissionSets": [],
+    "moduleEntitlements": [],
+    "users": [],
+    "userCount": 0,
+    "moduleCount": 0
+}
+```
+
+`stepPermissionSets` and `users` are returned empty; `moduleEntitlements` is populated in the
+response.

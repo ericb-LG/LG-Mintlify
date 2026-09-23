@@ -1,0 +1,130 @@
+---
+title: "Risk Cloud API: Update Records"
+sidebarTitle: "Update Records"
+description: "Update field values and due dates on existing records with the Record API."
+---
+
+## Update Records endpoint
+
+The Record API offers an Update Records endpoint that updates the values on a given record. This
+endpoint requires that the user whose API token is being used for the request has write access to
+the record.
+
+```
+PATCH /api/v1/records/{record-id}
+```
+
+**Request body**
+
+```json
+[
+  {
+    "fieldId": "e5f6g7h8",
+    "values": [
+      "The string value of the field"
+    ]
+  }
+]
+```
+
+| Property | Requiredness | Description |
+|---|---|---|
+| `fieldId` | optional | The unique ID of the field to set values on for the given record. |
+| `values` | optional | An array of strings representing the text values to set on the fields for the corresponding field IDs on the given record. |
+
+## Resources
+
+### Get record ID
+
+The `record-id` can be obtained from the Risk Cloud web application, emails, or via the Risk Cloud
+API.
+
+**Using the Risk Cloud application:**
+
+Open the desired record in the Risk Cloud web application and take the ID from the end of the URL:
+
+```
+https://your-company.logicgate.com/records/{record-id}
+```
+
+**Using email:**
+
+Contextual Notifications support setting Custom Fields and System Fields in outbound emails. Record
+ID is a System Field that can be included in outbound emails, letting you parse it out of the email
+for use in an update request.
+
+**Using the Risk Cloud API:**
+
+See [Record Search](/guides/api-usage/risk-cloud-api-record-search) to obtain record IDs via the
+Risk Cloud API.
+
+### Expected values for field types
+
+Different field types expect different string formats in the `values` array:
+
+| Field type | Example value | Notes |
+|---|---|---|
+| Text | `"Sample text"` | A single string value. |
+| User | `"user@example.com"` | The user's email address as a string. |
+| Date | `"2026-01-01 12:00:00"` | Format: `YYYY-MM-DD HH:MM:SS`. |
+| Number | `"12345.67"` | A numeric value as a string; supports integers or decimals depending on the field's format (for example, `DECIMAL`). |
+| Select / Multi Select | `"Option1"` | The selected option as a string. |
+| Checkbox | `"true"` or `"false"` | A boolean value as a string. |
+| Attachments | — | Must be added separately; see [Upload Attachments](/guides/api-usage/risk-cloud-api-upload-attachments). Use `POST /api/v1/attachments` to upload the file before referencing it in the record update. |
+| Fixed Date Calculation | `"2024-06-15"` | Format: `YYYY-MM-DD`. |
+| Calculation | `"1.0"` | A numeric value as a string, typically the result of other field calculations. |
+
+### Get field ID
+
+The field ID for the `fieldId` property can be obtained from the Risk Cloud web app or from the
+API.
+
+**Web app environment:**
+
+- Navigate to **Build > Applications**.
+- Search for and open the application containing the step.
+- Open the workflow containing the step.
+- Open the step.
+- Open the field for editing.
+- The field ID is shown in the **Field ID** section.
+
+**Risk Cloud API:**
+
+```
+GET /api/v2/fields
+```
+
+The field ID can be located in the `id` property of field objects returned in the `content`
+property of the response.
+
+## Update Record Due Date endpoint
+
+The Record API also offers an endpoint that updates the due date value on a given record. This
+endpoint requires that the user whose API token is being used for the request has write access to
+the record.
+
+```
+PATCH /api/v1/records/{record-id}/due-date
+```
+
+This endpoint accepts a datetime value as the request body, in the format
+`YYYY-MM-DDTHH:MM:SS.000Z`. Make sure the request body contains only the datetime value you wish
+to set. For example:
+
+```
+2025-12-01T01:00:00.000Z
+```
+
+### Response
+
+Returns the fully updated Record object, including the updated due date:
+
+```json
+{
+    "id": "{record-id}",
+    "active": true,
+    "dueDate": 1764550800000
+}
+```
+
+The response includes the full record object; only the relevant fields are shown above.

@@ -1,0 +1,258 @@
+---
+title: "Risk Cloud API: View Record Audits"
+sidebarTitle: "View Record Audits"
+description: "Retrieve record-level audit events such as creation, movement, linking, and deletion, optionally filtered by workflow and timeframe."
+---
+
+Record audits track record events such as when and how a record was created, moved, deleted, and
+more. Before making any of these calls you'll need a bearer token — see
+[Authentication](/guides/api-usage/authentication), or pull the Risk Cloud
+[Postman collection](/guides/quick-start/postman) to get started.
+
+## Retrieve Record Audits endpoint
+
+The Record Audits API offers a Retrieve Record Audits endpoint that returns an iterable page of
+all record audits in a given timeframe. It's available to all users with a build entitlement.
+
+```
+GET /api/v1/audit/records
+```
+
+This endpoint accepts the following optional query parameters for additional filtering:
+
+| Query parameter | Description |
+|---|---|
+| `minCreated` | A timestamp in milliseconds since the Unix epoch. If provided, the response contains only record audits created since this timestamp. |
+| `maxCreated` | A timestamp in milliseconds since the Unix epoch. If provided, the response contains only record audits created before this timestamp. |
+| `workflow` | The unique ID of a workflow. If provided, the response contains only record audits from that workflow. |
+| `page` | The zero-indexed page number (must not be less than 0, defaults to 0). |
+| `size` | The size of the page and maximum number of items returned (must not be less than 1, defaults to 20). |
+
+See [Pagination](/guides/api-usage/pagination) for details on the page response envelope.
+
+## Use cases
+
+### Get a Workflow ID
+
+To request all record audits in a workflow, use the `workflow` query parameter with that
+workflow's ID. The Workflow ID can be obtained either from the Risk Cloud web app or from the API.
+
+**Web app**
+
+1. Navigate to **Build > Applications**.
+2. Search for and open the application containing the workflow.
+3. Open the edit gear icon (⚙) on the workflow to open the Workflow Editor.
+4. The Workflow ID is shown under the **Workflow ID** label in the editor window.
+
+**API**
+
+The Workflow ID can also be retrieved via the Retrieve Workflows endpoint, in the `id` property of
+each workflow object returned in the response's `content` array:
+
+```
+GET /api/v2/workflows
+```
+
+See [View Applications, Workflows, and Steps](/guides/api-usage/risk-cloud-api-view-applications-workflows-and-steps)
+for another way to look up Workflow IDs.
+
+### Retrieve record audits
+
+Once you have the Workflow ID and a timeframe, request the workflow's record audits:
+
+```
+GET /api/v1/audit/records?workflow={WORKFLOW_ID}&minCreated={MIN_CREATED}&maxCreated={MAX_CREATED}
+```
+
+#### Response
+
+The response contains all matching record audits, along with contextual information for each
+audit such as the step, audit type, and user. The `auditType` property can be any of the
+following values:
+
+- `CreatedAudit`
+- `CopiedAudit`
+- `LinkingAudit`
+- `LinkedAudit`
+- `UnlinkedAudit`
+- `DeletedAudit`
+- `MovedAudit`
+- `AssignedAudit`
+- `SecondaryAssignedAudit`
+- `SecondaryUnassignedAudit`
+- `PreservedAudit`
+- `UnassignedAudit`
+
+A sample response is shown below.
+
+```json
+{
+  "content": [
+    {
+      "id": "abcd1234",
+      "active": true,
+      "created": 1710426007818,
+      "updated": null,
+      "record": {
+        "id": "efgh5678",
+        "active": true,
+        "created": 1710426006820,
+        "updated": null,
+        "state": "LIVE",
+        "sequenceId": 22,
+        "status": "IN_PROGRESS",
+        "name": "",
+        "viewableTitle": "",
+        "initialStateEndStep": false,
+        "workflowDueDate": null,
+        "recordType": "RECORD",
+        "isPublic": false
+      },
+      "source": {
+        "id": "ijkl9012",
+        "active": true,
+        "created": 1696954275470,
+        "updated": 1702410681371,
+        "stepType": "ORIGIN",
+        "name": "Default Origin",
+        "priority": 1,
+        "userGroupOperationType": "FULL_ACCESS",
+        "xpos": 55,
+        "ypos": 55,
+        "isPublic": true,
+        "commentsEnabled": true,
+        "documentsEnabled": false,
+        "externalUserMfaRequired": false,
+        "uxriEnabled": true,
+        "sla": {
+          "enabled": false,
+          "duration": 0
+        },
+        "workflow": {
+          "id": "mnop3456",
+          "active": true,
+          "created": 1696954275551,
+          "updated": 1713881453125,
+          "name": "Item",
+          "recordPrefix": "Item",
+          "allowGroups": false,
+          "requireGroups": false,
+          "xpos": 147,
+          "ypos": 98,
+          "priority": 1,
+          "sla": {
+            "enabled": false,
+            "duration": 0
+          },
+          "allowAec": false,
+          "sequence": {
+            "id": "qrst7890",
+            "active": true,
+            "created": 1696954275485,
+            "updated": null
+          },
+          "application": null,
+          "userGroups": [],
+          "primaryField": null,
+          "workflowType": "WORKFLOW"
+        },
+        "assignableUserType": "APP_AND_EXTERNAL_USERS",
+        "end": false,
+        "chain": false,
+        "origin": true
+      },
+      "target": null,
+      "user": {
+        "status": "Active",
+        "id": "uvwx1234",
+        "active": true,
+        "created": 1677696956370,
+        "updated": 1713993694617,
+        "email": "first.last@logicgate.com",
+        "company": null,
+        "imageUrl": null,
+        "imageS3Key": null,
+        "tier": "SECONDARY",
+        "pricingUserTier": "POWER",
+        "first": "First",
+        "last": "Last",
+        "mfaEnabled": false,
+        "mfaSetup": false,
+        "autoprovisioned": true,
+        "scimStatus": "Active",
+        "lastLogin": null,
+        "lastDeactivated": null,
+        "name": "First Last",
+        "locked": false,
+        "superUser": false,
+        "external": false,
+        "disabled": false,
+        "serviceAccount": false,
+        "empty": false,
+        "idOrTransientId": "uvwx1234",
+        "transientIdOrId": "uvwx1234"
+      },
+      "sourceUser": null,
+      "targetUser": {
+        "status": "Active",
+        "id": "uvwx1234",
+        "active": true,
+        "created": 1677696956370,
+        "updated": 1713993694617,
+        "email": "first.last@logicgate.com",
+        "company": null,
+        "imageUrl": null,
+        "imageS3Key": null,
+        "tier": "SECONDARY",
+        "pricingUserTier": "POWER",
+        "first": "First",
+        "last": "Last",
+        "mfaEnabled": false,
+        "mfaSetup": false,
+        "autoprovisioned": true,
+        "scimStatus": "Active",
+        "lastLogin": null,
+        "lastDeactivated": null,
+        "name": "First Last",
+        "locked": false,
+        "superUser": false,
+        "external": false,
+        "disabled": false,
+        "serviceAccount": false,
+        "empty": false,
+        "idOrTransientId": "uvwx1234",
+        "transientIdOrId": "uvwx1234"
+      },
+      "fieldAudits": [],
+      "dueDate": null,
+      "stepDueDate": null,
+      "auditType": "CreatedAudit"
+    }
+  ],
+  "pageable": {
+    "sort": {
+      "empty": true,
+      "sorted": false,
+      "unsorted": true
+    },
+    "offset": 0,
+    "pageSize": 20,
+    "pageNumber": 0,
+    "paged": true,
+    "unpaged": false
+  },
+  "last": true,
+  "totalElements": 1,
+  "totalPages": 1,
+  "size": 20,
+  "number": 0,
+  "sort": {
+    "empty": true,
+    "sorted": false,
+    "unsorted": true
+  },
+  "numberOfElements": 1,
+  "first": true,
+  "empty": false
+}
+```

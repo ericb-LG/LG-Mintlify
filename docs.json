@@ -1,37 +1,259 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mintlify Starter Kit",
+  "name": "Risk Cloud Developer Portal",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#0027D6",
+    "light": "#00E0DF",
+    "dark": "#08075F"
   },
   "favicon": "/favicon.svg",
   "navigation": {
-    "pages": [
+    "tabs": [
       {
-        "group": "Getting Started",
+        "tab": "Guides",
         "pages": [
           "index",
-          "quickstart"
+          {
+            "group": "Quick Start Guides",
+            "pages": [
+              "guides/quick-start/getting-started",
+              "guides/quick-start/postman",
+              "guides/quick-start/risk-cloud-power-bi-connection",
+              "guides/quick-start/risk-cloud-webhooks"
+            ]
+          },
+          {
+            "group": "API Usage Guides",
+            "pages": [
+              "guides/api-usage/authentication",
+              "guides/api-usage/navigating-risk-cloud-data-with-v2",
+              "guides/api-usage/pagination",
+              "guides/api-usage/risk-cloud-api-about-users-roles-and-permissions",
+              "guides/api-usage/risk-cloud-api-assign-records",
+              "guides/api-usage/risk-cloud-api-automated-evidence-collection",
+              "guides/api-usage/risk-cloud-api-build-audit-log",
+              "guides/api-usage/risk-cloud-api-bulk-import-records",
+              "guides/api-usage/risk-cloud-api-bulk-link-records",
+              "guides/api-usage/risk-cloud-api-create-records",
+              "guides/api-usage/risk-cloud-api-create-user-groups",
+              "guides/api-usage/risk-cloud-api-create-users",
+              "guides/api-usage/risk-cloud-api-data-repositories",
+              "guides/api-usage/risk-cloud-api-export-attachments",
+              "guides/api-usage/risk-cloud-api-export-roles",
+              "guides/api-usage/risk-cloud-api-export-step-permission-sets",
+              "guides/api-usage/risk-cloud-api-export-table-report",
+              "guides/api-usage/risk-cloud-api-export-user-groups",
+              "guides/api-usage/risk-cloud-api-grant-users-record-access",
+              "guides/api-usage/risk-cloud-api-link-records",
+              "guides/api-usage/risk-cloud-api-linked-record-search",
+              "guides/api-usage/risk-cloud-api-moving-records",
+              "guides/api-usage/risk-cloud-api-post-record-comments",
+              "guides/api-usage/risk-cloud-api-record-search",
+              "guides/api-usage/risk-cloud-api-update-field-configuration",
+              "guides/api-usage/risk-cloud-api-update-record-user-groups",
+              "guides/api-usage/risk-cloud-api-update-records",
+              "guides/api-usage/risk-cloud-api-update-user-details-and-roles",
+              "guides/api-usage/risk-cloud-api-update-users-and-permission-sets-on-role",
+              "guides/api-usage/risk-cloud-api-upload-attachments",
+              "guides/api-usage/risk-cloud-api-view-applications-workflows-and-steps",
+              "guides/api-usage/risk-cloud-api-view-field-audits",
+              "guides/api-usage/risk-cloud-api-view-record-audits",
+              "guides/api-usage/risk-cloud-api-viewing-fields",
+              "guides/api-usage/risk-cloud-api-viewing-user-access-audits",
+              "guides/api-usage/risk-cloud-api-viewing-users",
+              "guides/api-usage/risk-cloud-api-webhook-delivery-attempts",
+              "guides/api-usage/risk-cloud-api-webhook-delivery-replay",
+              "guides/api-usage/risk-cloud-api-webhook-urls",
+              "guides/api-usage/risk-cloud-export-record-data",
+              "guides/api-usage/service-accounts"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API v2",
+        "pages": [
+          "api-reference",
+          {
+            "group": "Access Audit",
+            "pages": [
+              "api-reference/access-audit/retrieve-access-audits"
+            ]
+          },
+          {
+            "group": "Application",
+            "pages": [
+              "api-reference/application/retrieve-applications",
+              "api-reference/application/create-an-application",
+              "api-reference/application/retrieve-an-application",
+              "api-reference/application/delete-an-application",
+              "api-reference/application/update-an-application"
+            ]
+          },
+          {
+            "group": "Authentication",
+            "pages": [
+              "api-reference/authentication/refresh-an-api-token",
+              "api-reference/authentication/create-an-api-access-token"
+            ]
+          },
+          {
+            "group": "Edge Path",
+            "pages": [
+              "api-reference/edge-path/list-all-conditional-edge-paths",
+              "api-reference/edge-path/create-a-conditional-edge-path",
+              "api-reference/edge-path/retrieve-a-conditional-edge-path",
+              "api-reference/edge-path/delete-a-conditional-edge-path",
+              "api-reference/edge-path/update-a-conditional-edge-path"
+            ]
+          },
+          {
+            "group": "Field",
+            "pages": [
+              "api-reference/field/retrieve-fields"
+            ]
+          },
+          {
+            "group": "Next Path",
+            "pages": [
+              "api-reference/next-path/list-all-default-next-paths",
+              "api-reference/next-path/create-a-default-next-path",
+              "api-reference/next-path/update-a-default-next-path",
+              "api-reference/next-path/retrieve-a-default-next-path",
+              "api-reference/next-path/delete-a-default-next-path"
+            ]
+          },
+          {
+            "group": "Record",
+            "pages": [
+              "api-reference/record/retrieve-records",
+              "api-reference/record/retrieve-a-record",
+              "api-reference/record/retrieve-all-linked-records"
+            ]
+          },
+          {
+            "group": "Redirect Path",
+            "pages": [
+              "api-reference/redirect-path/list-all-redirect-paths",
+              "api-reference/redirect-path/create-a-redirect-path",
+              "api-reference/redirect-path/retrieve-a-redirect-path",
+              "api-reference/redirect-path/delete-a-redirect-path",
+              "api-reference/redirect-path/update-a-redirect-path"
+            ]
+          },
+          {
+            "group": "Step",
+            "pages": [
+              "api-reference/step/retrieve-steps",
+              "api-reference/step/create-a-step",
+              "api-reference/step/retrieve-a-step",
+              "api-reference/step/delete-a-step",
+              "api-reference/step/update-a-step",
+              "api-reference/step/update-a-step-s-canvas-position"
+            ]
+          },
+          {
+            "group": "Workflow",
+            "pages": [
+              "api-reference/workflow/retrieve-workflows",
+              "api-reference/workflow/create-a-workflow",
+              "api-reference/workflow/retrieve-a-workflow",
+              "api-reference/workflow/delete-a-workflow",
+              "api-reference/workflow/update-a-workflow"
+            ]
+          },
+          {
+            "group": "Workflow Map",
+            "pages": [
+              "api-reference/workflow-map/retrieve-workflow-maps",
+              "api-reference/workflow-map/create-a-workflow-map",
+              "api-reference/workflow-map/retrieve-a-workflow-map",
+              "api-reference/workflow-map/delete-a-workflow-map",
+              "api-reference/workflow-map/update-a-workflow-map"
+            ]
+          }
+        ],
+        "openapi": "openapi.json"
+      },
+      {
+        "tab": "API v1",
+        "openapi": "openapi-v1.json",
+        "pages": [
+          "api-v1",
+          {
+            "group": "Account",
+            "pages": [
+              "api-v1/account/retrieve-account-overview-details",
+              "api-v1/account/retrieve-account-details",
+              "api-v1/account/retrieve-session-information",
+              "api-v1/account/retrieve-public-account-details"
+            ]
+          },
+          {
+            "group": "Authentication",
+            "pages": [
+              "api-v1/authentication/refresh-an-api-token",
+              "api-v1/authentication/list-the-current-user-s-api-tokens",
+              "api-v1/authentication/create-a-new-user-managed-api-token",
+              "api-v1/authentication/create-an-api-access-token",
+              "api-v1/authentication/retrieve-an-external-access-token",
+              "api-v1/authentication/revoke-an-external-access-token",
+              "api-v1/authentication/revoke-a-user-managed-api-token"
+            ]
+          },
+          {
+            "group": "External User",
+            "pages": [
+              "api-v1/external-user/create-an-external-user-with-no-attached-roles",
+              "api-v1/external-user/verify-mfa-for-external-user",
+              "api-v1/external-user/send-an-email-containing-an-mfa-code-to-the-specified-email",
+              "api-v1/external-user/bulk-create-external-users-with-no-attached-roles",
+              "api-v1/external-user/return-all-record-tokens-authorizing-the-given-user",
+              "api-v1/external-user/retrieve-an-external-token-based-off-the-associated-record-entity"
+            ]
+          },
+          {
+            "group": "Principal",
+            "pages": [
+              "api-v1/principal/get-the-authenticated-principal"
+            ]
+          },
+          {
+            "group": "SCIM",
+            "pages": [
+              "api-v1/scim/retrieve-a-scim-user",
+              "api-v1/scim/replace-a-scim-user",
+              "api-v1/scim/deactivate-a-scim-user",
+              "api-v1/scim/update-a-scim-user",
+              "api-v1/scim/retrieve-a-scim-group",
+              "api-v1/scim/replace-a-scim-group",
+              "api-v1/scim/delete-a-scim-group",
+              "api-v1/scim/update-a-scim-group",
+              "api-v1/scim/list-scim-users",
+              "api-v1/scim/create-a-scim-user",
+              "api-v1/scim/list-scim-groups",
+              "api-v1/scim/create-a-scim-group",
+              "api-v1/scim/retrieve-scim-service-provider-configuration",
+              "api-v1/scim/retrieve-scim-schemas",
+              "api-v1/scim/retrieve-scim-resource-types"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Release Notes",
+        "pages": [
+          "release-notes"
+        ]
+      },
+      {
+        "tab": "Developer Blog",
+        "pages": [
+          "blog-archive"
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
+    ]
   },
   "logo": {
     "light": "/logo/light.svg",
@@ -68,5 +290,24 @@
       "github": "https://github.com/mintlify",
       "linkedin": "https://linkedin.com/company/mintlify"
     }
+  },
+  "description": "Build integrations with the Risk Cloud API.",
+  "redirects": [
+    {
+      "source": "/api/public/risk-cloud-api",
+      "destination": "/api-reference",
+      "permanent": true
+    }
+  ],
+  "fonts": {
+    "heading": {
+      "family": "Archivo"
+    },
+    "body": {
+      "family": "Inter"
+    }
+  },
+  "api": {
+    "openapi": "openapi.json"
   }
 }

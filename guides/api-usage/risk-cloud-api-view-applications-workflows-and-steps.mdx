@@ -1,0 +1,89 @@
+---
+title: "Risk Cloud API: View Applications, Workflows, and Steps"
+sidebarTitle: "View Applications, Workflows, and Steps"
+description: "Retrieve every Application, Workflow, and Step in an environment in one request to look up IDs for other API calls."
+---
+
+## Background
+
+When working with the Risk Cloud API, it's common to need IDs for entities such as Applications,
+Workflows, and Steps. The endpoint below returns an array of every Application in your
+environment, including their Workflows and Steps.
+
+This gives you the ID data needed to interact with the rest of the API — for example, using a Step
+ID to create Records, or a Workflow ID to retrieve a list of Fields (see
+[Viewing Fields](/guides/api-usage/risk-cloud-api-viewing-fields)).
+
+Before making this request you'll need a bearer token — see
+[Authentication](/guides/api-usage/authentication).
+
+## Usage
+
+To obtain a list of all Applications, Workflows, and Steps in your environment, make the following
+request:
+
+```
+GET /api/v1/applications?generic=true
+```
+
+```bash
+curl --request GET 'https://your-company.logicgate.com/api/v1/applications?generic=true' \
+--header 'Authorization: Bearer {ACCESS_TOKEN}'
+```
+
+The response contains an array of all Applications. Application, Workflow, and Step IDs are the
+values of each object's `id` property, for use in subsequent API requests.
+
+### Sample response
+
+```json
+[
+  {
+    "active": true,
+    "color": "string",
+    "copied": true,
+    "created": "2019-08-24T14:15:22Z",
+    "homeScreen": {
+      "active": true,
+      "application": {},
+      "created": "2019-08-24T14:15:22Z",
+      "id": "string",
+      "tableReports": [null],
+      "updated": "2019-08-24T14:15:22Z"
+    },
+    "icon": "fa-bookmark",
+    "id": "string",
+    "imported": true,
+    "live": true,
+    "name": "string",
+    "permissionsEnabled": true,
+    "type": "string",
+    "updated": "2019-08-24T14:15:22Z",
+    "workflows": [
+      {
+        "active": null,
+        "allowGroups": null,
+        "application": null,
+        "applicationId": null,
+        "created": null,
+        "fields": null,
+        "id": null,
+        "name": null,
+        "primaryField": null,
+        "priority": null,
+        "recordPrefix": null,
+        "requireGroups": null,
+        "sequence": null,
+        "sla": null,
+        "steps": null,
+        "updated": null,
+        "userGroups": null,
+        "workflowMaps": null,
+        "workflowType": null,
+        "xpos": null,
+        "ypos": null
+      }
+    ]
+  }
+]
+```

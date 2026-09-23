@@ -1,0 +1,129 @@
+---
+title: "Risk Cloud API: Grant Users Record Access"
+sidebarTitle: "Grant Users Record Access"
+description: "Use a record's default User Group to dynamically grant or revoke individual users' access to that record."
+---
+
+## Overview
+
+User Groups give you the ability to provide more detailed access to particular records in your
+application, similar to how permission sets allow you to restrict access on steps. User Group
+access enables tagging specific users or pre-defined groups of users to records, restricting
+access accordingly. This functionality appears in the Risk Cloud web application under **Record
+Access > Users** for User Group enabled records.
+
+At the API level, this list of users is represented as a "Default User Group", a unique type
+automatically created for each individual record.
+
+The Risk Cloud API enables dynamic user access granting to records via default user groups. To
+begin, obtain your [API Access Token](/guides/api-usage/authentication) or pull the Risk Cloud
+Postman Collection — see the [Postman guide](/guides/quick-start/postman).
+
+## Update Default User Group
+
+The User Group API provides the following endpoint:
+
+**Endpoint:** `PATCH /api/v1/userGroups/recordDefault/{user-group-id}?record={record-id}`
+
+## Use case
+
+### Step 1: Get the record ID
+
+The `record-id` can be obtained through three methods:
+
+- **Using the Risk Cloud application:** Open the desired record and take the ID from the end of
+  the URL: `https://your-company.logicgate.com/records/{record-id}`
+- **Using email:** The Contextual Notifications feature allows setting Custom Fields and System
+  Fields in outbound emails. Record ID is a System Field that can be included and parsed from
+  emails.
+- **Using the Risk Cloud API:** Reference [Risk Cloud API: Record
+  Search](/guides/api-usage/risk-cloud-api-record-search) to obtain record IDs via the API.
+
+### Step 2: Get the default User Group
+
+When a record is created, a default User Group is added for granting specific users access. To
+preserve this User Group when adding and removing additional groups, the default User Group must
+be obtained from this internal endpoint:
+
+**Endpoint:** `GET /api/v1/internal/userGroups/default?record={record-id}`
+
+**Response:**
+
+```json
+{
+  "id": "a1b2c3d4",
+  "recordDefault": true,
+  "title": " Default Group",
+  "users": []
+}
+```
+
+The default User Group ID is the value of the `id` property in the response object.
+
+### Step 3: Get user IDs
+
+User IDs can be obtained from the Risk Cloud web app or the Risk Cloud API.
+
+**Using the web app:**
+
+1. Navigate to **Admin > Users**.
+2. Search for and select a user by clicking their email.
+3. The user ID appears under the **User ID** label.
+
+**Using the Risk Cloud API:**
+
+A user ID is located in the `id` property of returned user objects. To obtain all users, reference
+[Risk Cloud API: Viewing Users](/guides/api-usage/risk-cloud-api-viewing-users).
+
+To obtain a user ID by particular email, use this internal User API endpoint:
+
+**Endpoint:** `GET /api/v1/internal/users?search-type=EMAIL&query={email}`
+
+**Response:**
+
+```json
+{
+  "content": [
+    {
+      "id": "a1b2c3d4",
+      "email": "first.last@example.com"
+    }
+  ],
+  "pageable": {}
+}
+```
+
+### Step 4: Update the default User Group
+
+With the default User Group ID and the user IDs to add, users can be added via the following API
+endpoint and request body payload.
+
+**Endpoint:** `PATCH /api/v1/userGroups/recordDefault/{user-group-id}?record={record-id}`
+
+Use the record ID obtained in step 1 for the `record` query parameter. Use the full payload from
+the Get Default User Group response — including `id`, `title`, `users`, and `recordDefault` — as
+the basis for the request body.
+
+Modify the `users` array with user objects containing the IDs of the users you wish to grant
+access. Each user object should include `id`, a `status` of `Active`, and a `valueType` of `User`.
+To remove users from the default user group, omit their user objects from the request payload.
+
+```json
+{
+    "recordDefault": true,
+    "users": [
+        {
+            "status": "Active",
+            "valueType": "User",
+            "id": "{user-id}"
+        }
+    ],
+    "id": "{user-group-id}",
+    "title": " Default Group"
+}
+```
+
+**Response:**
+
+A 200 response confirms the Default User Group was updated. Upon refreshing the record in the
+Risk Cloud web application, the users are updated accordingly.

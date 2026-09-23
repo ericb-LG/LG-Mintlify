@@ -1,0 +1,117 @@
+---
+title: "Risk Cloud API: Interacting with Webhooks via Endpoints"
+sidebarTitle: "Interacting with Webhooks via Endpoints"
+description: "List, create, update, and rotate secrets for Risk Cloud webhook URLs via the webhook-urls API endpoints."
+---
+
+Webhooks enable Risk Cloud to send real-time messages to your third-party tools. This article
+covers the webhook URL API use cases for managing those integrations. For an introduction to Risk
+Cloud Webhooks, see the [Webhooks quick start](/guides/quick-start/risk-cloud-webhooks).
+
+## Use cases
+
+### Get Webhook URLs
+
+Requires **BUILD** role access.
+
+```
+GET /api/v1/webhook-urls
+```
+
+| Parameter | Location | Required | Type | Description |
+|---|---|---|---|---|
+| `query` | query | Yes | string | Filter results via search query. The parameter must be present even if its value is empty. |
+
+Request body: none.
+
+Response body: an array of webhook URL objects.
+
+```json
+[
+  {
+    "id": "<webhook url id>",
+    "requestType": "GET",
+    "headers": [],
+    "url": "<webhook url>",
+    "name": "<webhook name>",
+    "status": "<webhook status ex FAILING or ACTIVE>",
+    "creatorEmail": "<webhook creator email>",
+    "authHeadersEnabled": true,
+    "enabled": true
+  }
+]
+```
+
+### Generate a new webhook secret
+
+Requires **ADMIN** role access.
+
+```
+PATCH /api/v1/webhook-urls/{webhook-url-id}/key
+```
+
+Request body: none.
+
+Response body: the new webhook URL secret.
+
+### Create Webhook URL
+
+Requires **ADMIN** role access.
+
+```
+POST /api/v1/webhook-urls
+```
+
+```json
+{
+  "active": true,
+  "authHeaderName": "<webhook auth header name>",
+  "authHeaderValue": "<webhook auth header value>",
+  "dateFormat": "EEEE, MMMM d, yyyy h:mm a",
+  "name": "<webhook name>",
+  "url": "<webhook url that is properly formatted ex https://example.com>"
+}
+```
+
+Response: `200` with an object of the same shape as the request, plus additional fields populated
+by Risk Cloud.
+
+### Update Webhook URL
+
+Requires **ADMIN** role access.
+
+```
+PATCH /api/v1/webhook-urls/{webhook-url-id}
+```
+
+```json
+{
+  "active": true,
+  "dateFormat": "EEEE, MMMM d, yyyy h:mm a",
+  "authHeadersEnabled": false,
+  "authHeaderName": "<webhook auth header name>",
+  "authHeaderValue": "<webhook auth header value>",
+  "name": "<webhook name>",
+  "url": "<webhook url that is properly formatted ex https://example.com>"
+}
+```
+
+Response: `200` with an object of the same shape as the request, plus additional fields populated
+by Risk Cloud.
+
+## FAQ
+
+**What do I use for Header Name and Header Value?**
+
+Header Name is typically set to `Authorization`, and Header Value is typically set to
+`Bearer <token>`.
+
+**How long does a webhook secret last?**
+
+A webhook secret never expires unless it's changed. Best practice is to rotate it every 6–12
+months, but the cadence is up to your organization.
+
+**What LogicGate IP addresses can I add to an internal allow list?**
+
+LogicGate only provides dynamic IP addresses, not static ranges. If you need to allow list
+traffic, use an IaaS platform (Azure, Google Cloud, or AWS) to do so instead.

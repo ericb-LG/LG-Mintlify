@@ -1,0 +1,64 @@
+---
+title: "Risk Cloud API: Viewing Users"
+sidebarTitle: "Viewing Users"
+description: "Retrieve a list of all Users in your Risk Cloud environment for use in other API requests."
+---
+
+This article walks through obtaining User information for review and future API requests via the
+Risk Cloud API.
+
+## Authentication
+
+Obtain your API Access Token before getting started — see
+[Authentication](/guides/api-usage/authentication).
+
+## Permissions
+
+Listing all Users via the Risk Cloud API requires an Access Token generated from an Admin Primary
+account.
+
+## Background
+
+When working with Risk Cloud via the API, it's common to need User IDs for tasks ranging from
+enabling and disabling Users to assigning Users to Records. The endpoint below returns an array of
+all Users in your Risk Cloud environment.
+
+## Usage
+
+To obtain a list of all Users in your environment, make the following request:
+
+```
+GET /api/v1/users
+```
+
+The response contains an array of all Users in your environment. The `id` property of each object
+can be used in future API requests.
+
+### Response example
+
+```json
+[
+  {
+    "active": true,
+    "id": "string",
+    "email": "string",
+    "first": "string",
+    "last": "string",
+    "disabled": true,
+    "archived": true,
+    "roles": [null],
+    "serviceAccount": true,
+    "superUser": true,
+    "created": "2019-08-24T14:15:22Z",
+    "updated": "2019-08-24T14:15:22Z"
+  }
+]
+```
+
+## Next steps
+
+The `serviceAccount` field identifies integration users — see
+[Service Accounts](/guides/api-usage/service-accounts) for how to create and manage them. With
+User IDs in hand, you can also use them with
+[Export Record Data](/guides/api-usage/risk-cloud-export-record-data) or other record endpoints
+that reference a specific User.

@@ -1,0 +1,108 @@
+---
+title: "Risk Cloud API: Export Table Report"
+sidebarTitle: "Export Table Report"
+description: "Export a table report's record data as a CSV or XLSX file via the API."
+---
+
+Exporting Table Report data via the Risk Cloud API as a CSV or XLSX is a common use case, as it
+provides a way of exporting record data in the same format as it would be displayed within a
+table report in the Risk Cloud web application.
+
+This article walks through obtaining a table report and exporting its records as a CSV or XLSX
+via the Risk Cloud API:
+
+1. Obtain the `table-report-id` that you'd like applied as the columns for the export.
+2. Retrieve the table report export.
+
+Obtain your [API Access Token](/guides/api-usage/authentication) to get started. For more on
+exporting record data and table reports, refer to the Help Center articles on Export Record Data
+and Export Data from Table Reports.
+
+## Step 1: Obtain the table report ID
+
+The `table-report-id` can be obtained from the Risk Cloud web application or via the Risk Cloud
+API. If you already know your `table-report-id`, continue to
+[Step 2: Retrieve table report export](#step-2-retrieve-table-report-export).
+
+### Using the Risk Cloud application
+
+Open the desired table report from the reporting page located at **Reports > Table Reports** in
+the Risk Cloud web application, then take the ID from the end of the URL:
+
+```
+https://your-company.logicgate.com/report/tableReport/{table-report-id}
+```
+
+### Using the Risk Cloud API
+
+The Retrieve Table Reports endpoint returns all table reports that the user is entitled to by
+workflow. If no table reports are returned, check the permissions of the requesting API user to
+ensure proper permissions are granted.
+
+```
+GET /api/v1/internal/tableReports
+```
+
+This endpoint has the following optional query parameters for additional filtering:
+
+| Query parameter | Description |
+|---|---|
+| `applicationId` | The unique ID of an application where, if provided, the response only contains table reports from the identified application. |
+| `query` | A query string where, if provided, the response is filtered to only contain table reports whose title, application name, or workflow name case-insensitively matches the given string. |
+| `page` | Zero-indexed page number (must not be less than `0`, defaults to `0`). |
+| `size` | Page size, the maximum number of items to return (must not be less than `1`, defaults to `20`). |
+
+See [Pagination](/guides/api-usage/pagination) for iterating through paginated responses.
+
+#### Response body
+
+Returns a paginated response of table report objects. Parse the objects by properties like
+`workflowName`, `applicationName`, or `title` until you've located the intended table report.
+
+```json
+{
+  "id": "a1b2c3d4",
+  "title": "My Table Report",
+  "created": 1685482001992,
+  "updated": 1685482002192,
+  "modified": 1685482002192,
+  "defaultLayout": false,
+  "workflowId": "e5f6g7h8",
+  "workflowName": "My Workflow",
+  "applicationId": "i9j0k1l2",
+  "applicationName": "My Application",
+  "applicationLive": true,
+  "applicationPermissionsEnabled": false,
+  "applicationColor": "#49b800",
+  "applicationIcon": "fas__fa-cubes",
+  "totalLayoutFields": 2,
+  "homeScreenPresent": false,
+  "creatorEmail": "jane.doe@example.com",
+  "creatorName": "Jane Doe",
+  "totalReportFilters": 0,
+  "totalJoins": 0
+}
+```
+
+## Step 2: Retrieve table report export
+
+Use the `table-report-id` found in the previous step to export the table report and its record
+data as a CSV or XLSX. The `csv` in the path may be swapped for `xlsx` to switch the returned
+format of the spreadsheet.
+
+```
+POST /api/v1/records/export/csv
+```
+
+### Sample request body
+
+```json
+{
+  "tableReport": "table-report-id"
+}
+```
+
+### Response
+
+A CSV or XLSX file of the table report record data, with field columns reflecting the table
+report.

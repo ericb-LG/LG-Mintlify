@@ -1,0 +1,31 @@
+---
+title: "Risk Cloud API: Build Audit Log Export"
+sidebarTitle: "Build Audit Log Export"
+description: "Export an application's Build Audit Log as a CSV or XLSX file via the Risk Cloud API."
+---
+
+Reference the Build Audit Log help article for in-depth information about the Build Audit Log functionality itself. Obtain your API Access Token to get started — see [Authentication](/guides/api-usage/authentication).
+
+## Export Build Audit Log endpoint
+
+The Build Audit Export endpoint returns a `.csv` or `.xlsx` file containing the Build Audits for the application given in the query parameters.
+
+**`GET /api/v1/audit/build/export/{extension}`**
+
+### Path parameter
+
+| Parameter | Description |
+|---|---|
+| `extension` | The file format to export: `csv` or `xlsx`. |
+
+### Query parameters
+
+| Parameter | Required | Description |
+|---|---|---|
+| `applicationId` | Yes | The unique ID of the application to retrieve the build audit log for. Can be a previously deleted application's ID. |
+| `startDate` | No | Inclusive start date, in `YYYY-MM-DD` format. |
+| `endDate` | No | Exclusive end date, in `YYYY-MM-DD` format. |
+
+### Response
+
+The endpoint returns the requested file. To interpret its contents, see the "Reading the Log" section of the Build Audit Log help page and the Build Audit Log Glossary help page.

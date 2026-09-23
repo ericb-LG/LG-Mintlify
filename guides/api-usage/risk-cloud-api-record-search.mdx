@@ -1,0 +1,152 @@
+---
+title: "Risk Cloud API: Record Search"
+sidebarTitle: "Record Search"
+description: "Retrieve records by application, workflow, step, update time, or field value using the Record API."
+---
+
+From field values to due dates, the Record API enables you to export and process your record data
+via the Risk Cloud API. API users can filter records by application, workflow, step, and even by
+when records were last updated.
+
+Obtain your [API Access Token](/guides/api-usage/authentication) or pull the Risk Cloud Postman
+Collection (see the [Postman guide](/guides/quick-start/postman)) to get started.
+
+## Retrieve Records endpoint
+
+```
+GET /api/v2/records
+```
+
+This endpoint returns an iterable page of all records that the current user has read or write
+access to. The Records API is available to all authenticated users, but it only returns records
+that are entitled to be read by the user whose API token is being used for the request.
+
+Entitlement is based on any of the following being true:
+
+- The user has a read or write step permission set entitlement to the step.
+- The user is assigned to the record.
+
+To retrieve all record data from a particular workflow or application, ensure that the user whose
+API token is being used for the integration has permission set entitlements in place to read or
+write every step of the workflow or application.
+
+This endpoint accepts the following optional query parameters for additional filtering:
+
+| Query Parameter | Description |
+|---|---|
+| `application-id` | The unique ID of an application where, if provided, the response will only contain records from the identified application. |
+| `workflow-id` | The unique ID of a workflow where, if provided, the response will only contain records from the identified workflow. |
+| `step-id` | The unique ID of a step where, if provided, the response will only contain records on the identified step. |
+| `updated-min` | A timestamp measured in milliseconds since the Unix epoch where, if provided, the response will only contain records that have been modified since the given timestamp. |
+| `page` | The zero-indexed page number (must not be less than 0, defaults to 0). |
+| `size` | The size of the page and maximum number of items to be returned (must not be less than 1, defaults to 20). |
+
+See [Pagination](/guides/api-usage/pagination) for details on the `page`/`size` parameters and the
+response envelope.
+
+## Use cases
+
+### Records by application
+
+```
+GET /api/v2/records?application-id={application-id}
+```
+
+The application ID can be obtained from the Risk Cloud web app or from the API.
+
+**Web app environment:**
+
+- Navigate to **Build > Applications**.
+- Search for and open the application.
+- The application ID can be found in the browser URL bar: `https://environment.logicgate.com/build/applications/{application-id}`.
+
+**Risk Cloud API:**
+
+```
+GET /api/v2/applications
+```
+
+The application ID can be located in the `id` property of application objects returned in the
+`content` property of the response.
+
+### Records by workflow
+
+```
+GET /api/v2/records?workflow-id={workflow-id}
+```
+
+The workflow ID can be obtained from the Risk Cloud web app or from the API.
+
+**Web app environment:**
+
+- Navigate to **Build > Applications**.
+- Search for and open the application containing the workflow.
+- Open the edit gear icon (⚙) on the workflow to open the Workflow Editor.
+- The workflow ID can be found under the **Workflow ID** label in the editor window.
+
+**Risk Cloud API:**
+
+```
+GET /api/v2/workflows
+```
+
+The workflow ID can be located in the `id` property of workflow objects returned in the `content`
+property of the response.
+
+### Records by step
+
+```
+GET /api/v2/records?step-id={step-id}
+```
+
+The step ID can be obtained from the Risk Cloud web app or from the API.
+
+**Web app environment:**
+
+- Navigate to **Build > Applications**.
+- Search for and open the application containing the step.
+- Open the workflow containing the step.
+- The step ID can be found in the browser URL bar: `https://environment.logicgate.com/build/steps/{step-id}`.
+
+**Risk Cloud API:**
+
+```
+GET /api/v2/steps
+```
+
+The step ID can be located in the `id` property of step objects returned in the `content` property
+of the response.
+
+### Records updated since date
+
+To request all records that have been updated (a field was updated, or the record was moved,
+assigned, or linked), use the `updated-min` query parameter with a timestamp measured in
+milliseconds since the Unix epoch. For example, January 1st 2023 at 9:00am GMT is
+`1672563600000`.
+
+```
+GET /api/v2/records?updated-min={updated-min}
+```
+
+The `updated-min` parameter can be combined with `application-id`, `workflow-id`, and `step-id` to
+narrow your record search further.
+
+## Retrieve Records by Field Value endpoint
+
+The Record API also provides the ability to return records that have a particular field value,
+using the following v1 endpoint:
+
+```
+GET /api/v1/records?field={field-id}&textValue={text-value}&numericValue={number-value}
+```
+
+| Query Parameter | Required? | Description |
+|---|---|---|
+| `field` | Yes | The unique ID of the field for the associated text value to filter records by. |
+| `textValue` | No | The text value of the given field to filter records by. |
+| `numericValue` | No | The number value of the given field to filter records by. |
+
+There are two main ways to search for records by field and value: by text value or by numeric
+value. Which one you use depends on the field you are searching. By default, use the `textValue`
+query parameter. If you're searching a Number Field, use the `numericValue` query parameter
+instead.
