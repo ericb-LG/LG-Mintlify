@@ -25,7 +25,7 @@ POST /api/v1/jobs/webhook-history/{job-execution-operation-id}/replay
   endpoint: with Build permission only, you can replay a job execution when the job runs on a
   fixed schedule, its triggering Workflow has no permissions restrictions, or you're entitled to
   that Application. A job execution ID you're not entitled to responds the same as one that
-  doesn't exist — see [Errors](#errors).
+  doesn't exist. See [Errors](#errors).
 - **A saved request payload on the attempt.** Only attempts recorded after Webhook Observability
   was enabled have a saved payload. An attempt from before the feature was turned on can't be
   replayed.
@@ -41,7 +41,7 @@ Request body: none.
 ## What happens on replay
 
 - The most recent delivery attempt for the given execution is looked up, and its exact original
-  payload is resent to the webhook's **current** URL — not the URL that was in effect at the
+  payload is resent to the webhook's **current** URL, not the URL that was in effect at the
   time of the original attempt.
 - A new attempt is recorded with `attemptType: REPLAY`. It does not overwrite or modify the
   attempt it replayed.
@@ -51,7 +51,7 @@ Request body: none.
 
 <Warning>
   A replay whose delivery fails is still a `200` from this endpoint, because the delivery
-  attempt failed — not the API request. Check the `responseBody` and `httpStatusCode` fields on
+  attempt failed, not the API request. Check the `responseBody` and `httpStatusCode` fields on
   `lastWebhookDeliveryAttempt` to determine the actual result of the replay.
 </Warning>
 
@@ -97,7 +97,7 @@ Request body: none.
 | `recordExists` | `false` if the record has been deleted. |
 | `webhookExists` | `false` if the webhook has been deleted. |
 | `jobExecutionId` | The job execution that holds the operation being replayed. |
-| `lastWebhookDeliveryAttempt` | The attempt this call just created — see below. |
+| `lastWebhookDeliveryAttempt` | The attempt this call just created. See below. |
 
 `lastWebhookDeliveryAttempt` fields:
 
@@ -121,6 +121,6 @@ Request body: none.
 
 <Tip>
   Unlike the list-style [Webhook Delivery Attempts](/guides/api-usage/risk-cloud-api-webhook-delivery-attempts)
-  endpoint, this endpoint does return `404` — there's no page of results to come back empty, just
+  endpoint, this endpoint does return `404`. There's no page of results to come back empty, just
   one execution that either resolves or doesn't.
 </Tip>

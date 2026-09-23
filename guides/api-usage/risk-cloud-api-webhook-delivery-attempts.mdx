@@ -5,8 +5,7 @@ description: "Retrieve a paginated list of webhook delivery attempts across your
 ---
 
 Webhook delivery attempts record every time Risk Cloud tried to send a webhook payload to your
-endpoint — both automatic deliveries (including automatic retries) and deliveries you replayed
-manually. This endpoint requires the **Webhook Observability** feature; contact your LogicGate
+endpoint, whether the delivery was automatic (including automatic retries) or a manual replay. This endpoint requires the **Webhook Observability** feature; contact your LogicGate
 representative to enable it. For background on webhook URLs themselves, see
 [Interacting with Webhooks via Endpoints](/guides/api-usage/risk-cloud-api-webhook-urls).
 
@@ -19,7 +18,7 @@ GET /api/v1/jobs/webhook-delivery-attempts
 Requires **Build** permission. Requests without it are rejected with `403`. If Webhook
 Observability is not enabled on your account, requests are rejected with `400`.
 
-Which attempts you can see also depends on which Applications you're entitled to — see
+Which attempts you can see also depends on which Applications you're entitled to. See
 [Which attempts you see](#which-attempts-you-see) below.
 
 ### Query parameters
@@ -42,7 +41,7 @@ Sortable fields: `fireDate`, `status`, `attemptType`, `httpStatusCode`, `webhook
 
 <Warning>
   An unrecognized sort field is accepted rather than rejected, but the resulting order is
-  unspecified — check your spelling if results come back in an unexpected order. The
+  unspecified. Check your spelling if results come back in an unexpected order. The
   `fireDate,desc` default only applies when you supply no sort at all; it isn't added as a
   tiebreaker to a sort you provide. Sorting by a field with many repeated values (such as
   `status`) won't produce a stable order across pages unless you add `fireDate,desc` as a final
@@ -124,7 +123,7 @@ Each of these may be `null`.
 
 These seven fields are recorded **at the time of the attempt** and never updated afterward:
 
-- Renaming a webhook, job, or record does not change attempts already recorded — older entries
+- Renaming a webhook, job, or record does not change attempts already recorded. Older entries
   keep the names that were in effect when they were sent.
 - Attempts are retained after the webhook, job, or record they reference is deleted. An ID in a
   response is therefore not a guarantee that the item still exists.
@@ -148,7 +147,7 @@ error.
   - **Application entitlement is separate from step permissions.** Having full permissions on
     every step of an Application does not by itself make that Application's jobs visible here.
     You need entitlement to the Application itself.
-  - **The Application that matters is the one the job is triggered from** — the Application
+  - **The Application that matters is the one the job is triggered from**, the Application
     containing the Workflow the job's trigger watches. It is not necessarily the Application of
     the record in the response.
 </Tip>
