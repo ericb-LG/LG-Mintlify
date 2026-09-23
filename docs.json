@@ -118,7 +118,7 @@
               "api-reference/next-path/list-all-default-next-paths",
               "api-reference/next-path/create-a-default-next-path",
               "api-reference/next-path/update-a-default-next-path",
-              "api-reference/next-path/create-a-default-next-path-2",
+              "api-reference/next-path/retrieve-a-default-next-path",
               "api-reference/next-path/delete-a-default-next-path"
             ]
           },
