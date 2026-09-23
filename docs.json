@@ -62,6 +62,8 @@
               "guides/api-usage/risk-cloud-api-viewing-fields",
               "guides/api-usage/risk-cloud-api-viewing-user-access-audits",
               "guides/api-usage/risk-cloud-api-viewing-users",
+              "guides/api-usage/risk-cloud-api-webhook-delivery-attempts",
+              "guides/api-usage/risk-cloud-api-webhook-delivery-replay",
               "guides/api-usage/risk-cloud-api-webhook-urls",
               "guides/api-usage/risk-cloud-export-record-data",
               "guides/api-usage/service-accounts"

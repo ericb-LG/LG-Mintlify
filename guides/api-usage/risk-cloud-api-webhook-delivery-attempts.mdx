@@ -1,0 +1,173 @@
+---
+title: "Risk Cloud API: Webhook Delivery Attempts"
+sidebarTitle: "Webhook Delivery Attempts"
+description: "Retrieve a paginated list of webhook delivery attempts across your account, including automatic deliveries, automatic retries, and manual replays."
+---
+
+Webhook delivery attempts record every time Risk Cloud tried to send a webhook payload to your
+endpoint — both automatic deliveries (including automatic retries) and deliveries you replayed
+manually. This endpoint requires the **Webhook Observability** feature; contact your LogicGate
+representative to enable it. For background on webhook URLs themselves, see
+[Interacting with Webhooks via Endpoints](/guides/api-usage/risk-cloud-api-webhook-urls).
+
+## Retrieve Webhook Delivery Attempts endpoint
+
+```
+GET /api/v1/jobs/webhook-delivery-attempts
+```
+
+Requires **Build** permission. Requests without it are rejected with `403`. If Webhook
+Observability is not enabled on your account, requests are rejected with `400`.
+
+Which attempts you can see also depends on which Applications you're entitled to — see
+[Which attempts you see](#which-attempts-you-see) below.
+
+### Query parameters
+
+All filters are optional. Omit one to match all values. When you supply more than one, they're
+combined with AND.
+
+| Query parameter | Description |
+|---|---|
+| `status` | Return only attempts with this outcome: `DELIVERED` or `FAILED`. Any other value is rejected with `400`. |
+| `webhookId` | Return only attempts for this webhook. Continues to match after the webhook has been deleted. |
+| `jobId` | Return only attempts triggered by this job. Continues to match after the job has been deleted. |
+| `page` | Which page to return, starting at `0`. |
+| `size` | Number of attempts per page. |
+| `sort` | `field(,asc\|desc)`. Ascending if the direction is omitted. Repeat the parameter for multiple sort criteria. Defaults to `fireDate,desc`. |
+
+Sortable fields: `fireDate`, `status`, `attemptType`, `httpStatusCode`, `webhookName`,
+`webhookUrl`, `webhookId`, `jobId`, `jobName`, `recordId`, `recordName`,
+`jobExecutionOperationId`.
+
+<Warning>
+  An unrecognized sort field is accepted rather than rejected, but the resulting order is
+  unspecified — check your spelling if results come back in an unexpected order. The
+  `fireDate,desc` default only applies when you supply no sort at all; it isn't added as a
+  tiebreaker to a sort you provide. Sorting by a field with many repeated values (such as
+  `status`) won't produce a stable order across pages unless you add `fireDate,desc` as a final
+  sort criterion.
+</Warning>
+
+Request body: none.
+
+### Response
+
+`200 OK`. Attempts are returned in `content`, alongside standard pagination metadata. See
+[Pagination](/guides/api-usage/pagination) for details on the page response envelope.
+
+```json
+{
+  "content": [
+    {
+      "jobExecutionOperationId": "jeo-9f2a",
+      "status": "FAILED",
+      "attemptType": "REPLAY",
+      "responseBody": "{\"error\":\"unauthorized\"}",
+      "httpStatusCode": 401,
+      "fireDate": "2026-07-28T14:03:11.000+00:00",
+      "webhookName": "Vendor sync",
+      "webhookUrl": "https://vendor.example.com/hook",
+      "webhookId": "abc123",
+      "jobId": "job-4471",
+      "jobName": "Notify vendor on approval",
+      "recordId": "rec-8812",
+      "recordName": "ACME-104"
+    }
+  ],
+  "totalElements": 1,
+  "totalPages": 1,
+  "number": 0,
+  "size": 20,
+  "first": true,
+  "last": true,
+  "numberOfElements": 1,
+  "empty": false
+}
+```
+
+#### Attempt fields
+
+**When and how the attempt happened**
+
+| Field | Description |
+|---|---|
+| `fireDate` | Timestamp when the attempt was made. |
+| `attemptType` | `ORIGINAL` for a delivery sent automatically when the job ran (including automatic retries), or `REPLAY` for a delivery you re-sent manually. Always present. |
+| `status` | The outcome: `DELIVERED` if your endpoint returned a success response, `FAILED` otherwise. |
+| `jobExecutionOperationId` | Identifies the execution of a webhook operation for a single job run. All attempts sharing this value are deliveries for the same webhook on the same run, so you can group by it to see an original delivery together with every subsequent replay. |
+
+**What your endpoint returned**
+
+| Field | Description |
+|---|---|
+| `httpStatusCode` | Integer, may be `null`. The HTTP status your endpoint responded with. |
+| `responseBody` | String, may be `null`. The response body your endpoint returned. |
+
+Both are `null` when no response was received at all, such as a timeout, a DNS failure, or a
+refused connection. If your endpoint responded but rejected the request, both are populated and
+`status` is `FAILED`.
+
+**Which webhook, job, and record were involved**
+
+Each of these may be `null`.
+
+| Field | Description |
+|---|---|
+| `webhookId` | The webhook the payload was sent to. |
+| `webhookName` | The webhook's name. |
+| `webhookUrl` | The URL the payload was sent to. |
+| `jobId` | The job that triggered the delivery. |
+| `jobName` | The job's name. |
+| `recordId` | The record that triggered the job. `null` for jobs that run on a schedule rather than in response to a record. |
+| `recordName` | The record's name. |
+
+These seven fields are recorded **at the time of the attempt** and never updated afterward:
+
+- Renaming a webhook, job, or record does not change attempts already recorded — older entries
+  keep the names that were in effect when they were sent.
+- Attempts are retained after the webhook, job, or record they reference is deleted. An ID in a
+  response is therefore not a guarantee that the item still exists.
+
+## Which attempts you see
+
+Results are limited to attempts from jobs you're entitled to.
+
+- With **Admin** permission, you see every attempt in the account.
+- With **Build** permission only, you see attempts from a job when any of the following is true:
+  - the job runs on a fixed schedule; or
+  - the job is triggered from a Workflow whose Application has no permissions restrictions; or
+  - you're entitled to the Application the job is triggered from.
+
+If none of your jobs qualify, the response is `200` with an empty `content` array rather than an
+error.
+
+<Tip>
+  Two common sources of confusion when results are emptier than expected:
+
+  - **Application entitlement is separate from step permissions.** Having full permissions on
+    every step of an Application does not by itself make that Application's jobs visible here.
+    You need entitlement to the Application itself.
+  - **The Application that matters is the one the job is triggered from** — the Application
+    containing the Workflow the job's trigger watches. It is not necessarily the Application of
+    the record in the response.
+</Tip>
+
+Attempts are also excluded once the job that produced them has been deleted.
+
+## Errors
+
+| Status | Reason |
+|---|---|
+| `400 Bad Request` | The Webhook Observability feature is not enabled on your account, or `status` was given a value other than `DELIVERED` or `FAILED`. |
+| `401 Unauthorized` | The request could not be associated with a user. |
+| `403 Forbidden` | Your user does not have Build permission. |
+
+This endpoint does not return `404`. A valid request that matches nothing returns `200` with an
+empty `content` array.
+
+## Historical coverage
+
+Delivery attempts are recorded from the point Webhook Observability became active on your account
+onward. Webhook activity from before then is not available through this endpoint and cannot be
+backfilled. A newly enabled account returns no attempts until its next webhook delivery.
