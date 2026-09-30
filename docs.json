@@ -308,6 +308,9 @@
     }
   },
   "api": {
-    "openapi": "openapi.json"
+    "openapi": "openapi.json",
+    "playground": {
+      "proxy": false
+    }
   }
 }
