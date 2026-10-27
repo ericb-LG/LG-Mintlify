@@ -308,6 +308,9 @@
     }
   },
   "api": {
-    "openapi": "openapi.json"
+    "openapi": [
+      "openapi.json",
+      "openapi-fixed.json"
+    ]
   }
 }
