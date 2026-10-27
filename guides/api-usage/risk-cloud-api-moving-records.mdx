@@ -1,0 +1,192 @@
+---
+title: "Risk Cloud API: Moving Records"
+sidebarTitle: "Moving Records"
+description: "Progress a record through workflow validation, or force-move it to any step without validation."
+---
+
+## Overview
+
+Within Risk Cloud, records are moved from one step to another by submitting them. In the Risk
+Cloud API, this operation is called "progressing a record." When a record progresses, validation
+is done on the record fields to determine whether it can move to the next step. Alternatively,
+another API endpoint allows you to force-move a record from one step to another without any
+validation.
+
+This article covers both approaches:
+
+1. Progressing a Record
+2. Force Moving a Record
+
+Obtain your [API Access Token](/guides/api-usage/authentication) to get started. This
+functionality is limited to the Admin role, so ensure that the creator of the API Key used has the
+Admin role entitlement — this applies to both methods below.
+
+## Progressing a Record
+
+**Endpoint:** `PUT /api/v1/records/{record-id}/progress/applications/{application-id}/workflows/{workflowId}/steps/{stepId}`
+
+This method only progresses the record if all required fields on the record are completed.
+
+### Step 1: Obtain the record ID
+
+The `record-id` can be obtained from the Risk Cloud web application, emails, or via the Risk Cloud
+API.
+
+- **Using the Risk Cloud application:** Open the desired record, then take the ID from the end of
+  the URL: `https://your-company.logicgate.com/records/{record-id}`
+- **Using email:** The Contextual Notifications feature offers the ability to set Custom Fields
+  and System Fields in outbound emails. Record ID is a System Field that can be included in
+  outbound emails and parsed for use in API requests.
+- **Using the Risk Cloud API:** Reference [Risk Cloud API: Record
+  Search](/guides/api-usage/risk-cloud-api-record-search) to obtain record IDs via the API.
+
+### Step 2: Obtain required data
+
+To search for the record information, use the Records endpoint:
+
+**Endpoint:** `GET /api/v1/records/{recordId}`
+
+Use this to confirm the `applicationId`, `workflowId`, and available `step-id` values for the
+record.
+
+### Step 3: Progress the record
+
+Use the `record-id`, `applicationId`, `workflowId`, and `step-id` found in the previous steps to
+progress the record.
+
+| Path Parameter | Description |
+|---|---|
+| `record-id` | The unique ID of the record to move. |
+| `applicationId` | The application ID of the record to move. |
+| `workflowId` | The workflow ID of the record to move. |
+| `step-id` | The unique ID of the step to move the record to. |
+
+**Endpoint:** `PUT /api/v1/records/{record-id}/progress/applications/{application-id}/workflows/{workflowId}/steps/{stepId}`
+
+**Sample request body:**
+
+```json
+{
+    "id": "{{record-id}}",
+    "step": {
+        "id": "{{step-id}}",
+        "stepType": "{{step-type}}"
+    },
+    "assignee": {
+        "id": "{{user-id}}",
+        "status": "Active"
+    },
+    "assigneeType": "none",
+    "user": {
+        "id": "{{user-id}}",
+        "status": "Active"
+    },
+    "workflow": {
+        "id": "{{workflow-id}}",
+        "workflowType": "WORKFLOW"
+    }
+}
+```
+
+**Response:**
+
+A 200 response with JSON confirming the structure and status of the moved record.
+
+```json
+{
+  "active": true,
+  "created": "2024-09-11T16:20:56.965Z",
+  "fields": [
+    {
+      "currentValues": [
+        {
+          "active": true,
+          "archived": true,
+          "created": "2024-09-11T16:20:56.965Z",
+          "discriminator": "string",
+          "id": "string",
+          "numericValue": 0,
+          "temporalValue": "2024-09-11T16:20:56.965Z",
+          "textValue": "string",
+          "updated": "2024-09-11T16:20:56.965Z",
+          "valueType": "string"
+        }
+      ],
+      "fieldType": "string",
+      "id": "string",
+      "label": "string",
+      "name": "string",
+      "operators": [
+        "EQUALS"
+      ],
+      "readOnly": true,
+      "required": true
+    }
+  ],
+  "id": "string",
+  "name": "string",
+  "primaryFieldValue": "string",
+  "public": true,
+  "recordDueDate": "2024-09-11T16:20:56.965Z",
+  "status": "INACTIVE",
+  "updated": "2024-09-11T16:20:56.965Z",
+  "workflowDueDate": "2024-09-11T16:20:56.965Z"
+}
+```
+
+## Force Moving a Record
+
+**Endpoint:** `PUT /api/v1/records/{record-id}/move/{step-id}`
+
+This method force-moves the record without doing any validation on the record itself.
+
+### Step 1: Obtain the record ID
+
+The `record-id` can be obtained from the Risk Cloud web application, emails, or via the Risk Cloud
+API, using the same three methods described above.
+
+### Step 2: Obtain the step ID
+
+- **Using the Risk Cloud application:** Open the desired step from the builder page located at
+  **Build > Applications > (Select a Step)** in Risk Cloud, then take the ID from the end of the
+  URL. Ensure that this is a valid step on the same workflow that the record represents:
+  `https://your-company.logicgate.com/build/steps/{step-id}`
+- **Using the Risk Cloud API:** The Steps API provides a paginated means of iterating through all
+  resources entitled to the API user. To search for an application, use the Retrieve Steps
+  endpoint:
+
+  **Endpoint:** `GET /api/v2/steps`
+
+### Step 3: Move the record
+
+Use the `record-id` and `step-id` found in the previous steps to move the record.
+
+| Path Parameter | Description |
+|---|---|
+| `record-id` | The unique ID of the record to move. |
+| `step-id` | The unique ID of the step to move the record to. |
+
+**Endpoint:** `PUT /api/v1/records/{record-id}/move/{step-id}`
+
+**Sample request body:** The request body can be empty for this `PUT` request.
+
+**Response:**
+
+A 200 response with JSON confirming the structure and status of the moved record.
+
+```json
+{
+  "id": "a1b2c3d4",
+  "active": true,
+  "created": 1706651975544,
+  "updated": null,
+  "sequenceId": 1,
+  "status": "COMPLETE",
+  "name": "A-1",
+  "viewableTitle": "A-1",
+  "initialStateEndStep": false,
+  "workflowDueDate": null,
+  "recordType": "RECORD",
+  "isPublic": false
+}
+```

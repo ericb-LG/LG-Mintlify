@@ -1,0 +1,93 @@
+---
+title: "Risk Cloud API: View User Access Audits"
+sidebarTitle: "View User Access Audits"
+description: "Retrieve login attempt logs for Risk Cloud users, filtered to successes, failures, or both."
+---
+
+## Overview
+
+This guide covers three endpoints for retrieving access logs: all login attempts, successful
+logins only, and login failures only. Results from these endpoints are only accessible to access
+keys belonging to users with the **Admin > All** module entitlement. Before making these requests
+you'll need a bearer token — see [Authentication](/guides/api-usage/authentication).
+
+## Login attempts
+
+Retrieve a log of login successes and failures for a Risk Cloud user, by email.
+
+```
+GET /api/v1/access-audit
+```
+
+**Parameters**
+
+| Parameter | Description |
+|---|---|
+| `email` | A valid user email (e.g. `admin@example.com`, or URL-encoded as `admin%40example.com` for Postman). |
+| `size` | The size of the paged response. |
+| `page` | The page number of the response. |
+
+**Result**
+
+A paginated response of login logs, ordered newest to oldest, containing:
+
+| Field | Description |
+|---|---|
+| `type` | `Login` or `LoginFail`. |
+| `timestamp` | The timestamp of the login attempt. |
+| `message` | Details on the reason for a `LoginFail`; `null` for `Login`. |
+| `remoteAddress` | The remote IP address of the user. |
+
+## Logins (successes)
+
+Retrieve a log of successful login attempts for all users.
+
+```
+GET /api/v1/access-audit/logins
+```
+
+**Parameters**
+
+| Parameter | Description |
+|---|---|
+| `email` | A valid user email (e.g. `admin@example.com`, or URL-encoded as `admin%40example.com` for Postman). |
+| `size` | The size of the paged response. |
+| `page` | The page number of the response. |
+
+**Result**
+
+A paginated response of login logs, ordered newest to oldest, containing:
+
+| Field | Description |
+|---|---|
+| `type` | Always `Login`. |
+| `timestamp` | The timestamp of the login. |
+| `message` | Always `null` for `Login`. |
+| `remoteAddress` | The remote IP address of the user. |
+
+## Logins (failures)
+
+Retrieve a log of failed login attempts.
+
+```
+GET /api/v1/access-audit/failures
+```
+
+**Parameters**
+
+| Parameter | Description |
+|---|---|
+| `email` | A valid user email (e.g. `admin@example.com`, or URL-encoded as `admin%40example.com` for Postman). |
+| `size` | The size of the paged response. |
+| `page` | The page number of the response. |
+
+**Result**
+
+A paginated response of login logs, ordered newest to oldest, containing:
+
+| Field | Description |
+|---|---|
+| `type` | Always `LoginFail`. |
+| `timestamp` | The timestamp of the failed login. |
+| `message` | Details on the reason for the failure. |
+| `remoteAddress` | The remote IP address of the user. |

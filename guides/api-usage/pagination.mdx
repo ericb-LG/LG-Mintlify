@@ -1,0 +1,86 @@
+---
+title: "Risk Cloud API: Pagination"
+sidebarTitle: "Pagination"
+description: "page/size request parameters and the page response envelope."
+---
+
+The Risk Cloud API offers offset pagination on endpoints that can return large datasets, so you
+can process data in smaller, predictable chunks.
+
+## Page requests
+
+Paginated endpoints accept two optional query parameters:
+
+| Parameter | Description |
+|---|---|
+| `page` | Zero-indexed page number. Minimum `0`, default `0`. |
+| `size` | Maximum items per page. Minimum `1`, default `20`. |
+
+These work the same way as the pagination controls in the Risk Cloud UI.
+
+### Example
+
+For a Field "read all" endpoint with 50 active fields:
+
+| Page | Size | Request | Result |
+|---|---|---|---|
+| default | default | `GET /api/v1/fields` | Fields 1–20 |
+| 0 | 20 | `GET /api/v1/fields?page=0&size=20` | Fields 1–20 |
+| 1 | 20 | `GET /api/v1/fields?page=1&size=20` | Fields 21–40 |
+| 2 | 20 | `GET /api/v1/fields?page=2&size=20` | Fields 41–50 |
+| 0 | 8 | `GET /api/v1/fields?page=0&size=8` | Fields 1–8 |
+
+## Page responses
+
+| Property | Type | Description |
+|---|---|---|
+| `content` | array | The returned items |
+| `number` | integer | Zero-indexed page number |
+| `size` | integer | Maximum items per page |
+| `totalElements` | integer | Total items available |
+| `totalPages` | integer | Total pages available |
+| `first` | boolean | Is this the first page? |
+| `last` | boolean | Is this the last page? |
+| `empty` | boolean | Is the page empty? |
+| `numberOfElements` | integer | Items on the current page |
+| `sort` | object | Sorting parameters |
+
+<Tip>
+**v2 endpoints**
+
+The v2 API's response envelope (see
+[Navigating Risk Cloud Data with API v2](/guides/api-usage/navigating-risk-cloud-data-with-v2#pagination))
+adds a `links` object with pre-built `first`/`prev`/`next`/`last` URLs — following `links.next`
+until absent is the simplest way to iterate without computing page numbers yourself.
+</Tip>
+
+## Page processing strategies
+
+### Bulk strategy
+
+Submit a single request with a large `size`:
+
+```
+GET /api/v1/fields?size=1000
+```
+
+Extract items from `content`.
+
+```text
+CALL GetFields with size as 1000 RETURNING response
+SET items to response.content
+```
+
+### Iteration strategy
+
+Submit multiple requests, incrementing the page number until `last` is `true`:
+
+```text
+SET items to []
+SET index to 0
+REPEAT
+  CALL GetFields with page as index RETURNING response
+  APPEND response.content to items
+  INCREMENT index
+UNTIL response.last = true
+```

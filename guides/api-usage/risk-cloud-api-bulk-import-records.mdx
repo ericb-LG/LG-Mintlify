@@ -1,0 +1,139 @@
+---
+title: "Risk Cloud API: Bulk Import Records"
+sidebarTitle: "Bulk Import Records"
+description: "Import records in bulk from a CSV or XLSX file via the Risk Cloud API, and poll for import status."
+---
+
+Records can be imported in bulk from CSV and XLSX files in the Risk Cloud web application. The same functionality is available through the Risk Cloud API's Bulk Import endpoints. Obtain your API Access Token or pull the Risk Cloud Postman Collection to get started — see [Authentication](/guides/api-usage/authentication) and the [Postman guide](/guides/quick-start/postman).
+
+## Bulk Import Records endpoint
+
+The internal Record API's Bulk Import Records endpoint creates records on a given step from a CSV or XLSX payload structured according to a Risk Cloud layout. It's available to any user with the Import entitlement.
+
+**`POST /api/v1/internal/records/import?step={step-id}&layout={layout-id}`**
+
+### Query parameters
+
+| Parameter | Required | Description |
+|---|---|---|
+| `step` | Yes | The unique ID of the step to create records on. |
+| `layout` | Yes | The unique ID of the Risk Cloud layout defining the column headers and structure of the attached file. |
+
+### Request
+
+The CSV or XLSX file's headers must match the field names in the specified layout. For example, a layout with custom fields "Title", "Description", and "Amount" would accept:
+
+```
+Title,Description,Amount
+Phishing,Deceptive attempts to obtain sensitive information by masquerading as a trustworthy entity,9
+Malware,Malicious software designed to compromise a device or network.,8
+DDoS Attacks,Overwhelming a network or service with excessive traffic to cause disruption.,7
+```
+
+Send the file as `multipart/form-data` with a key named `file`:
+
+```bash
+curl --location 'https://your-company.logicgate.com/api/v1/internal/records/import?step={step-id}&layout={layout-id}' \
+--header 'Authorization: Bearer {API_TOKEN}' \
+--form 'file=@"/the/path/to/file/import.csv"'
+```
+
+### Response
+
+```json
+{
+  "importType": "ImportRecordRequest",
+  "id": "{{import-record-request-id}}",
+  "layoutSnapshot": null,
+  "batchRecordImport": null
+}
+```
+
+| Property | Description |
+|---|---|
+| `id` | The unique ID of the bulk import request, used to track import status. |
+
+## Bulk Import Status endpoint
+
+The import runs asynchronously. Poll the status endpoint until `status` is `COMPLETED`.
+
+**`POST /api/v1/internal/records/import/{id}`**
+
+| Path parameter | Description |
+|---|---|
+| `id` | The unique ID of the bulk import request. |
+
+### Response
+
+```json
+{
+  "importRequestId": "{{import-request-id}}",
+  "completed": 1722459144960,
+  "totalRows": 2,
+  "invalidRows": 0,
+  "validRows": 2,
+  "status": "COMPLETED",
+  "creator": {
+    "id": "{{user-id}}",
+    "email": "first.last@example.com"
+  }
+}
+```
+
+| Property | Description |
+|---|---|
+| `importRequestId` | The unique ID of the bulk import request. |
+| `completed` | Unix timestamp (ms) of when the import completed. |
+| `totalRows` | Total number of rows to import. |
+| `invalidRows` | Number of rows marked invalid. |
+| `validRows` | Number of rows marked valid. |
+| `status` | Import status; the operation is complete once this is `COMPLETED`. |
+
+## Getting a layout ID
+
+The layout defines the field columns of the CSV/XLSX file. Custom layouts can be created for specific integration use cases.
+
+### From the web application
+
+Open the layout from **Build > Layouts** and take the ID from the end of the URL:
+
+```
+https://your-company.logicgate.com/build/layouts/{layout-id}
+```
+
+### From the API
+
+**GET /api/v1/layouts**
+
+Returns all layouts the user is entitled to as an Admin, Builder, or Step Permission Set grantee. If no layouts are returned, check the requesting user's permissions.
+
+```json
+{
+  "id": "a1b2c3d4",
+  "title": "[Reg Compliance] Assessments",
+  "defaultLayout": true,
+  "workflow": {
+    "id": "e5f6g7h8",
+    "name": "Risk and Impact Assessments",
+    "application": {
+      "id": "i8j9k0l1",
+      "name": "RCX: Regulatory Compliance"
+    }
+  },
+  "layoutType": "Display"
+}
+```
+
+Filter the returned objects by `workflow`, `application`, or `title` to find the intended layout.
+
+## Getting a step ID
+
+### From the web application
+
+Navigate to **Build > Applications**, open the application and workflow containing the step, then open the step. The step ID is in the URL: `https://environment.logicgate.com/build/steps/{step-id}`.
+
+### From the API
+
+**GET /api/v2/steps**
+
+Returns step objects with an `id` property in the response's `content` array.

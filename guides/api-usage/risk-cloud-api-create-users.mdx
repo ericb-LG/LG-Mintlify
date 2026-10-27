@@ -1,0 +1,123 @@
+---
+title: "Risk Cloud API: Create Users"
+sidebarTitle: "Create Users"
+description: "Create Users in Risk Cloud via the API, including access tier and welcome-email options."
+---
+
+The Create User endpoint can be helpful for integrations that automate the onboarding of new
+colleagues or teams to the Risk Cloud. To create Users in your environment via the Risk Cloud
+API, assemble the JSON of the User and submit it in a `POST` request.
+
+## Authentication
+
+Prior to any interaction with the Risk Cloud API you'll need an Access Token for the
+`Authorization` header — see [Authentication](/guides/api-usage/authentication).
+
+Creating a User via the Risk Cloud API requires an Access Token from an Admin Primary account.
+
+## Usage
+
+Creating a User via the Risk Cloud API is a two-step process:
+
+1. Configure the User in JSON.
+2. Create the User via a request.
+
+### 1. Configure the User in JSON
+
+```json
+{
+  "active": true,
+  "status": "Active",
+  "tier": "SECONDARY",
+  "valueType": "User",
+  "sendEmail": false,
+  "email": "email@your-company.com",
+  "first": "FirstName",
+  "last": "LastName",
+  "company": "Your Company"
+}
+```
+
+Adjust `tier`, `sendEmail`, `email`, `first`, `last`, and `company` to the User you're creating.
+
+If `sendEmail` is `true`, the system sends an automatic Welcome Message after the User is
+created.
+
+`tier` designates the User's access tier:
+
+| Value | Description |
+|---|---|
+| `PRIMARY` | Users who have access to the Build section of the app (typically Admin users). |
+| `SECONDARY` | Users without access to the Build section (typically end-users). |
+| `LIMITED` | Secondary users who only use the platform infrequently (typically end-users performing quarterly or annual tasks). |
+
+### 2. Create the User via a request
+
+Once the JSON for the User has been assembled, submit it to:
+
+```
+POST https://your-company.logicgate.com/api/v1/users
+```
+
+```bash
+curl --request POST 'https://your-company.logicgate.com/api/v1/users' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer {ACCESS_TOKEN}' \
+--data-raw '{
+"active": true,
+"status": "Active",
+"tier": "SECONDARY",
+"valueType": "User",
+"sendEmail": false,
+"email": "email@your-company.com",
+"first": "FirstName",
+"last": "LastName",
+"company": "Your Company"
+}'
+```
+
+If successful, the User is created and the response contains the new User's information,
+including the User ID, which can be used for future API requests.
+
+```json
+{
+  "status": "Active",
+  "id": "a4b3c2d1",
+  "active": true,
+  "created": 1629383622871,
+  "updated": 1629383622932,
+  "email": "email@your-company.com",
+  "company": "Your Company",
+  "imageUrl": null,
+  "imageS3Key": null,
+  "tier": "SECONDARY",
+  "first": "FirstName",
+  "last": "LastName",
+  "languageTag": "en-GB",
+  "timeZone": "Europe/Kiev",
+  "notificationPreference": false,
+  "mfaEnabled": false,
+  "mfaSetup": false,
+  "autoprovisioned": false,
+  "scimStatus": null,
+  "sendEmail": false,
+  "roles": [],
+  "stepPermissionSets": [],
+  "applicationEntitlements": [],
+  "records": [],
+  "lastLogin": null,
+  "external": false,
+  "superUser": false,
+  "name": "FirstName LastName",
+  "locked": false,
+  "idOrTransientId": "a4b3c2d1",
+  "transientIdOrId": "a4b3c2d1",
+  "empty": false
+}
+```
+
+## Next steps
+
+To manage the new User's roles or permission sets, see
+[Risk Cloud API: Update User Details and Roles](/guides/api-usage/risk-cloud-api-update-user-details-and-roles)
+and [Risk Cloud API: Update Users and Permission Sets on Role](/guides/api-usage/risk-cloud-api-update-users-and-permission-sets-on-role).

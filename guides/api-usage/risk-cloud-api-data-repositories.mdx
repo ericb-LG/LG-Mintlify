@@ -1,0 +1,268 @@
+---
+title: "Risk Cloud API: Data Repositories"
+sidebarTitle: "Data Repositories"
+description: "Create, populate, and link Data Repositories and their Items to records via the API."
+---
+
+Refer to the Data Repositories Help Center article for in-depth information about the
+functionality and permissions needed. Obtain your [API Access Token](/guides/api-usage/authentication)
+to get started.
+
+## High-level overview
+
+A Data Repository contains Item Fields. For example:
+
+- Data Repository: **Risk Cloud Ingredients**
+- Item Fields created on that Data Repository: **Name**, **Description**
+
+A Data Repository also contains Items, which are mapped to that Item Field structure:
+
+| External Id | Name | Description |
+|---|---|---|
+| `<item external id>` | Flour | A sack of flour. |
+
+## Step 1: Create and update a Data Repository
+
+### 1.1 Check if a Data Repository name already exists
+
+```
+GET /api/v1/data-repository/exists
+```
+
+| Query parameter | Required | Description |
+|---|---|---|
+| `name` | No | The Data Repository name you want to verify. |
+
+**Response:** `boolean` — `true` if the name already exists, `false` otherwise.
+
+### 1.2 Create a Data Repository
+
+```
+POST /api/v1/data-repository
+```
+
+Request body is a `DataWarehouseIn` object.
+
+**DataWarehouseIn (request)**
+
+| Parameter | Type | Description |
+|---|---|---|
+| `name` | String | The Data Repository name. Must be unique and cannot be blank. |
+| `description` | String | The Data Repository description. |
+| `itemPrefix` | String | The Data Repository item prefix. Cannot be blank. |
+| `externalIdDisplayName` | String | The Data Repository external Id display name. Not needed for creation. |
+
+**DataWarehouseOut (response)**
+
+| Parameter | Description |
+|---|---|
+| `id` | The Data Repository Id. |
+| `created` | The date the Data Repository was created. |
+| `updated` | The date the Data Repository was updated. |
+| `name` | The Data Repository name. |
+| `description` | The Data Repository description. |
+| `itemPrefix` | The Data Repository item prefix. |
+| `sequence` | The Data Repository sequence (always zero). |
+| `externalIdDisplayName` | The Data Repository external Id display name. |
+| `itemFields` | List of `ItemFieldOut` for the Data Repository. |
+| `itemCount` | The number of Items for the Data Repository. |
+
+**ItemFieldOut (response)**
+
+| Parameter | Description |
+|---|---|
+| `id` | The Item Field id. |
+| `created` | The date the Item Field was created. |
+| `updated` | The date the Item Field was updated. |
+| `name` | The Item Field name. |
+| `displayOrder` | The Item Field display order. |
+| `displayInRecords` | Whether the Item Field should be displayed in records. |
+| `primaryField` | Whether the Item Field is the primary field (only one may be primary at a time). |
+
+### 1.3 Update a Data Repository
+
+```
+PATCH /api/v1/data-repository/{id}
+```
+
+| Path parameter | Description |
+|---|---|
+| `id` | The unique Data Repository Id. |
+
+Request body is a `DataWarehouseIn` object; response is `DataWarehouseOut` (same as 1.2).
+
+## Step 2: Create and update an Item Field on a Data Repository
+
+### 2.1 Check if an Item Field name already exists
+
+```
+GET /api/v1/data-repository/item-field/exists
+```
+
+| Query parameter | Required | Description |
+|---|---|---|
+| `data-repository-id` | No | The Data Repository to verify the Item Field on. |
+| `name` | No | The Item Field name you want to verify. |
+
+**Response:** `boolean` — `true` if the name already exists on the specified Data Repository,
+`false` otherwise.
+
+### 2.2 Create an Item Field on a Data Repository
+
+```
+POST /api/v1/data-repository/{id}/item-field
+```
+
+| Path parameter | Description |
+|---|---|
+| `id` | The unique Data Repository Id. |
+
+**ItemFieldIn (request)**
+
+| Parameter | Type | Description |
+|---|---|---|
+| `name` | String | The Item Field name. Must be unique and cannot be blank. |
+| `displayInRecords` | boolean | Whether the Item Field should display in records. |
+| `primaryField` | boolean | Whether the Item Field is the primary field. |
+| `displayOrder` | int | The Item Field display order. |
+
+**Response:** `ItemFieldOut` (same as 1.2).
+
+### 2.3 Update an Item Field on a Data Repository
+
+```
+PATCH /api/v1/data-repository/item-field/{id}
+```
+
+| Path parameter | Description |
+|---|---|
+| `id` | The unique Item Field Id. |
+
+Request body is an `ItemFieldIn` object; response is `ItemFieldOut` (same as 1.2).
+
+## Step 3: Import Items into a Data Repository
+
+### 3.1 Download the import data template
+
+```
+GET /api/v1/data-repository/{id}/import/template
+```
+
+| Path parameter | Description |
+|---|---|
+| `id` | The unique Data Repository Id. |
+
+**Response:** a `StreamingResponseBody` — the import data template file in CSV format.
+
+### 3.2 Upload the import data template
+
+```
+POST /api/v1/data-repository/{id}/items/import
+```
+
+| Path parameter | Description |
+|---|---|
+| `id` | The unique Data Repository Id. |
+
+| Parameter | Required | Description |
+|---|---|---|
+| `file` | Yes | The file to upload (CSV format). |
+
+**Response:** `200` with an empty body.
+
+### 3.3 Search all Items
+
+```
+POST /api/v1/data-repository/{id}/items
+```
+
+| Path parameter | Description |
+|---|---|
+| `id` | The unique Data Repository Id. |
+
+| Query parameter | Required | Description |
+|---|---|---|
+| `item-field` | No | Optional Item Field Id to filter results. |
+| `query` | No | Optional query string to filter results. |
+| `itemSearchFilters` | No | Optional list of `ItemSearchFilter` to filter results. |
+| pageable params | No | Optional pageable params (e.g. `sort` or `size`) — see [Pagination](/guides/api-usage/pagination). |
+
+**ItemSearchFilter (request)**
+
+| Parameter | Type | Description |
+|---|---|---|
+| `itemFieldId` | String | The Item Field Id. Must be unique and cannot be blank. |
+| `searchType` | ItemSearchType | The search type, e.g. `TEXT`, `NUMBER`, `FIXED_DATE`. |
+| `operator` | Operator | The operator type, e.g. `EQUALS`, `NOT_EQUALS`, `GREATER_THAN_EQUALS`. |
+| `textValue` | String | The text value. |
+| `numberValue` | Float | The number start value. |
+| `endNumberValue` | Float | The number end value. |
+| `dateValue` | Date | The date start value. |
+| `endDateValue` | Date | The date end value. |
+| `dateRangeType` | DateRangeType | The date range type, e.g. `FIXED`, `LAST_THREE_MONTHS`, `NEXT_ONE_YEAR`. |
+
+**ItemOut (response)**
+
+| Parameter | Type | Description |
+|---|---|---|
+| `id` | String | The Item Id. |
+| `created` | Date | The date the Item was created. |
+| `updated` | Date | The date the Item was updated. |
+| `sequenceId` | long | The Item sequence Id. |
+| `externalId` | String | The Item external Id. |
+| `dataRepository` | DataWarehouseOut | The Data Repository the item is associated with. |
+| `values` | Map | Map of Item Field Id to Item Field value. |
+
+**Response:** `Page<ItemOut>`.
+
+## Step 4: Link and unlink an Item and a Record
+
+### 4.1 Link a Record to an Item
+
+```
+PATCH /api/v1/data-repository/{data-repository-id}/items/link/record/{record-id}
+```
+
+| Path parameter | Description |
+|---|---|
+| `data-repository-id` | The unique Data Repository Id. |
+| `record-id` | The unique Record Id. |
+
+| Query parameter | Required | Description |
+|---|---|---|
+| `externalIds` | Yes | The external Ids from the Items you want to link to the Record (in request body). |
+
+**Response:** `200` with an empty body.
+
+### 4.2 Unlink a Record from an Item
+
+```
+DELETE /api/v1/data-repository/{data-repository-id}/items/link/record/{record-id}
+```
+
+| Path parameter | Description |
+|---|---|
+| `data-repository-id` | The unique Data Repository Id. |
+| `record-id` | The unique Record Id. |
+
+| Query parameter | Required | Description |
+|---|---|---|
+| `externalIds` | Yes | The external Ids from the Items you want to unlink from the Record (in request body). |
+
+**Response:** `200` with an empty body.
+
+## Step 5: Other operations
+
+| Action | Endpoint | Notes |
+|---|---|---|
+| Find a Data Repository | `GET /api/v1/data-repository/{id}` | Returns `DataWarehouseOut`. |
+| Find all Data Repositories | `GET /api/v1/data-repository` | Optional `include-item-counts` (boolean, default `false`) and pageable params. Returns `Page<DataWarehouseOut>`. |
+| Delete a Data Repository | `DELETE /api/v1/data-repository/{id}` | Permanently removes all associated Items and Item Fields. |
+| Find an Item Field | `GET /api/v1/data-repository/item-field/{id}` | Returns `ItemFieldOut`. |
+| Delete an Item Field | `DELETE /api/v1/data-repository/item-field/{id}` | Remaining fields are reordered appropriately. |
+| Find Items linked to a Record | `POST /api/v1/data-repository/{data-repository-id}/items/search/{record-id}` | Optional `include-all-fields` (boolean), `query`, `link-state` (`LINKED` or `NOT_LINKED`, default `LINKED`), and pageable params. Returns `Page<ItemOut>`. |
+
+## Next steps
+
+For bulk-linking multiple Items or records at once, see
+[Risk Cloud API: Bulk Link Records](/guides/api-usage/risk-cloud-api-bulk-link-records).

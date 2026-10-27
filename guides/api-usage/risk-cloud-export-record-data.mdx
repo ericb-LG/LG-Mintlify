@@ -1,0 +1,93 @@
+---
+title: "Risk Cloud API: Export Record Data"
+sidebarTitle: "Export Record Data"
+description: "Export Record data as CSV or XLSX by combining a layout with application, workflow, and status filters."
+---
+
+This guide walks through exporting Record data in CSV or XLSX format using the Risk Cloud API.
+
+## Authentication
+
+Obtain your API Access Token before getting started — see
+[Authentication](/guides/api-usage/authentication).
+
+## Overview
+
+Exporting Records is a four-step process:
+
+1. Obtain the `layout-id` that defines which columns are included in the export.
+2. Obtain the `application-id`, `workflow-id`, and (optionally) `step-id` that define which
+   Records to export.
+3. Optionally choose one or more status filters.
+4. Submit the export request and retrieve the file.
+
+## Step 1: Obtain the layout-id
+
+The Layout ID can be found in the URL of the Layout Builder:
+
+```text
+https://your-company.logicgate.com/build/layouts/{layout-id}
+```
+
+Alternatively, retrieve it via the API:
+
+```
+GET /api/v1/layouts
+```
+
+## Step 2: Obtain the application-id, workflow-id, and step-id
+
+Application and Step IDs can also be found in their respective Builder URLs:
+
+```text
+https://your-company.logicgate.com/build/applications/{application-id}
+https://your-company.logicgate.com/build/steps/{step-id}
+```
+
+Or retrieve them via the API:
+
+| Resource | Endpoint |
+|---|---|
+| Applications | `GET /api/v2/applications` |
+| Workflows | `GET /api/v2/workflows` |
+| Steps | `GET /api/v2/steps` |
+
+## Step 3: Select status filters (optional)
+
+You can restrict the export to Records in specific statuses:
+
+- `INACTIVE`
+- `NOT_ASSIGNED`
+- `ASSIGNED`
+- `IN_PROGRESS`
+- `COMPLETE`
+
+## Step 4: Retrieve the record export
+
+Submit the IDs gathered above to the export endpoint:
+
+```
+POST /api/v1/records/export/csv
+```
+
+Swap `csv` for `xlsx` in the path to receive an Excel file instead.
+
+```json
+{
+  "layout": "layout-id",
+  "applications": ["application-id"],
+  "workflow": "workflow-id",
+  "statuses": ["IN_PROGRESS"],
+  "step": "step-id"
+}
+```
+
+The response is a CSV or XLSX representation of the matching Records, with field columns
+reflecting the provided layout.
+
+## Next steps
+
+To find Records to export without walking through the Builder UI, see
+[Record Search](/guides/api-usage/risk-cloud-api-record-search). The application, workflow, and
+step lookup endpoints above are paginated — see [Pagination](/guides/api-usage/pagination) if you
+need to page through large result sets.

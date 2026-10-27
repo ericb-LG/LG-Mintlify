@@ -1,0 +1,58 @@
+---
+title: "Risk Cloud API: Linked Record Search"
+sidebarTitle: "Linked Record Search"
+description: "Retrieve all parent or child records linked to a given record, up to a configurable relationship depth."
+---
+
+Whether it's for parent records or child records, the Risk Cloud Record API empowers integration
+use cases to automate and process linked records.
+
+Obtain your [API Access Token](/guides/api-usage/authentication) to get started.
+
+## Retrieve All Linked Records
+
+Retrieve a page of all records that are linked to the record of the given record ID that the
+current user has "Read or Write access" to. The maximum depth of linked records to return, with
+regards to the relationship between the records, can be specified by the `depth` property, which
+defaults to 10.
+
+This endpoint reflects the functionality of Relationship Reports in the Risk Cloud.
+
+**Endpoint:** `GET /api/v2/records/{id}/linked`
+
+### Query parameters
+
+| Query Parameter | Required | Description |
+|---|---|---|
+| `workflow-id` | Yes | The unique ID of a workflow where, if provided, the response will only contain linked records from the identified workflow. |
+| `depth` | No | Specifies the maximum depth of linked records to return with regards to the relationship between the given record's workflow and the workflow specified by `workflow-id` (must not be less than 0, defaults to 10). |
+| `updated-min` | No | A timestamp measured in milliseconds since the Unix epoch where, if provided, the response will only contain records that have been modified since the given timestamp. |
+| `page` | No | The zero-indexed page number (must not be less than 0, defaults to 0). |
+| `size` | No | The size of the page and maximum number of items to be returned (must not be less than 1, defaults to 20). |
+
+See [Pagination](/guides/api-usage/pagination) for how `page` and `size` behave and how the
+response envelope is structured.
+
+## Use case: obtain the record ID
+
+To obtain the value `id` of a particular record, use the [Risk Cloud API: Record
+Search](/guides/api-usage/risk-cloud-api-record-search) endpoint to search and filter records by
+application and workflow.
+
+**Endpoint:** `GET /api/v2/records`
+
+The value `id` of a record can be located in the response of the Record Search endpoint in the
+`content[].id` property. In the sample below, the value ID would be `abcd1234` (ellipses are used
+to omit information for clarity).
+
+```json
+{
+  "content": [
+    {
+      "id": "abcd1234",
+      ...
+    }
+  ],
+  ...
+}
+```

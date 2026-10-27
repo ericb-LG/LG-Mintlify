@@ -1,0 +1,99 @@
+---
+title: "Risk Cloud API: Authentication"
+sidebarTitle: "Authentication"
+description: "OAuth 2.0 bearer tokens, Access Keys, service accounts, and token lifecycle."
+---
+
+## Overview
+
+The Risk Cloud API uses OAuth 2.0 for authentication with bearer tokens in the `Authorization`
+HTTP header. Tokens expire after one year and must be regenerated. You can create multiple named
+Access Keys for different use cases instead of sharing a single token — see
+[Service Accounts](/guides/api-usage/service-accounts) for why that matters at scale.
+
+## Retrieving your Access Key
+
+Access keys are managed from your Profile page: **Person icon → Profile → Access Key tab**
+(requires API privileges). The Client ID is shown directly; the Secret is never shown again but
+can be reset.
+
+## Creating multiple Access Keys
+
+Named Access Keys can be created directly in Risk Cloud:
+
+1. Enter a name identifying the use case (up to 100 characters).
+2. Click **Create Access Key**.
+3. Copy the access key and refresh token immediately — they're shown only once.
+4. Store the credentials in your secrets manager.
+
+Each key can be independently revoked without affecting others. There's no fixed limit on the
+number of Access Keys.
+
+## Creating an Access Key from Client ID and Secret
+
+1. Get your Client ID from the Access Key tab.
+2. Reset your Secret Key to generate credentials.
+3. Base64-encode `{CLIENT}:{SECRET}`:
+
+```bash
+# Terminal
+echo -n '{CLIENT}:{SECRET}' | base64
+```
+
+```powershell
+# PowerShell
+[Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes('{CLIENT}:{SECRET}'))
+```
+
+4. `POST /api/v1/account/token` with `Authorization: Basic {ENCODED_BASE64_STRING}`:
+
+```json
+{
+    "access_token": "KEY_HERE",
+    "token_type": "bearer",
+    "expires_in": 31532918,
+    "scope": "read write"
+}
+```
+
+Use the returned `access_token` as your bearer token.
+
+## Managing Access Keys via API
+
+| Action | Endpoint |
+|---|---|
+| List Access Keys | `GET /api/v1/account/tokens` |
+| Create Access Key | `POST /api/v1/account/tokens` |
+| Revoke Access Key | `DELETE /api/v1/account/tokens/{id}` |
+| Refresh Token | `POST /api/v2/account/token` |
+
+Creating an Access Key requires a JSON body with a `name` field; the response returns metadata
+with tokens displayed once.
+
+## Token lifecycle
+
+| Event | Effect |
+|---|---|
+| Regenerating default token | Deletes only that token; named Access Keys are unaffected |
+| Revoking a named Access Key | Affects only that key |
+| Resetting Client Secret | Deletes the default token **and** all named Access Keys |
+| Disabling a user | Removes all of that user's tokens immediately |
+| Token expiration | Auto-removed after one year |
+
+To manually revoke your default token: `DELETE /api/v1/account/token`.
+
+## Best practices
+
+- **Give each use case its own Access Key.** A compromised key can be revoked independently.
+- **Cache tokens for the full year.** Store generated tokens in a secrets manager and reuse them —
+  don't call the token endpoint on every request.
+- **Handle 401 with one retry.** Refresh the token and replay the request once; persistent
+  failures usually mean another service regenerated the credentials.
+- **Rotate the Client Secret on a schedule.** Quarterly, or immediately on suspected exposure —
+  update your secrets manager first, then regenerate.
+- **Never commit credentials** to source control or container images.
+
+## Next steps
+
+With a valid bearer token, continue to the [API Reference](/api-reference) or the
+[Postman guide](/guides/quick-start/postman).

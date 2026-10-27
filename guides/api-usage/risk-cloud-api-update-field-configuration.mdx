@@ -1,0 +1,152 @@
+---
+title: "Risk Cloud API: Update Field Configuration"
+sidebarTitle: "Update Field Configuration"
+description: "Retrieve and update a Field's label and select values with the Field API."
+---
+
+When you create Fields in Risk Cloud, you can name them, label them, add selectable options, and
+configure many other options. This guide walks through how to do the following via the Field API:
+
+1. Get a Field.
+2. Update a Field.
+   1. Update the Field label.
+   2. Update the Field's select values.
+   3. Add or remove the Field's select values.
+
+## Prerequisites
+
+- Obtain your [API Access Token](/guides/api-usage/authentication) or pull the Risk Cloud Postman
+  Collection (see the [Postman guide](/guides/quick-start/postman)) to get started.
+- The user whose token is used for `PATCH` calls needs a role with the `Build` entitlement.
+
+## 1. Get Field
+
+Retrieve the field you want to update:
+
+```
+GET /api/v1/fields/{fieldId}
+```
+
+**Path parameter**
+
+| Parameter | Required | Description |
+|---|---|---|
+| `fieldId` | Yes | The Field ID you want to get. String. |
+
+**Query parameter**
+
+| Parameter | Required | Description |
+|---|---|---|
+| `archived` | No | Whether to get an archived Field. `true` or `false`. |
+
+### Response
+
+Returns a `Field` object to be used in the following `PATCH` request.
+
+<Tip>
+**Finding the Field ID**
+
+You can retrieve the Field ID by editing the field on the Step Builder page, or by calling
+`GET /api/v1/fields` to list all fields.
+</Tip>
+
+## 2. Update Field
+
+```
+PATCH /api/v1/fields/{fieldId}
+```
+
+**Path parameter**
+
+| Parameter | Required | Description |
+|---|---|---|
+| `fieldId` | Yes | The Field ID you want to update. |
+
+This endpoint covers three related use cases: updating the field label, updating the field's
+select values, and adding or removing select values.
+
+### Case 1: Update Field label
+
+**Request**
+
+```json
+{
+    "fieldType": "SELECT",
+    "label": "Select Label NEW",
+    "validTypeForCalculationInput": true
+}
+```
+
+After the `PATCH` call updates `Select Label` to `Select Label NEW`, the field label on the record
+reflects the new value.
+
+**Response**
+
+Returns the updated `Field` object.
+
+### Case 2: Update Field select values
+
+**Request**
+
+```json
+{
+    "fieldType": "SELECT",
+    "currentValues": [
+        {
+            "id": "<current value id>",
+            "textValue": "Option 1",
+            "numericValue": 1.0,
+            "archived": false,
+            "priority": 1,
+            "fieldId": "<field id>"
+        },
+        {
+            "id": "<current value id>",
+            "textValue": "Option 3",
+            "numericValue": 3.0,
+            "archived": false,
+            "priority": 2,
+            "fieldId": "<field id>"
+        }
+    ],
+    "validTypeForCalculationInput": true
+}
+```
+
+After the `PATCH` call renames `Option 2` (value `2`) to `Option 3` (value `3`), the field's select
+values reflect the update.
+
+**Response**
+
+Returns the updated `Field` object.
+
+### Case 3: Add or remove Field select values
+
+**Request**
+
+```json
+{
+    "fieldType": "SELECT",
+    "currentValues": [
+        {
+            "id": "<current value id>",
+            "textValue": "Option 1",
+            "numericValue": 1.0,
+            "archived": false,
+            "priority": 1,
+            "fieldId": "<field id>"
+        }
+        // ADD CASE: copy an existing currentValues entry and update it as needed.
+        // REMOVE CASE: delete the entry you no longer want.
+    ],
+    "validTypeForCalculationInput": true
+}
+```
+
+To add a select value, copy an existing entry in `currentValues` and update its `textValue`,
+`numericValue`, and `priority`. To remove a select value, delete its entry from the array
+entirely — for example, this request removes `Option 1` and adds a new `Option 2`.
+
+**Response**
+
+Returns the updated `Field` object.

@@ -1,0 +1,69 @@
+---
+title: "Risk Cloud API: Getting Started"
+sidebarTitle: "Getting Started"
+description: "Overview of the Risk Cloud API, authentication, pagination, rate limits, and where to go next."
+---
+
+The Risk Cloud API is a collection of RESTful API endpoints that empower you and your team to
+directly integrate, automate, and build with the Risk Cloud. JSON-based payloads are standard,
+with certain endpoints supporting CSV and XLSX exports.
+
+<Note>
+API access requires purchasing the API Access Add-On Feature.
+</Note>
+
+## Authentication
+
+Risk Cloud uses OAuth 2.0 for authentication, using a bearer Access Token in the `Authorization`
+HTTP header. See [Authentication](/guides/api-usage/authentication) for how to obtain and manage
+access tokens.
+
+## Postman
+
+A user-friendly Postman workspace makes it easy to build and refine integrations. See the
+[Postman guide](/guides/quick-start/postman) for setup.
+
+## Pagination
+
+The API implements offset pagination so endpoints returning large datasets can be processed in
+predictable chunks. See [Pagination](/guides/api-usage/pagination) for the full contract.
+
+## Rate Limit
+
+LogicGate recommends maintaining a rate limit of **10 requests per second** to ensure optimal and
+efficient performance.
+
+## Getting Data
+
+The API enables data export for data lakes and dashboard tools. Relevant guides:
+
+- [View Applications, Workflows, and Steps](/guides/api-usage/risk-cloud-api-view-applications-workflows-and-steps)
+- [Viewing Users](/guides/api-usage/risk-cloud-api-viewing-users)
+- [View User Access Audits](/guides/api-usage/risk-cloud-api-viewing-user-access-audits)
+- [Viewing Fields](/guides/api-usage/risk-cloud-api-viewing-fields)
+- [Record Search](/guides/api-usage/risk-cloud-api-record-search)
+- [Export Record Data](/guides/api-usage/risk-cloud-export-record-data)
+
+## Modifying Data
+
+The API supports actions including record/user creation and field/attachment updates:
+
+- [Create Users](/guides/api-usage/risk-cloud-api-create-users)
+- [Create Records](/guides/api-usage/risk-cloud-api-create-records)
+- [Update Records](/guides/api-usage/risk-cloud-api-update-records)
+- [Upload Attachments](/guides/api-usage/risk-cloud-api-upload-attachments)
+
+## Webhooks
+
+Risk Cloud Webhooks enhance integrations by pushing automation event data to external systems.
+See the [Webhooks guide](/guides/quick-start/risk-cloud-webhooks).
+
+## API Troubleshooting
+
+See the troubleshooting guide for common issues like authorization errors and authentication
+problems.
+
+## Contact
+
+Reach LogicGate's Developer Relations team at
+[developer-relations@logicgate.com](mailto:developer-relations@logicgate.com).

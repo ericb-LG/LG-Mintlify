@@ -1,0 +1,74 @@
+---
+title: "Risk Cloud API: Export User Groups"
+sidebarTitle: "Export User Groups"
+description: "Retrieve the user groups defined in a Risk Cloud environment and the users assigned to each one."
+---
+
+## Overview
+
+User Groups are pre-defined groups of users that allow you to provide more detailed access to
+specific records in your application workflows.
+
+With the Risk Cloud API, user group information can be exported for identifying what users are in
+each user group.
+
+Obtain your [API Access Token](/guides/api-usage/authentication) to get started, and for more on
+user groups, refer to the Help Center article "Getting Started with User Groups".
+
+## Retrieve User Groups
+
+The User Groups API offers the following endpoint, which returns a list of all user groups in the
+Risk Cloud environment.
+
+**Endpoint:** `GET /api/v1/userGroups?default=false&results=false`
+
+This endpoint has the following required query parameters.
+
+| Query Parameter | Description |
+|---|---|
+| `default` | Whether default user groups or non-default user groups are to be returned, which will always be `false` for this use case. |
+| `results` | A necessary query parameter flag for this endpoint, which will always be `false` for this use case. |
+
+### Response
+
+The response contains a JSON array of all user groups in the environment, including user
+information. A sample response is shown below.
+
+```json
+[
+     {
+        "id": "a1b2c3d4",
+        "recordDefault": false,
+        "title": "Policy Team",
+        "users": [
+            {
+                "status": "Active",
+                "id": "e5f6g7h8",
+                "email": "jane.doe@example.com",
+                "company": null,
+                "imageUrl": "/api/v1/users/e5f6g7h8/images?v=upload_file_e5f6g7h8.jpg",
+                "imageS3Key": "profile-picture/upload_file_e5f6g7h8.jpg",
+                "tier": "SECONDARY",
+                "pricingUserTier": "POWER",
+                "mfaEnabled": false,
+                "mfaSetup": false,
+                "autoprovisioned": false,
+                "scimStatus": null,
+                "lastLogin": null,
+                "lastDeactivated": null,
+                "name": "Jane Doe",
+                "locked": false,
+                "external": false,
+                "disabled": false,
+                "serviceAccount": false,
+                "stepPermissionSetIds": [],
+                "roleIds": [],
+                "superUser": false,
+                "empty": false,
+                "idOrTransientId": "e5f6g7h8",
+                "transientIdOrId": "e5f6g7h8"
+            }
+        ]
+    }
+]
+```

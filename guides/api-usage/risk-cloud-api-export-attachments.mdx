@@ -1,0 +1,93 @@
+---
+title: "Risk Cloud API: Export Attachments"
+sidebarTitle: "Export Attachments"
+description: "Retrieve the download URL for a record's attachment field values and fetch the file."
+---
+
+Within Risk Cloud, you can add "Attachment" fields to your records, enabling you to store files
+within Risk Cloud alongside your records. Once stored, these files can be exported via the Risk
+Cloud API.
+
+To instead upload attachments to Risk Cloud, see
+[Risk Cloud API: Upload Attachments](/guides/api-usage/risk-cloud-api-upload-attachments).
+
+Obtain your [API Access Token](/guides/api-usage/authentication) or pull the Risk Cloud Postman
+Collection to get started.
+
+## Export Attachment endpoint
+
+The Attachments API offers the following endpoint, which returns a `String` URL to the file,
+based on the value ID of a value on a particular record's attachment field.
+
+```
+GET /api/v1/attachments/{value-id}/url
+```
+
+## Use cases
+
+### Obtain the value ID
+
+To obtain the value ID of a value on a record's attachment field, use the
+[Risk Cloud API: Record Search](/guides/api-usage/risk-cloud-api-record-search) endpoint to view
+the fields and values of an attachment on a set of records, filterable by application, workflow,
+step, or a timestamp.
+
+```
+GET /api/v2/records
+```
+
+The value ID of an attachment field is found in the response at
+`content[].fields[].values[].id`, for fields where `content[].fields[].values[].type` is
+`ATTACHMENT`. In the sample below, the value ID is `abcd1234` (ellipses omit unrelated fields for
+clarity).
+
+**Response**
+
+```json
+{
+  "content": [
+    {
+      "fields": [
+        {
+          "values": [
+            {
+              "id": "abcd1234",
+              "type": "ATTACHMENT",
+              "textValue": "Evidence.pdf",
+              "numericValue": 1.0,
+              "object": "value"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Obtain the attachment URL
+
+Using the value ID obtained from the Record Search endpoint, make a request to the export
+attachment endpoint, which returns a `String` URL to the file.
+
+```
+GET /api/v1/attachments/{value-id}/url
+```
+
+This endpoint returns a plain string (not JSON), so the `Accept` header of the request should be
+either `Accept: text/plain` or `Accept: */*`.
+
+**Response**
+
+```text
+https://env-logic-gate.amazonaws.com/attachment/file_123456789.pdf
+```
+
+### Get the attachment
+
+Finally, run a `GET` request directly on the returned URL to obtain the file. The file type can
+be inferred from the extension of the file name.
+
+```
+GET https://env-logic-gate.amazonaws.com/attachment/file_123456789.pdf
+```

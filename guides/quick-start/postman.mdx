@@ -1,0 +1,37 @@
+---
+title: "Risk Cloud API: Postman"
+sidebarTitle: "Postman"
+description: "Set up the Risk Cloud API Postman workspace and send your first request."
+---
+
+LogicGate provides a user-friendly Postman workspace for building and refining custom
+integrations with the Risk Cloud API.
+
+## Setup Instructions
+
+**Prerequisites**
+
+- An API Bearer Token or Client Key & Secret Key — see [Authentication](/guides/api-usage/authentication).
+- Fork the Risk Cloud API Postman Collection into your own workspace.
+
+**Environment configuration**
+
+Set these variable/value pairs in the Risk Cloud API Environment:
+
+| Variable | Value |
+|---|---|
+| `bearerToken` | Your API Bearer Token |
+| `baseUrl` | Your Risk Cloud environment URL, e.g. `https://{subdomain}.logicgate.com` |
+| `basicAuthUsername` | Your client key (if using client/secret auth) |
+| `basicAuthPassword` | Your secret key (if using client/secret auth) |
+
+## Step-by-step example
+
+1. Click **Run in Postman** and select **Fork Collection**.
+2. Customize the fork name.
+3. Go to **Environments**, select your new environment, and fill in `bearerToken` and `baseUrl`.
+4. Go to **Collections**, pick an endpoint (e.g. `GET /api/v2/records`), open **Authorization**,
+   choose **Bearer Token**, and enter `{{bearerToken}}`.
+5. Confirm the correct environment is selected, then click **Send**.
+6. If no results appear, re-check your token and user permissions — see
+   [Authentication](/guides/api-usage/authentication) or the troubleshooting guide.

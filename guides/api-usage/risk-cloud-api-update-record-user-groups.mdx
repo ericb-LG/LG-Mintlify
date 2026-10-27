@@ -1,0 +1,123 @@
+---
+title: "Risk Cloud API: Update Record User Groups"
+sidebarTitle: "Update Record User Groups"
+description: "Add or remove User Groups on a record while preserving its default User Group."
+---
+
+## Overview
+
+User Groups enable detailed access control to specific records in applications, functioning
+similarly to permission sets for step-level restrictions. The Risk Cloud API allows dynamic
+configuration of User Groups on records.
+
+Obtain your [API Access Token](/guides/api-usage/authentication) or pull the Risk Cloud Postman
+Collection (see the [Postman guide](/guides/quick-start/postman)) to get started.
+
+## Update Record User Group endpoint
+
+```
+PUT /api/v1/records/{record-id}
+```
+
+## Use cases
+
+### Get record ID
+
+The `record-id` can be sourced from three locations:
+
+- **Risk Cloud application:** Open the desired record and extract the ID from the URL:
+  `https://your-company.logicgate.com/records/{record-id}`.
+- **Email:** Contextual Notifications support custom and system fields in outbound emails. Record
+  ID is a System Field available for inclusion in Risk Cloud emails, which lets you extract the ID
+  for use in API requests.
+- **Risk Cloud API:** Use [Record Search](/guides/api-usage/risk-cloud-api-record-search) to obtain
+  record IDs programmatically.
+
+### Get default User Group
+
+When a record is created, a default User Group is automatically added to it for granting specific
+user access. Preserving this User Group is essential when you add or remove additional groups.
+
+```
+GET /api/v1/internal/userGroups/default?record={record-id}
+```
+
+**Response**
+
+The default User Group ID is in the `id` property:
+
+```json
+{
+  "id": "a1b2c3d4",
+  "recordDefault": true,
+  "title": " Default Group",
+  "users": []
+}
+```
+
+### Get User Group IDs
+
+**Web app environment:**
+
+- Navigate to **Build > Access**.
+- Select the **Groups** tab.
+- Click a User Group title to open the editor.
+- Locate the ID under the **User Group ID** label.
+
+**Risk Cloud API:**
+
+Create User Groups via [Create User Groups](/guides/api-usage/risk-cloud-api-create-user-groups)
+to obtain IDs from the returned object's `id` property, or retrieve all User Groups:
+
+```
+GET /api/v1/userGroups?page=0&size=1000
+```
+
+**Response**
+
+```json
+{
+  "content": [
+    {
+      "id": "a1b2c3d4",
+      "title": "User Group Name"
+    }
+  ],
+  "pageable": {}
+}
+```
+
+### Update record User Group
+
+```
+PUT /api/v1/records/{record-id}
+```
+
+**Request body**
+
+```json
+{
+  "id": "{record-id}",
+  "userGroups": [
+    {
+      "id": "{default-user-group-id}"
+    },
+    {
+      "id": "{user-group-id-1}"
+    },
+    {
+      "id": "{user-group-id-2}"
+    }
+  ]
+}
+```
+
+- Use the record ID in both the URL path and the request body.
+- Include User Group IDs as `id` property values in the `userGroups` array.
+- Always preserve the default User Group by including its ID in every request.
+- Omit a User Group's ID to remove it from the record.
+
+**Response**
+
+A `200` status confirms the User Group update. Refresh the record in the Risk Cloud web
+application to see the change reflected.

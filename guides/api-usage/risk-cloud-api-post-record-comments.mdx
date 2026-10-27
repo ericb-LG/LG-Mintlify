@@ -1,0 +1,66 @@
+---
+title: "Risk Cloud API: Post Record Comments"
+sidebarTitle: "Post Record Comments"
+description: "Post a rich-text comment to a record via the Risk Cloud API to centralize context from external systems."
+---
+
+## Overview
+
+Creating comments via the Risk Cloud API allows custom integrations to post contextual updates to
+records, keeping related information from external sources centralized in the Risk Cloud.
+
+This article walks through the steps necessary for posting a comment to a record via the Risk
+Cloud API:
+
+1. Obtain the `record-id` of the record that you would like to post the comment to.
+2. Post the record comment.
+
+**Endpoint:** `POST /api/v1/comments`
+
+Obtain your [API Access Token](/guides/api-usage/authentication) to get started.
+
+## Comments feature requirements
+
+Ensure that the Comments feature is enabled for your step. To enable comments on a record step:
+
+1. Navigate to the step via **Build > Applications > Open an application > Open a step in a
+   workflow > Configure Step**.
+2. Check the box **Enable Comments**.
+
+## Step 1: Obtain the record ID
+
+The `record-id` can be obtained from the Risk Cloud web application, emails, or via the Risk Cloud
+API. If you already know your `record-id`, continue to [Step 2: Post Record
+Comment](#step-2-post-record-comment).
+
+- **Using the Risk Cloud application:** Open the desired record in the Risk Cloud web application,
+  then take the ID from the end of the URL: `https://your-company.logicgate.com/records/{record-id}`
+- **Using email:** The Contextual Notifications feature offers the ability to set Custom Fields
+  and System Fields in outbound emails. As a result, Record ID is a System Field that can be
+  included in outbound emails from the Risk Cloud. This Record ID can in turn be parsed from the
+  email for use in the Post Record Comment API request below.
+- **Using the Risk Cloud API:** Reference [Risk Cloud API: Record
+  Search](/guides/api-usage/risk-cloud-api-record-search) to obtain record IDs via the Risk Cloud
+  API.
+
+## Step 2: Post Record Comment
+
+Use the `record-id` found in the previous step to create a comment. You will also need the text of
+the post in Rich Text HTML format.
+
+**Endpoint:** `POST /api/v1/comments`
+
+### Sample request body
+
+```json
+{
+  "record": {
+    "id": "record-id"
+  },
+  "content": "<p>Your comment here.</p>"
+}
+```
+
+### Response
+
+A 200 response with JSON confirming the structure of the new comment.
